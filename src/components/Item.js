@@ -17,8 +17,16 @@ const buttonStyle = {
   margin: 10
 }
 
-
 class Item extends Component{
+  constructor(props){
+    super(props)
+    this.delete = this.delete.bind(this);
+  }
+
+  delete = () => {
+    this.props.deletePost(this.props.id);
+  }
+
   render() {
     return (
       <Card style={style}>
@@ -34,7 +42,7 @@ class Item extends Component{
           {
             this.props.auth.uid ?
             this.props.auth.username === this.props.item.username ?
-            <RaisedButton label="Delete" secondary={true} style = {buttonStyle}/>
+            <RaisedButton label="Delete" secondary={true} style = {buttonStyle} onClick = {this.delete}/>
             :
             null
             :

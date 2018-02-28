@@ -41,22 +41,18 @@ export const submitPost = (contents) => {
 			username: state.auth.username,
 			uid: state.auth.uid,
 		};
-    //
-		// postsRef.push(post, (error) =>{
-		// 	if (error) {
-		// 		console.log(error)
-		// 	}
-		// })
 
 		dispatch({ type: C.POST_AWAIT_CREATION_RESPONSE });
 		postsRef.push(post, (error) => {
 			dispatch({ type: C.POST_RECEIVE_CREATION_RESPONSE });
 			if (error) {
+				console.log(error);
 				dispatch({
 					type: C.FEEDBACK_DISPLAY_ERROR,
 					error: `Submission failed! ${error}`
 				});
 			} else {
+				console.log("Posted");
 				dispatch({
 					type: C.FEEDBACK_DISPLAY_MESSAGE,
 					message: 'Submission successfully saved!'
@@ -66,49 +62,14 @@ export const submitPost = (contents) => {
 	};
 };
 
-export const startPostEdit = (qid) => {
-	return (dispatch) => {
-		dispatch({ type: C.POST_EDIT, qid });
-	};
-};
-
-export const cancelPostEdit = (qid) => {
-	return (dispatch) => {
-		dispatch({ type: C.POST_EDIT_FINISH, qid });
-	};
-};
-
-export const submitPostEdit = (qid, contents) => {
-	return (dispatch, getState) => {
-		const state = getState();
-		const post = {
-			contents,
-			username: state.auth.username,
-			uid: state.auth.uid
-		};
-		dispatch({ type: C.POST_EDIT_SUBMIT, qid });
-		postsRef.child(qid).set(post, (error) => {
-			dispatch({ type: C.POST_EDIT_FINISH, qid });
-			if (error) {
-				dispatch({
-					type: C.FEEDBACK_DISPLAY_ERROR,
-					error: `Update failed! ${error}`
-				});
-			} else {
-				dispatch({
-					type: C.FEEDBACK_DISPLAY_MESSAGE,
-					message: 'Update successfully saved!'
-				});
-			}
-		});
-	};
-};
 
 export const deletePost = (qid) => {
 	return (dispatch) => {
-		dispatch({ type: C.POST_EDIT_SUBMIT, qid });
+		console.log(qid);
+		// console.log("hello");
+		// dispatch({ type: C.POST_EDIT_SUBMIT, qid });
 		postsRef.child(qid).remove((error) => {
-			dispatch({ type: C.POST_EDIT_FINISH, qid });
+			// dispatch({ type: C.POST_EDIT_FINISH, qid });
 			if (error) {
 				dispatch({
 					type: C.FEEDBACK_DISPLAY_ERROR,
@@ -123,3 +84,43 @@ export const deletePost = (qid) => {
 		});
 	};
 };
+
+
+
+// export const startPostEdit = (qid) => {
+// 	return (dispatch) => {
+// 		dispatch({ type: C.POST_EDIT, qid });
+// 	};
+// };
+//
+// export const cancelPostEdit = (qid) => {
+// 	return (dispatch) => {
+// 		dispatch({ type: C.POST_EDIT_FINISH, qid });
+// 	};
+// };
+//
+// export const submitPostEdit = (qid, contents) => {
+// 	return (dispatch, getState) => {
+// 		const state = getState();
+// 		const post = {
+// 			contents,
+// 			username: state.auth.username,
+// 			uid: state.auth.uid
+// 		};
+// 		dispatch({ type: C.POST_EDIT_SUBMIT, qid });
+// 		postsRef.child(qid).set(post, (error) => {
+// 			dispatch({ type: C.POST_EDIT_FINISH, qid });
+// 			if (error) {
+// 				dispatch({
+// 					type: C.FEEDBACK_DISPLAY_ERROR,
+// 					error: `Update failed! ${error}`
+// 				});
+// 			} else {
+// 				dispatch({
+// 					type: C.FEEDBACK_DISPLAY_MESSAGE,
+// 					message: 'Update successfully saved!'
+// 				});
+// 			}
+// 		});
+// 	};
+// };

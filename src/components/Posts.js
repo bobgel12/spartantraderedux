@@ -1,5 +1,5 @@
-import PostBook from './PostBook.jsx';
-import Item from './Item.jsx';
+import PostBook from './PostBook.js';
+import Item from './Item.js';
 
 
 import React, { Component } from 'react';
@@ -24,7 +24,7 @@ class Posts extends Component{
               Object.keys(this.props.posts.data).map((item) => {
                 return (
                   <div className="col-xs-12 col-md-6 col-lg-4" key={item}>
-                    <Item item = {this.props.posts.data[item]}/>
+                    <Item item = {this.props.posts.data[item]} id = {item}/>
                   </div>
                 );
               })

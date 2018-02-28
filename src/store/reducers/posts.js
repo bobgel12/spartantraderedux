@@ -35,16 +35,15 @@ export default (state, action) => {
 };
 
 
-
 // case C.POST_EDIT:
-// 	newstate = Object.assign({}, state);
-// 	newstate.status[action.qid] = C.POST_EDITING;
-// 	return newstate;
+// newstate = Object.assign({}, state);
+// newstate.status[action.qid] = C.POST_EDITING;
+// return newstate;
 // case C.POST_EDIT_FINISH:
-// 	newstate = Object.assign({}, state);
-// 	delete newstate.status[action.qid];
-// 	return newstate;
+// newstate = Object.assign({}, state);
+// delete newstate.status[action.qid];
+// return newstate;
 // case C.POST_EDIT_SUBMIT:
-// 	newstate = Object.assign({}, state);
-// 	newstate.status[action.qid] = C.POST_SUBMITTING;
-// 	return newstate;
+// newstate = Object.assign({}, state);
+// newstate.status[action.qid] = C.POST_SUBMITTING;
+// return newstate;
