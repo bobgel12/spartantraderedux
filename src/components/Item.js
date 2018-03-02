@@ -8,8 +8,10 @@ import { deletePost, addWishlist } from '../actions/posts';
 
 const style = {
   height: 300,
-  width: 280,
-  margin:20,
+  width: "100%",
+  margin:0,
+  marginTop: 20,
+  marginBottom: 20,
   textAlign: 'center',
 };
 

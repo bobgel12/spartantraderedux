@@ -1,5 +1,6 @@
 import PostBook from './PostBook.js';
 import Item from './Item.js';
+import Profile from './Profile.js';
 
 
 import React, { Component } from 'react';
@@ -68,3 +69,8 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+
+// 
+// <div className="col-xs-12 col-md-6 col-lg-4">
+//   <Profile />
+// </div>

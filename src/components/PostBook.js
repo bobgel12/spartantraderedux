@@ -5,8 +5,10 @@ import Card from 'material-ui/Card';
 
 const style = {
   height: 300,
-  width: 280,
-  margin:20,
+  width: "100%",
+  margin:0,
+  marginBottom: 20,
+  marginTop: 20,
   textAlign: 'center',
 };
 
