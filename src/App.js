@@ -8,7 +8,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export default class App extends Component {
 	componentWillMount() {
+		// Check if there is a user logined
 		store.dispatch(listenToAuth());
+		// Get all the post from the database
 		store.dispatch(listenToPosts());
 	}
 	render() {

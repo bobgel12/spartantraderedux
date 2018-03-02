@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 
 import { connect } from 'react-redux';
-import { deletePost } from '../actions/posts';
+import { deletePost, addWishlist } from '../actions/posts';
 
 const style = {
   height: 300,
@@ -21,24 +21,29 @@ class Item extends Component{
   constructor(props){
     super(props)
     this.delete = this.delete.bind(this);
+    this.a = this.a.bind(this);
   }
 
   delete = () => {
-    this.props.deletePost(this.props.id);
+    this.props.addWishlist(this.props.id);
+  }
+
+  a = () => {
+    this.props.addWishlist(this.props.id, this.props.auth.uid);
   }
 
   render() {
     return (
       <Card style={style}>
         <CardHeader
-          title={this.props.item.user}
+          title={this.props.item.username}
           subtitle="SJSU"
           avatar={this.props.item.userPhoto}
           />
         <CardTitle title={this.props.item.title} subtitle={this.props.item.major + " price " + this.props.item.price} />
         <CardActions>
-          <RaisedButton label="Interested" primary = {true}/>
-          <RaisedButton label="WishList" primary = {true}/>
+          <RaisedButton label="Message" primary = {true}/>
+          <RaisedButton label="WishList" primary = {true} onClick = {this.a}/>
           {
             this.props.auth.uid ?
             this.props.auth.username === this.props.item.username ?
@@ -62,7 +67,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-	deletePost,
+	deletePost, addWishlist
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Item);

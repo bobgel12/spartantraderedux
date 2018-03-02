@@ -3,6 +3,23 @@ import { database } from '../firebaseApp';
 
 const postsRef = database.ref('books');
 
+export const addWishlist = (qid, uid) => {
+	return (dispatch) => {
+		const wishListRef = database.ref(uid+'/wishList');
+		wishListRef.push((qid), (error) =>{
+			if (error) {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA_ERROR,
+					message: error.message
+				});
+			}
+			dispatch({
+				type: C.FEEDBACK_DISPLAY_MESSAGE,
+				message: 'WishList successfully saved!'
+			});
+		});
+	}
+}
 
 export const listenToPosts = () => {
 	return (dispatch) => {
@@ -66,21 +83,17 @@ export const submitPost = (contents) => {
 export const deletePost = (qid) => {
 	return (dispatch) => {
 		console.log(qid);
-		// console.log("hello");
-		// dispatch({ type: C.POST_EDIT_SUBMIT, qid });
 		postsRef.child(qid).remove((error) => {
-			// dispatch({ type: C.POST_EDIT_FINISH, qid });
 			if (error) {
 				dispatch({
 					type: C.FEEDBACK_DISPLAY_ERROR,
 					error: `Deletion failed! ${error}`
 				});
-			} else {
-				dispatch({
-					type: C.FEEDBACK_DISPLAY_MESSAGE,
-					message: 'Post successfully deleted!'
-				});
 			}
+			dispatch({
+				type: C.FEEDBACK_DISPLAY_MESSAGE,
+				message: 'Post successfully deleted!'
+			});
 		});
 	};
 };

@@ -1,5 +1,4 @@
 import AppBar from 'material-ui/AppBar';
-import {List, ListItem} from 'material-ui/List';
 import FlatButton from 'material-ui/FlatButton';
 import Avatar from 'material-ui/Avatar';
 
@@ -16,17 +15,10 @@ class Auth extends Component {
         <AppBar
           title="SpartanTrade"
           iconElementRight={
-            <List>
-              <ListItem
-                disabled={true}
-                children={
                   <div>
-                    <Avatar src={props.auth.photo} />
-                    <FlatButton onClick={props.logoutUser} label="Log Out" />
+                    <Avatar src={props.auth.photo} key = {1} />
+                    <FlatButton onClick={props.logoutUser} label="Log Out" key = {2}/>
                   </div>
-                }
-                />
-            </List>
           }
           user={props.auth}
         />
