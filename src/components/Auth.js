@@ -5,7 +5,7 @@ import Avatar from 'material-ui/Avatar';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { openAuth, logoutUser } from '../actions/auth';
+import { openAuth, logoutUser, toggleProfile } from '../actions/auth';
 import C from '../constants';
 
 class Auth extends Component {
@@ -16,8 +16,8 @@ class Auth extends Component {
           title="SpartanTrade"
           iconElementRight={
                   <div>
-                    <Avatar src={props.auth.photo} key = {1} />
-                    <FlatButton onClick={props.logoutUser} label="Log Out" key = {2}/>
+                    <Avatar src={props.auth.photo} onClick={this.props.toggleProfile} />
+                    <FlatButton onClick={props.logoutUser} label="Log Out"/>
                   </div>
           }
           user={props.auth}
@@ -49,6 +49,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
 	openAuth,
 	logoutUser,
+  toggleProfile
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

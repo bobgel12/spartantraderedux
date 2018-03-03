@@ -5,6 +5,7 @@ const initialState = {
 	uid: null,
 	photo: null,
 	status: C.AUTH_ANONYMOUS,
+	profile: false,
 };
 
 export default (state, action) => {
@@ -30,6 +31,10 @@ export default (state, action) => {
 				uid: null,
 				photo: null,
 			};
+		case C.TOGGLE_PROFLE:
+			return Object.assign({}, initialState, state, {
+				profile: !state.profile,
+			});
 		default: return state || initialState;
 	}
 };

@@ -48,3 +48,10 @@ export const logoutUser = () => {
 		auth.signOut();
 	};
 };
+
+export const toggleProfile = () => {
+	return (dispatch) => {
+		console.log('Profile');
+		dispatch({ type: C.TOGGLE_PROFLE });
+	};
+};

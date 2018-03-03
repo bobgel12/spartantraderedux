@@ -9,32 +9,12 @@ import { connect } from 'react-redux';
 import { submitPost, deletePost } from '../actions/posts';
 
 class Posts extends Component{
-  goProfile = () => {
-    this.props.auth.go = true;
-    this.forceUpdate();
-  }
-  goBooks = () => {
-    this.props.auth.go = false;
-    this.forceUpdate();
-  }
   getJSX(props) {
-    if (this.props.auth.go) {
-      return (
-        <div>
-        <FlatButton onClick={this.goBooks} label="Books" />
-        <Profile auth={this.props.auth}/>
-        </div>
-      );
-    }
 		switch (props.posts.hasReceivedData) {
 			case true: return (
         <div className= "container">
           <div className="row">
-            {
-              <div>
-                <FlatButton onClick={this.goProfile} label="Profile" />
-              </div>
-            }
+
             {
               this.props.auth.uid ?
               <div className="col-xs-12 col-md-6 col-lg-4">
@@ -92,6 +72,15 @@ const mapDispatchToProps = {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
 
+// 
+// goProfile = () => {
+//   this.props.auth.go = true;
+//   this.forceUpdate();
+// }
+// goBooks = () => {
+//   this.props.auth.go = false;
+//   this.forceUpdate();
+// }
 //
 // <div className="col-xs-12 col-md-6 col-lg-4">
 //   <Profile />

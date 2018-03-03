@@ -35,7 +35,7 @@ class Item extends Component{
   }
 
   render() {
-    if (this.props.id == 'mini') {
+    if (this.props.id === 'mini') {
       return (
         <CardText>
           {this.props.item.title}

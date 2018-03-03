@@ -35,6 +35,7 @@ class Profile extends Component{
     super(props)
     this.state = {
       value: 'a',
+      wishlistArray:[]
     };
   }
 
@@ -43,25 +44,23 @@ class Profile extends Component{
       value: value,
     });
   };
-
   render() {
 
     const wishListRef = database.ref(this.props.auth.uid+'/wishList');
-
     var wishlistArrayRaw=[];
     wishListRef.on('value', function(stuff) {
        stuff.forEach(function(qid) {
         wishlistArrayRaw.push(qid.A.B);
       });
     });
-    var wishlistArray = [...new Set(wishlistArrayRaw)];
+    this.state.wishlistArray = [...new Set(wishlistArrayRaw)];
 
     return (
       <Tabs
        value={this.state.value}
        onChange={this.handleChange}
        >
-       <Tab value="a" icon={<i class="material-icons md-18">grade</i>}>
+       <Tab value="a" icon={<i className="material-icons md-18">grade</i>}>
          <div>
            <Card style={styles.card}>
              <CardHeader
@@ -76,7 +75,7 @@ class Profile extends Component{
            </Card>
          </div>
        </Tab>
-       <Tab value="b" icon={<i class="material-icons md-18">message</i>}>
+       <Tab value="b" icon={<i className="material-icons md-18">message</i>}>
        <div>
          <Card style={styles.card}>
            <CardHeader
@@ -91,7 +90,7 @@ class Profile extends Component{
          </Card>
        </div>
        </Tab>
-       <Tab value="c" icon={<i class="material-icons md-18">redeem</i>}>
+       <Tab value="c" icon={<i className="material-icons md-18">redeem</i>}>
        <div>
          <Card style={styles.card}>
            <CardHeader
@@ -102,9 +101,11 @@ class Profile extends Component{
              <CardTitle title="Wish List" />
             {
               // map performs some function for each element of array
-              wishlistArray.map((qid) => {
+              this.state.wishlistArray.map((qid) => {
                 return (
+                  <div key = {qid}>
                     <Item item = {this.props.posts.data[qid]} id = "mini"/>
+                  </div>
                 );
               })
             }
