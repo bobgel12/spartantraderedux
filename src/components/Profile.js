@@ -2,16 +2,18 @@ import React, {Component} from 'react';
 import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Avatar from 'material-ui/Avatar';
+import Item from './Item.js';
 import FontIcon from 'material-ui/FontIcon';
 
 import { connect } from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import { deletePost, addWishlist } from '../actions/posts';
+import { database } from '../firebaseApp';
 
 
 const styles = {
   card: {
-    height: 300,
+    height: 900,
     width: "100%",
     margin:0,
     marginBottom: 20,
@@ -43,6 +45,17 @@ class Profile extends Component{
   };
 
   render() {
+
+    const wishListRef = database.ref(this.props.auth.uid+'/wishList');
+
+    var wishlistArrayRaw=[];
+    wishListRef.on('value', function(stuff) {
+       stuff.forEach(function(qid) {
+        wishlistArrayRaw.push(qid.A.B);
+      });
+    });
+    var wishlistArray = [...new Set(wishlistArrayRaw)];
+
     return (
       <Tabs
        value={this.state.value}
@@ -87,9 +100,14 @@ class Profile extends Component{
              avatar={this.props.auth.photo}
              />
              <CardTitle title="Wish List" />
-             <CardText>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </CardText>
+            {
+              // map performs some function for each element of array
+              wishlistArray.map((qid) => {
+                return (
+                    <Item item = {this.props.posts.data[qid]} id = "mini"/>
+                );
+              })
+            }
          </Card>
        </div>
        </Tab>
@@ -101,7 +119,8 @@ class Profile extends Component{
 
 const mapStateToProps = (state) => {
 	return {
-		auth: state.auth
+		auth: state.auth,
+    posts: state.posts
 	};
 };
 

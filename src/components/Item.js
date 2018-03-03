@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardActions, CardHeader, CardTitle} from 'material-ui/Card';
+import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 
 
@@ -35,6 +35,13 @@ class Item extends Component{
   }
 
   render() {
+    if (this.props.id == 'mini') {
+      return (
+        <CardText>
+          {this.props.item.title}
+        </CardText>
+      );
+    }
     return (
       <Card style={style}>
         <CardHeader
