@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { deletePost, addWishlist } from '../actions/posts';
 
 const style = {
-  height: 300,
+  height: 324,
   width: "100%",
   margin:0,
   marginTop: 20,
@@ -16,21 +16,22 @@ const style = {
 };
 
 const buttonStyle = {
-  margin: 10
+  margin: 10,
+  marginTop: 5
 }
 
 class Item extends Component{
   constructor(props){
     super(props)
     this.delete = this.delete.bind(this);
-    this.a = this.a.bind(this);
+    this.addWishlist = this.addWishlist.bind(this);
   }
 
   delete = () => {
-    this.props.addWishlist(this.props.id);
+    this.props.deletePost(this.props.id);
   }
 
-  a = () => {
+  addWishlist = () => {
     this.props.addWishlist(this.props.id, this.props.auth.uid);
   }
 
@@ -48,19 +49,29 @@ class Item extends Component{
           title={this.props.item.username}
           subtitle="SJSU"
           avatar={this.props.item.userPhoto}
+          children = {
+              this.props.auth.uid ?
+              this.props.auth.uid === this.props.item.uid ?
+              <RaisedButton label="Delete" secondary={true} style = {buttonStyle} onClick = {this.delete}/>
+              :
+              null
+              :
+              null
+          }
           />
-        <CardTitle title={this.props.item.title} subtitle={this.props.item.major + " price " + this.props.item.price} />
+        <CardTitle title={this.props.item.title} subtitle={"Major: "+this.props.item.major + ", Price: $" + this.props.item.price} />
+        <CardText>
+          {this.props.item.description}
+        </CardText>
         <CardActions>
-          <RaisedButton label="Message" primary = {true}/>
-          <RaisedButton label="WishList" primary = {true} onClick = {this.a}/>
           {
-            this.props.auth.uid ?
-            this.props.auth.username === this.props.item.username ?
-            <RaisedButton label="Delete" secondary={true} style = {buttonStyle} onClick = {this.delete}/>
-            :
-            null
-            :
-            null
+              this.props.auth.uid ?
+              <div>
+                <RaisedButton style= {buttonStyle} label="Message" primary = {true}/>
+                <RaisedButton style= {buttonStyle} label="WishList" primary = {true} onClick = {this.addWishlist}/>
+              </div>
+              :
+              null
           }
         </CardActions>
       </Card>

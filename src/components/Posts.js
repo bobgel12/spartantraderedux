@@ -1,7 +1,5 @@
 import PostBook from './PostBook.js';
 import Item from './Item.js';
-import Profile from './Profile.js';
-import FlatButton from 'material-ui/FlatButton';
 
 
 import React, { Component } from 'react';
@@ -14,7 +12,6 @@ class Posts extends Component{
 			case true: return (
         <div className= "container">
           <div className="row">
-
             {
               this.props.auth.uid ?
               <div className="col-xs-12 col-md-6 col-lg-4">
@@ -24,13 +21,16 @@ class Posts extends Component{
               null
             }
             {
+              this.props.posts.data ?
               Object.keys(this.props.posts.data).map((item) => {
                 return (
                   <div className="col-xs-12 col-md-6 col-lg-4" key={item}>
-                    <Item item = {this.props.posts.data[item]} id = {item}/>
+                  <Item item = {this.props.posts.data[item]} id = {item}/>
                   </div>
                 );
               })
+              :
+              null
             }
           </div>
         </div>
@@ -72,7 +72,7 @@ const mapDispatchToProps = {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
 
-// 
+//
 // goProfile = () => {
 //   this.props.auth.go = true;
 //   this.forceUpdate();

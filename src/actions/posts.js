@@ -1,11 +1,11 @@
 import C from '../constants';
 import { database } from '../firebaseApp';
 
-const postsRef = database.ref('books');
+const postsRef = database.ref('Books');
 
 export const addWishlist = (qid, uid) => {
 	return (dispatch) => {
-		const wishListRef = database.ref(uid+'/wishList');
+		const wishListRef = database.ref('Users/'+uid+'/wishList');
 		wishListRef.push((qid), (error) =>{
 			if (error) {
 				dispatch({

@@ -44,9 +44,14 @@ class Profile extends Component{
       value: value,
     });
   };
+
+  remove = (qid) =>{
+    console.log("in the remove "+ qid);
+  }
+
   render() {
 
-    const wishListRef = database.ref(this.props.auth.uid+'/wishList');
+    const wishListRef = database.ref("Users/"+this.props.auth.uid+'/wishList');
     var wishlistArrayRaw=[];
     wishListRef.on('value', function(stuff) {
        stuff.forEach(function(qid) {
@@ -102,9 +107,13 @@ class Profile extends Component{
             {
               // map performs some function for each element of array
               this.state.wishlistArray.map((qid) => {
+                console.log(this.props.posts.data[qid]);
                 return (
                   <div key = {qid}>
-                    <Item item = {this.props.posts.data[qid]} id = "mini"/>
+                    <CardText>
+                      {this.props.posts.data[qid].title}.
+                   </CardText>
+                   <RaisedButton label="Delete" secondary={true} style = {styles.buttonStyle} onClick = {this.remove(qid)}/>
                   </div>
                 );
               })

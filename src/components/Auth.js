@@ -1,7 +1,8 @@
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import Avatar from 'material-ui/Avatar';
-
+import IconButton from 'material-ui/IconButton';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -14,6 +15,7 @@ class Auth extends Component {
       case C.AUTH_LOGGED_IN: return (
         <AppBar
           title="SpartanTrade"
+          iconElementLeft={<IconButton>icon={<i className="material-icons md-18">code</i>}</IconButton>}
           iconElementRight={
                   <div>
                     <Avatar src={props.auth.photo} onClick={this.props.toggleProfile} />
@@ -26,12 +28,14 @@ class Auth extends Component {
       case C.AUTH_AWAITING_RESPONSE: return (
         <AppBar
           title="SpartanTrade"
+          iconElementLeft={<IconButton>icon={<i className="material-icons md-18">code</i>}</IconButton>}
           iconElementRight={<FlatButton onClick={props.openAuth} label="Log in" />}
           />
       );
       default: return(
         <AppBar
           title="SpartanTrade"
+          iconElementLeft={<IconButton>icon={<i className="material-icons md-18">code</i>}</IconButton>}
           iconElementRight={<FlatButton onClick={props.openAuth} label="Log in" />}
           />
       );

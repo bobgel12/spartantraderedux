@@ -4,7 +4,7 @@ import Posts from './Posts';
 import Profile from './Profile';
 
 import { connect } from 'react-redux';
-import { submitPost, deletePost } from '../actions/posts';
+import { submitPost } from '../actions/posts';
 
 class Page extends Component {
 	render(){
