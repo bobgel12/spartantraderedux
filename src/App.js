@@ -1,20 +1,14 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
 import store from './store';
 import { listenToAuth } from './actions/auth';
-import { listenToPosts, listenToWishList } from './actions/posts';
-import Page from './components/Page';
+import { listenToPosts } from './actions/posts';
 import Auth from './components/Auth';
+import ItemPage from './components/ItemPage';
 import Posts from './components/Posts';
 import Profile from './components/Profile';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import {
-	BrowserRouter,
 	Route,
-	Link,
-	Redirect,
-	withRouter, 
 	Switch
 } from "react-router-dom";
 
@@ -36,6 +30,7 @@ export default class App extends Component {
 				<Switch>
 					<Route exact path='/' component={Posts} />
 					<Route path='/profile' component={Profile} />
+					<Route path="/posts/:id" component={ItemPage} />
 				</Switch>
 			</div>
 		);

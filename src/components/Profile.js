@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
-import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import Avatar from 'material-ui/Avatar';
-import Item from './Item.js';
-import FontIcon from 'material-ui/FontIcon';
 
 import { connect } from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import { deletePost, addWishlist, listenToWishList } from '../actions/posts';
-import { database } from '../firebaseApp';
+import { deletePost, listenToWishList } from '../actions/posts';
 
 
 const styles = {
@@ -106,7 +102,7 @@ class Profile extends Component{
                     <div key = {qid}>
                       <CardText>
                         {this.props.posts.data[this.props.wishList[qid]].title}
-                    </CardText>
+                      </CardText>
                       <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { console.log(qid); console.log("Remove wishlist"); }} />
                       <RaisedButton style={styles.buttonStyle} label="View" onClick={() => { console.log(qid); console.log("Go to the Item page"); }} />
                     </div>

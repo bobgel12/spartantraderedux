@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Card, CardActions, CardHeader, CardTitle, CardText } from 'material-ui/Card';
+import { Card, CardActions, CardHeader, CardTitle, CardMedia, CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
@@ -22,19 +23,15 @@ const buttonStyle = {
 
 class ItemPage extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        console.log(this.props.posts);
+        console.log(this.props.posts[this.props.match.params]);
     }
+    
+
 
     render() {
-        if (this.props.id === 'mini') {
-            return (
-                <CardText>
-                    {this.props.item.title}
-                </CardText>
-            );
-        }
         return (
-
             <Card>
                 <CardHeader
                     title="URL Avatar"
@@ -44,7 +41,7 @@ class ItemPage extends Component {
                 <CardMedia
                     overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}
                 >
-                    <img src="images/nature-600-337.jpg" alt="" />
+                    <img src="https://images.unsplash.com/photo-1499161033200-caf4960b7252?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d2f8580f23f2f7d06c64fab5a02dc362&dpr=1&auto=format&fit=crop&w=1000&q=80&cs=tinysrgb" alt="" />
                 </CardMedia>
                 <CardTitle title="Card title" subtitle="Card subtitle" />
                 <CardText>
@@ -65,7 +62,8 @@ class ItemPage extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        auth: state.auth
+        auth: state.auth,
+        posts: state.posts.data
     };
 };
 
@@ -73,4 +71,4 @@ const mapDispatchToProps = {
     deletePost, addWishlist
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Item);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemPage);

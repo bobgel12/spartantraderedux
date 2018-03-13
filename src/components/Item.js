@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { deletePost, addWishlist } from '../actions/posts';
@@ -44,37 +44,39 @@ class Item extends Component{
       );
     }
     return (
-      <Card style={style}>
-        <CardHeader
-          title={this.props.item.username}
-          subtitle="SJSU"
-          avatar={this.props.item.userPhoto}
-          children = {
-              this.props.auth.uid ?
-              this.props.auth.uid === this.props.item.uid ?
-              <RaisedButton label="Delete" secondary={true} style = {buttonStyle} onClick = {this.delete}/>
-              :
-              null
-              :
-              null
-          }
-          />
-        <CardTitle title={this.props.item.title} subtitle={"Major: "+this.props.item.major + ", Price: $" + this.props.item.price} />
-        <CardText>
-          {this.props.item.description}
-        </CardText>
-        <CardActions>
-          {
-              this.props.auth.uid ?
-              <div>
-                <RaisedButton style= {buttonStyle} label="Message" primary = {true}/>
-                <RaisedButton style= {buttonStyle} label="WishList" primary = {true} onClick = {this.addWishlist}/>
-              </div>
-              :
-              null
-          }
-        </CardActions>
-      </Card>
+      <div>
+        <Card style={style}>
+          <CardHeader
+            title={this.props.item.username}
+            subtitle="SJSU"
+            avatar={this.props.item.userPhoto}
+            children = {
+                this.props.auth.uid ?
+                this.props.auth.uid === this.props.item.uid ?
+                <RaisedButton label="Delete" secondary={true} style = {buttonStyle} onClick = {this.delete}/>
+                :
+                null
+                :
+                null
+            }
+            />
+          <CardTitle title={this.props.item.title} subtitle={"Major: "+this.props.item.major + ", Price: $" + this.props.item.price} />
+          <CardText>
+            {this.props.item.description}
+          </CardText>
+          <CardActions>
+            {
+                this.props.auth.uid ?
+                <div>
+                  <Link to={`/posts/${this.props.id}`}><RaisedButton style={buttonStyle} label="READMORE" primary={true}/></Link>
+                  <RaisedButton style= {buttonStyle} label="WISHLIST" primary = {true} onClick = {this.addWishlist}/>
+                </div>
+                :
+                null
+            }
+          </CardActions>
+        </Card>
+      </div>
     )
   }
 }

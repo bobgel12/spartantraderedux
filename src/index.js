@@ -7,15 +7,7 @@ import { Provider } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import store from './store';
 
-
-
-import {
-    BrowserRouter,
-    Route,
-    Link,
-    Redirect,
-    withRouter
-} from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 
 ReactDOM.render(
