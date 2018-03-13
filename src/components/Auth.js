@@ -4,6 +4,8 @@ import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { openAuth, logoutUser, toggleProfile } from '../actions/auth';
@@ -15,10 +17,13 @@ class Auth extends Component {
       case C.AUTH_LOGGED_IN: return (
         <AppBar
           title="SpartanTrade"
-          iconElementLeft={<IconButton>icon={<i className="material-icons md-18">code</i>}</IconButton>}
+          iconElementLeft={
+            <Link to='/'><IconButton >icon={<i className="material-icons md-18">code</i>}</IconButton></Link>
+          }
           iconElementRight={
                   <div>
-                    <Avatar src={props.auth.photo} onClick={this.props.toggleProfile} />
+                    <Link to='/profile'><Avatar src={props.auth.photo}/></Link>
+                    {/* <Avatar src={props.auth.photo} onClick={() => {history.push('/profile')}} /> */}
                     <FlatButton onClick={props.logoutUser} label="Log Out"/>
                   </div>
           }

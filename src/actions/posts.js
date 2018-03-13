@@ -21,6 +21,26 @@ export const addWishlist = (qid, uid) => {
 	}
 }
 
+export const listenToWishList = (uid) => {
+	return (dispatch) => {
+		const wishListRef = database.ref('Users/'+ uid+'/wishList');
+		wishListRef.off();
+		wishListRef.on('value', (snapshot) => {
+			dispatch({
+				type: C.WISHLIST_RECEIVE_DATA,
+				data: snapshot.val()
+			});
+		}, (error) => {
+			dispatch({
+				type: C.WISHLIST_RECEIVE_DATA_ERROR,
+				message: error.message
+			});
+		});
+	};
+};
+
+
+
 export const listenToPosts = () => {
 	return (dispatch) => {
 		postsRef.off();

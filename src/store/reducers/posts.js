@@ -6,6 +6,7 @@ const initialState = {
 	errorMessage: '',
 	data: {},
 	status: {},
+	wishList: {}
 };
 
 export default (state, action) => {
@@ -17,9 +18,15 @@ export default (state, action) => {
 				data: action.data,
 				errorMessage: ''
 			});
+		case C.WISHLIST_RECEIVE_DATA:
+			return Object.assign({}, state, {
+				hasReceivedData: true,
+				wishList: action.data,
+				errorMessage: ''
+			});
 		case C.POSTS_RECEIVE_DATA_ERROR:
 			return Object.assign({}, state, {
-				data: null,
+				wishList: null,
 				errorMessage: action.message
 			});
 		case C.POST_AWAIT_CREATION_RESPONSE:

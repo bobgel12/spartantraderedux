@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-
+import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { deletePost, addWishlist } from '../actions/posts';

@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 
 import { connect } from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import { deletePost, addWishlist } from '../actions/posts';
+import { deletePost, addWishlist, listenToWishList } from '../actions/posts';
 import { database } from '../firebaseApp';
 
 
@@ -35,32 +35,26 @@ class Profile extends Component{
     super(props)
     this.state = {
       value: 'a',
-      wishlistArray:[]
     };
+    this.handleChange = this.handleChange.bind(this);
   }
-
+  
   handleChange = (value) => {
     this.setState({
       value: value,
     });
   };
 
-  remove = (qid) =>{
-    console.log("in the remove "+ qid);
+  handleRemove = (qid) => {
+    console.log(qid);
   }
 
-  render() {
-
-    const wishListRef = database.ref("Users/"+this.props.auth.uid+'/wishList');
-    var wishlistArrayRaw=[];
-    wishListRef.on('value', function(stuff) {
-       stuff.forEach(function(qid) {
-        wishlistArrayRaw.push(qid.A.B);
-      });
-    });
-    this.state.wishlistArray = [...new Set(wishlistArrayRaw)];
-
-    return (
+  componentDidMount(){
+      this.props.listenToWishList(this.props.auth.uid);
+  }
+    
+    render() {
+      return (
       <Tabs
        value={this.state.value}
        onChange={this.handleChange}
@@ -106,16 +100,20 @@ class Profile extends Component{
              <CardTitle title="Wish List" />
             {
               // map performs some function for each element of array
-              this.state.wishlistArray.map((qid) => {
-                console.log(this.props.posts.data[qid]);
-                return (
-                  <div key = {qid}>
-                    <CardText>
-                      {this.props.posts.data[qid].title}
-                   </CardText>
-                  </div>
-                );
-              })
+              this.props.wishList ?
+                  Object.keys(this.props.wishList).map((qid) => {
+                  return (
+                    <div key = {qid}>
+                      <CardText>
+                        {this.props.posts.data[this.props.wishList[qid]].title}
+                    </CardText>
+                      <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { console.log(qid); console.log("Remove wishlist"); }} />
+                      <RaisedButton style={styles.buttonStyle} label="View" onClick={() => { console.log(qid); console.log("Go to the Item page"); }} />
+                    </div>
+                  );
+                })
+                : 
+                null
             }
          </Card>
        </div>
@@ -129,12 +127,13 @@ class Profile extends Component{
 const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
-    posts: state.posts
+    posts: state.posts,
+    wishList: state.posts.wishList
 	};
 };
 
 const mapDispatchToProps = {
-	deletePost,
+  deletePost, listenToWishList
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
