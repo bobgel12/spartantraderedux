@@ -111,9 +111,8 @@ class Profile extends Component{
                 return (
                   <div key = {qid}>
                     <CardText>
-                      {this.props.posts.data[qid].title}.
+                      {this.props.posts.data[qid].title}
                    </CardText>
-                   <RaisedButton label="Delete" secondary={true} style = {styles.buttonStyle} onClick = {this.remove(qid)}/>
                   </div>
                 );
               })
