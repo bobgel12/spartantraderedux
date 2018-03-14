@@ -1,0 +1,5 @@
+action:
+add wishlist-check for douplicate
+delete wishlist-
+
+view-> linkn to item

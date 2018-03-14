@@ -19,6 +19,10 @@ const buttonStyle = {
   margin: 10,
   marginTop: 5
 }
+const buttonDelete = {
+  margin: 2,
+  marginTop: 5
+}
 
 class Item extends Component{
   constructor(props){
@@ -50,29 +54,27 @@ class Item extends Component{
             title={this.props.item.username}
             subtitle="SJSU"
             avatar={this.props.item.userPhoto}
-            children = {
-                this.props.auth.uid ?
-                this.props.auth.uid === this.props.item.uid ?
-                <RaisedButton label="Delete" secondary={true} style = {buttonStyle} onClick = {this.delete}/>
-                :
-                null
-                :
-                null
-            }
             />
           <CardTitle title={this.props.item.title} subtitle={"Major: "+this.props.item.major + ", Price: $" + this.props.item.price} />
-          <CardText>
-            {this.props.item.description}
-          </CardText>
           <CardActions>
             {
-                this.props.auth.uid ?
-                <div>
+              <div>
+                {                  
+                  this.props.auth.uid ?
+                  <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
+                  : null
+                }
                   <Link to={`/posts/${this.props.id}`}><RaisedButton style={buttonStyle} label="READMORE" primary={true}/></Link>
-                  <RaisedButton style= {buttonStyle} label="WISHLIST" primary = {true} onClick = {this.addWishlist}/>
-                </div>
-                :
-                null
+                {
+                  this.props.auth.uid ?
+                  this.props.auth.uid === this.props.item.uid ?
+                  <RaisedButton label="Delete" secondary={true} style={buttonDelete} onClick={this.delete} />
+                  :
+                  null
+                  :
+                  null
+                }
+              </div>
             }
           </CardActions>
         </Card>
