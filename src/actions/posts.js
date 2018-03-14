@@ -119,6 +119,30 @@ export const deletePost = (qid) => {
 };
 
 
+export const deleteWishlist = (qid, uid) => {
+	return (dispatch) => {
+		// console.log(qid);
+		// console.log(uid);
+		const wishListRef = database.ref('Users/' + uid + '/wishList');
+		wishListRef.child(qid).remove((error) => {
+			if (error) {
+				dispatch({
+					type: C.FEEDBACK_DISPLAY_ERROR,
+					error: `Deletion failed! ${error}`
+				});
+			}
+			dispatch({
+				type: C.FEEDBACK_DISPLAY_MESSAGE,
+				message: 'Post successfully deleted!'
+			});
+		});
+	};
+};
+
+
+
+
+
 
 // export const startPostEdit = (qid) => {
 // 	return (dispatch) => {

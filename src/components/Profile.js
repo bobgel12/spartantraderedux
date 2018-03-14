@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { connect } from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import { deletePost, listenToWishList } from '../actions/posts';
+import { deletePost, listenToWishList, deleteWishlist} from '../actions/posts';
 
 
 const styles = {
@@ -103,7 +103,7 @@ class Profile extends Component{
                       <CardText>
                         {this.props.posts.data[this.props.wishList[qid]].title}
                       </CardText>
-                      <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { console.log(qid); console.log("Remove wishlist"); }} />
+                      <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid) }} />
                       <RaisedButton style={styles.buttonStyle} label="View" onClick={() => { console.log(qid); console.log("Go to the Item page"); }} />
                     </div>
                   );
@@ -129,7 +129,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  deletePost, listenToWishList
+  deletePost, listenToWishList, deleteWishlist
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
