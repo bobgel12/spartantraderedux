@@ -71,17 +71,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
-
-//
-// goProfile = () => {
-//   this.props.auth.go = true;
-//   this.forceUpdate();
-// }
-// goBooks = () => {
-//   this.props.auth.go = false;
-//   this.forceUpdate();
-// }
-//
-// <div className="col-xs-12 col-md-6 col-lg-4">
-//   <Profile />
-// </div>

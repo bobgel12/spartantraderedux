@@ -21,7 +21,6 @@ export default class App extends Component {
 		store.dispatch(listenToAuth());
 		// Get all the post from the database
 		store.dispatch(listenToPosts());
-		// store.dispatch(listenToWishList());
 	}
 	render() {
 		return (
@@ -29,7 +28,7 @@ export default class App extends Component {
 				<Auth/>
 				<Switch>
 					<Route exact path='/' component={Posts} />
-					<Route path='/profile' component={Profile} />
+					<Route path='/profile/:uid' component={Profile} />
 					<Route path="/posts/:id" component={ItemPage} />
 				</Switch>
 			</div>

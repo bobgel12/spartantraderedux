@@ -1,8 +1,29 @@
 import * as firebase from 'firebase';
 import C from '../constants';
 import { auth } from '../firebaseApp';
+import { database } from '../firebaseApp';
 
 import { listenToPosts } from './posts';
+
+export const getUser = (uid) => {
+	return (dispatch) => {
+		const userRef = database.ref('Users/' + uid + '/data');
+		userRef.on('value', (snapshot) => {
+			console.log(snapshot.val());
+			if (snapshot.val()){
+				Object.keys(snapshot.val()).map((value) => {
+					console.log(snapshot.val()[value]);
+					dispatch({
+						type: C.PROFILE_USER,
+						data: snapshot.val()[value]
+					})
+					return null;
+				});
+			} 
+			return null;
+		});
+	}
+}
 
 export const listenToAuth = () => {
 	return (dispatch, getState) => {

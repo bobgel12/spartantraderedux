@@ -6,6 +6,7 @@ const initialState = {
 	photo: null,
 	status: C.AUTH_ANONYMOUS,
 	profile: false,
+	profileUser: null
 };
 
 export default (state, action) => {
@@ -17,6 +18,10 @@ export default (state, action) => {
 				uid: null,
 				photo: null,
 			};
+		case C.PROFILE_USER:
+			return Object.assign({}, initialState, state, {
+				profileUser: action.data,
+			});
 		case C.AUTH_LOGIN:
 			return {
 				status: C.AUTH_LOGGED_IN,

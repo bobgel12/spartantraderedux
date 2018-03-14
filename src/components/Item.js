@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
+import Avatar from 'material-ui/Avatar';
+
 
 import { connect } from 'react-redux';
 import { deletePost, addWishlist } from '../actions/posts';
@@ -53,7 +55,7 @@ class Item extends Component{
           <CardHeader
             title={this.props.item.username}
             subtitle="SJSU"
-            avatar={this.props.item.userPhoto}
+            children={<Link to={`/profile/${this.props.item.uid}`}><Avatar src={this.props.item.userPhoto} /></Link>}
             />
           <CardTitle title={this.props.item.title} subtitle={"Major: "+this.props.item.major + ", Price: $" + this.props.item.price} />
           <CardActions>

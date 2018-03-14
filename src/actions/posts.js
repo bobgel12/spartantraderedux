@@ -98,6 +98,14 @@ export const submitPost = (contents) => {
 			uid: state.auth.uid,
 		};
 
+		const userRef = database.ref('Users/' + state.auth.uid+ '/data');
+		const user = {
+			userPhoto: state.auth.photo,
+			username: state.auth.username,
+			rating: 5,
+			uid: state.auth.uid
+		}
+
 		dispatch({ type: C.POST_AWAIT_CREATION_RESPONSE });
 		postsRef.push(post, (error) => {
 			dispatch({ type: C.POST_RECEIVE_CREATION_RESPONSE });
@@ -108,6 +116,20 @@ export const submitPost = (contents) => {
 					error: `Submission failed! ${error}`
 				});
 			} else {
+				userRef.on('value', (snapshot) =>{
+					console.log(snapshot.val());
+					if(!snapshot.val()){
+						userRef.push(user, (error) =>{
+							if(error){
+								dispatch({
+									type: C.FEEDBACK_DISPLAY_ERROR,
+									error: `Save User Error! ${error}`
+								});
+							}
+						});
+					} 
+					return null;
+				});
 				console.log("Posted");
 				dispatch({
 					type: C.FEEDBACK_DISPLAY_MESSAGE,
