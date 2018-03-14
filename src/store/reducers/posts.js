@@ -24,9 +24,12 @@ export default (state, action) => {
 				wishList: action.data,
 				errorMessage: ''
 			});
+		case C.WISHLIST_RECEIVE_DATA_ERROR:
+			return Object.assign({}, state, {
+				errorMessage: action.message
+			});
 		case C.POSTS_RECEIVE_DATA_ERROR:
 			return Object.assign({}, state, {
-				wishList: null,
 				errorMessage: action.message
 			});
 		case C.POST_AWAIT_CREATION_RESPONSE:

@@ -6,25 +6,44 @@ const postsRef = database.ref('Books');
 export const addWishlist = (qid, uid) => {
 	return (dispatch) => {
 		const wishListRef = database.ref('Users/'+uid+'/wishList');
-		wishListRef.push((qid), (error) =>{
-			if (error) {
-				dispatch({
-					type: C.POSTS_RECEIVE_DATA_ERROR,
-					message: error.message
-				});
-			}
-			dispatch({
-				type: C.FEEDBACK_DISPLAY_MESSAGE,
-				message: 'WishList successfully saved!'
-			});
+		let check = false;
+		wishListRef.on('value', (snapshot) =>{
+			snapshot.val() ?
+				Object.keys(snapshot.val()).map((oldQid) =>{
+					if (qid === snapshot.val()[oldQid]) {
+						check = true;
+					}
+					return null;
+				})
+			:
+			console.log("There is no wishlist");
 		});
+		if (!check){
+			console.log(check);
+			wishListRef.push((qid), (error) =>{
+				if (error) {
+					dispatch({
+						type: C.WISHLIST_RECEIVE_DATA_ERROR,
+						message: error.message
+					});
+				}
+				dispatch({
+					type: C.FEEDBACK_DISPLAY_MESSAGE,
+					message: 'WishList successfully saved!'
+				});
+			});
+		} else {
+			dispatch({
+				type: C.WISHLIST_RECEIVE_DATA_ERROR,
+				message: "This Item has already in your WishList!"
+			});
+		}
 	}
 }
 
 export const listenToWishList = (uid) => {
 	return (dispatch) => {
 		const wishListRef = database.ref('Users/'+ uid+'/wishList');
-		wishListRef.off();
 		wishListRef.on('value', (snapshot) => {
 			dispatch({
 				type: C.WISHLIST_RECEIVE_DATA,
@@ -121,8 +140,6 @@ export const deletePost = (qid) => {
 
 export const deleteWishlist = (qid, uid) => {
 	return (dispatch) => {
-		// console.log(qid);
-		// console.log(uid);
 		const wishListRef = database.ref('Users/' + uid + '/wishList');
 		wishListRef.child(qid).remove((error) => {
 			if (error) {
@@ -133,7 +150,7 @@ export const deleteWishlist = (qid, uid) => {
 			}
 			dispatch({
 				type: C.FEEDBACK_DISPLAY_MESSAGE,
-				message: 'Post successfully deleted!'
+				message: 'Wishlist successfully deleted!'
 			});
 		});
 	};
@@ -180,4 +197,5 @@ export const deleteWishlist = (qid, uid) => {
 // 			}
 // 		});
 // 	};
+
 // };

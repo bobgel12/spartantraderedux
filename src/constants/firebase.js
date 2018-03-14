@@ -1,10 +1,10 @@
 export default {
   firebaseConfig :{
-    apiKey: "AIzaSyCuRETZyaUdJV2eH36781iTl93xz2_Gr-w",
-    authDomain: "spantantrade.firebaseapp.com",
-    databaseURL: "https://spantantrade.firebaseio.com",
-    projectId: "spantantrade",
-    storageBucket: "spantantrade.appspot.com",
-    messagingSenderId: "697800608507"
+    apiKey: "AIzaSyB5YXxTBrFhuxTZWQbKgfh0w-A2mPi2ecc",
+    authDomain: "spartantrade-12.firebaseapp.com",
+    databaseURL: "https://spartantrade-12.firebaseio.com",
+    projectId: "spartantrade-12",
+    storageBucket: "",
+    messagingSenderId: "369973732415"
   }
 };
