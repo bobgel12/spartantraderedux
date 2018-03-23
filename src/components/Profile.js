@@ -6,7 +6,18 @@ import { connect } from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import { deletePost, listenToWishList, deleteWishlist} from '../actions/posts';
 import { getUser } from '../actions/auth';
+import Message from './Message';
 
+
+import { List, ListItem } from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import Subheader from 'material-ui/Subheader';
+import Avatar from 'material-ui/Avatar';
+import { grey400, darkBlack, lightBlack } from 'material-ui/styles/colors';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 const styles = {
   card: {
@@ -35,7 +46,6 @@ class Profile extends Component{
       uid: this.props.match.params.uid
     };
     this.handleChange = this.handleChange.bind(this);
-    // this.props.getUser(this.props.match.params.uid);
   }
   
   handleChange = (value) => {
@@ -73,19 +83,7 @@ class Profile extends Component{
            </div>
          </Tab>
          <Tab value="b" icon={<i className="material-icons md-18">message</i>}>
-         <div>
-           <Card style={styles.card}>
-             <CardHeader
-               title={this.props.auth.username}
-               subtitle="SJSU"
-               avatar={this.props.auth.photo}
-               />
-               <CardTitle title="Messages" />
-               <CardText>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </CardText>
-           </Card>
-         </div>
+              <Message uid={this.state.uid}/>
          </Tab>
          <Tab value="c" icon={<i className="material-icons md-18">redeem</i>}>
          <div>

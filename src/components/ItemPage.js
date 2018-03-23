@@ -55,7 +55,7 @@ class ItemPage extends Component {
                             {this.state.item.description}
                         </CardText>
                         <CardActions>
-                            <RaisedButton style={buttonStyle} label="Messages" primary={true} onClick ={this.handleMessage}/>
+                            <Link to={`/message/${this.props.auth.uid}/${this.state.item.uid}`}><RaisedButton style={buttonStyle} label="Messages" primary={true} onClick={this.handleMessage} /></Link>
                             <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
                         </CardActions>
                     </Card>

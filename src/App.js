@@ -3,6 +3,7 @@ import store from './store';
 import { listenToAuth } from './actions/auth';
 import { listenToPosts } from './actions/posts';
 import Auth from './components/Auth';
+import Message from './components/Message';
 import ItemPage from './components/ItemPage';
 import Posts from './components/Posts';
 import Profile from './components/Profile';
@@ -30,6 +31,7 @@ export default class App extends Component {
 					<Route exact path='/' component={Posts} />
 					<Route path='/profile/:uid' component={Profile} />
 					<Route path="/posts/:id" component={ItemPage} />
+					<Route path="/message/:uid/:toid" component={Message} />
 				</Switch>
 			</div>
 		);
