@@ -1,5 +1,6 @@
 import C from '../constants';
 import { database } from '../firebaseApp';
+import * as firebase from 'firebase';
 
 export const sendMessage = (message, touid) => {
     return (dispatch, getState) => {
@@ -8,9 +9,9 @@ export const sendMessage = (message, touid) => {
         const userCom = database.ref('Users/' + state.auth.uid + '/message/');
         const mesRef = database.ref('messages/')
         dispatch({ type: C.MESSAGE_AWAIT_CREATION_RESPONSE});
-        mesItem = {
+        const mesItem = {
             content: message,
-            date: currentdate,
+            date: firebase.database.ServerValue.TIMESTAMP,
             from: state.auth.uid,
             to: touid
         }
@@ -26,7 +27,7 @@ export const sendMessage = (message, touid) => {
                     type: C.FEEDBACK_DISPLAY_MESSAGE,
                     message: 'Message successfully sent!'
                 });
-                userCom.push(uid, (error) => {
+                userCom.push(state.auth.uid, (error) => {
                     if (error) {
                         dispatch({
                             type: C.MESSAGE_RECEIVE_DATA_ERROR,

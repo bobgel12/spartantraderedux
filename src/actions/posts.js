@@ -81,18 +81,12 @@ export const submitPost = (contents) => {
 	return (dispatch, getState) => {
 		const state = getState();
 		var currentdate = new Date();
-		var datetime = currentdate.getDate() + "/"
-			                + (currentdate.getMonth()+1)  + "/"
-			                + currentdate.getFullYear() + " @ "
-			                + currentdate.getHours() + ":"
-			                + currentdate.getMinutes() + ":"
-			                + currentdate.getSeconds();
 		const post = {
 			title: contents.title,
 			major: contents.major,
 			description: contents.description,
 			price: contents.price,
-			date: datetime,
+			date: database.ServerValue.TIMESTAMP,
 			userPhoto: state.auth.photo,
 			username: state.auth.username,
 			uid: state.auth.uid,

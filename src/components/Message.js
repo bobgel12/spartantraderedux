@@ -7,6 +7,7 @@ import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { deletePost, listenToWishList, deleteWishlist } from '../actions/posts';
+import { sendMessage } from '../actions/message';
 import { getUser } from '../actions/auth';
 
 
@@ -154,7 +155,7 @@ class Message extends Component {
                                     hintText="Text"
                                     fullWidth={true}
                                 />
-                                <RaisedButton label="Primary" primary={true} style = {styles.buttonStyle} />
+                                <RaisedButton onClick={() => { this.props.sendMessage("I am a test", this.props.match.params.toid)}} label="Primary" primary={true} style = {styles.buttonStyle} />
                         </List>
                     </div>
                 </div>
@@ -172,7 +173,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    deletePost
+    deletePost, sendMessage
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Message);
