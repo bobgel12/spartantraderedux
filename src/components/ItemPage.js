@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
 import { Card, CardActions, CardHeader, CardTitle, CardMedia, CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { deletePost, addWishlist } from '../actions/posts';
-import { Divider } from 'material-ui';
 
-const style = {
-    height: 324,
-    width: "100%",
-    margin: 0,
-    marginTop: 20,
-    marginBottom: 20,
-    textAlign: 'center',
-};
+// const style = {
+//     height: 324,
+//     width: "100%",
+//     margin: 0,
+//     marginTop: 20,
+//     marginBottom: 20,
+//     textAlign: 'center',
+// };
 
 const buttonStyle = {
     margin: 10,
@@ -55,7 +53,7 @@ class ItemPage extends Component {
                             {this.state.item.description}
                         </CardText>
                         <CardActions>
-                            <Link to={`/message/${this.props.auth.uid}/${this.state.item.uid}`}><RaisedButton style={buttonStyle} label="Messages" primary={true} onClick={this.handleMessage} /></Link>
+                        <Link to={`/message/${this.props.match.params.id}/${this.props.auth.uid}/${this.state.item.uid}`}><RaisedButton style={buttonStyle} label="Messages" primary={true} onClick={this.handleMessage} /></Link>
                             <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
                         </CardActions>
                     </Card>

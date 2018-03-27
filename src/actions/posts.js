@@ -1,5 +1,6 @@
 import C from '../constants';
 import { database } from '../firebaseApp';
+import * as firebase from 'firebase';
 
 const postsRef = database.ref('Books');
 
@@ -19,7 +20,6 @@ export const addWishlist = (qid, uid) => {
 			console.log("There is no wishlist");
 		});
 		if (!check){
-			console.log(check);
 			wishListRef.push((qid), (error) =>{
 				if (error) {
 					dispatch({
@@ -80,13 +80,12 @@ export const listenToPosts = () => {
 export const submitPost = (contents) => {
 	return (dispatch, getState) => {
 		const state = getState();
-		var currentdate = new Date();
 		const post = {
 			title: contents.title,
 			major: contents.major,
 			description: contents.description,
 			price: contents.price,
-			date: database.ServerValue.TIMESTAMP,
+			date: firebase.database.ServerValue.TIMESTAMP,
 			userPhoto: state.auth.photo,
 			username: state.auth.username,
 			uid: state.auth.uid,
@@ -104,14 +103,12 @@ export const submitPost = (contents) => {
 		postsRef.push(post, (error) => {
 			dispatch({ type: C.POST_RECEIVE_CREATION_RESPONSE });
 			if (error) {
-				console.log(error);
 				dispatch({
 					type: C.FEEDBACK_DISPLAY_ERROR,
 					error: `Submission failed! ${error}`
 				});
 			} else {
 				userRef.on('value', (snapshot) =>{
-					console.log(snapshot.val());
 					if(!snapshot.val()){
 						userRef.push(user, (error) =>{
 							if(error){
@@ -124,7 +121,6 @@ export const submitPost = (contents) => {
 					} 
 					return null;
 				});
-				console.log("Posted");
 				dispatch({
 					type: C.FEEDBACK_DISPLAY_MESSAGE,
 					message: 'Submission successfully saved!'
@@ -137,7 +133,6 @@ export const submitPost = (contents) => {
 
 export const deletePost = (qid) => {
 	return (dispatch) => {
-		console.log(qid);
 		postsRef.child(qid).remove((error) => {
 			if (error) {
 				dispatch({
@@ -171,47 +166,3 @@ export const deleteWishlist = (qid, uid) => {
 		});
 	};
 };
-
-
-
-
-
-
-// export const startPostEdit = (qid) => {
-// 	return (dispatch) => {
-// 		dispatch({ type: C.POST_EDIT, qid });
-// 	};
-// };
-//
-// export const cancelPostEdit = (qid) => {
-// 	return (dispatch) => {
-// 		dispatch({ type: C.POST_EDIT_FINISH, qid });
-// 	};
-// };
-//
-// export const submitPostEdit = (qid, contents) => {
-// 	return (dispatch, getState) => {
-// 		const state = getState();
-// 		const post = {
-// 			contents,
-// 			username: state.auth.username,
-// 			uid: state.auth.uid
-// 		};
-// 		dispatch({ type: C.POST_EDIT_SUBMIT, qid });
-// 		postsRef.child(qid).set(post, (error) => {
-// 			dispatch({ type: C.POST_EDIT_FINISH, qid });
-// 			if (error) {
-// 				dispatch({
-// 					type: C.FEEDBACK_DISPLAY_ERROR,
-// 					error: `Update failed! ${error}`
-// 				});
-// 			} else {
-// 				dispatch({
-// 					type: C.FEEDBACK_DISPLAY_MESSAGE,
-// 					message: 'Update successfully saved!'
-// 				});
-// 			}
-// 		});
-// 	};
-
-// };
