@@ -7,6 +7,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import { deletePost, listenToWishList, deleteWishlist} from '../actions/posts';
 import { getUser } from '../actions/auth';
 import Message from './Message';
+import { Link } from 'react-router-dom';
 
 
 const styles = {
@@ -94,7 +95,7 @@ class Profile extends Component{
                           {this.props.posts.data[this.props.wishList[qid]].title}
                         </CardText>
                         <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid) }} />
-                        <RaisedButton style={styles.buttonStyle} label="View" onClick={() => { console.log(qid); console.log("Go to the Item page"); }} />
+                        <Link to={`/posts/${this.props.wishList[qid]}`}><RaisedButton style={styles.buttonStyle} label="View" /></Link>
                       </div>
                     );
                   })

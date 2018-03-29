@@ -6,7 +6,7 @@ import TextField from 'material-ui/TextField';
 
 import { connect } from 'react-redux';
 import { deletePost } from '../actions/posts';
-import { sendMessage, listenToMessage } from '../actions/message';
+import { sendMessage, listenToMessage, getMessageList } from '../actions/message';
 import { getUser } from '../actions/auth';
 
 
@@ -92,7 +92,10 @@ class Message extends Component {
     }
     
     componentWillMount(){
-        this.props.listenToMessage(this.props.match.params.qid, this.props.match.params.toid);
+        if (this.props.match){
+            this.props.listenToMessage(this.props.match.params.qid, this.props.match.params.toid);
+            this.props.getMessageList();
+        }
     }
 
     render(){
@@ -103,17 +106,19 @@ class Message extends Component {
                     <div className="col-sm-12 col-md-4 container1">
                         <List >
                             <Subheader>Messages</Subheader>
-                            <ListItem
-                                leftAvatar={<Avatar src={this.props.auth.photo} />}
-                                rightIconButton={rightIconMenu}
-                                primaryText="Brendan Lim"
-                                secondaryText={
-                                    <p>
-                                        <span style={{ color: darkBlack }}>Brunch this weekend?</span><br />
-                                        I&apos;ll be in your neighborhood doing errands this weekend. Do you want to grab brunch?</p>
-                                }
-                                secondaryTextLines={2}
-                            />
+                            {/* <Link to={`/message/${this.props.wishList[qid]}/${this.props.auth.uid}/${this.}`}><RaisedButton style={styles.buttonStyle} label="View" /> */}
+                                <ListItem
+                                    leftAvatar={<Avatar src={this.props.auth.photo} />}
+                                    rightIconButton={rightIconMenu}
+                                    primaryText="Brendan Lim"
+                                    secondaryText={
+                                        <p>
+                                            <span style={{ color: darkBlack }}>Brunch this weekend?</span><br />
+                                            I&apos;ll be in your neighborhood doing errands this weekend. Do you want to grab brunch?</p>
+                                    }
+                                    secondaryTextLines={2}
+                                />
+                            {/* </Link> */}
                             <Divider inset={true} />
                             <ListItem
                                 leftAvatar={<Avatar src={this.props.auth.photo} />}
@@ -212,7 +217,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    deletePost, sendMessage, listenToMessage
+    deletePost, sendMessage, listenToMessage, getMessageList
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Message);

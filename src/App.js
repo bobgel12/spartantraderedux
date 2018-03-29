@@ -31,7 +31,7 @@ export default class App extends Component {
 					<Route exact path='/' component={Posts} />
 					<Route path='/profile/:uid' component={Profile} />
 					<Route path="/posts/:id" component={ItemPage} />
-					<Route path="/message/:qid/:uid/:toid" component={Message} />
+					<Route path="/message/:qid?/:uid?/:toid?" component={Message} />
 				</Switch>
 			</div>
 		);

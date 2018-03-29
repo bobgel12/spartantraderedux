@@ -6,15 +6,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { deletePost, addWishlist } from '../actions/posts';
 
-// const style = {
-//     height: 324,
-//     width: "100%",
-//     margin: 0,
-//     marginTop: 20,
-//     marginBottom: 20,
-//     textAlign: 'center',
-// };
-
 const buttonStyle = {
     margin: 10,
     marginTop: 5
@@ -53,7 +44,7 @@ class ItemPage extends Component {
                             {this.state.item.description}
                         </CardText>
                         <CardActions>
-                        <Link to={`/message/${this.props.match.params.id}/${this.props.auth.uid}/${this.state.item.uid}`}><RaisedButton style={buttonStyle} label="Messages" primary={true} onClick={this.handleMessage} /></Link>
+                        <Link to={`/message/${this.props.match.params.id}/${this.props.auth.uid}/${this.state.item.uid}`}><RaisedButton style={buttonStyle} label="Messages" primary={true}/></Link>
                             <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
                         </CardActions>
                     </Card>
