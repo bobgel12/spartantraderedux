@@ -5,25 +5,50 @@ import * as firebase from 'firebase';
 export const sendMessage = (message, qid, touid) => {
     return (dispatch, getState) => {
         const state = getState();
-        const fromRef = database.ref('Conversation/' + state.auth.uid + '/conservations/'+qid);
-        const toRef = database.ref('Users/' + touid + '/conservations/'+qid);
+        const conversationRef = database.ref('Conversations');
+        const sendRef = database.ref('Users/' + touid + '/conversation');
+        const recieveRef = database.ref('Users/' + state.auth.uid + '/conversation');
+        
         dispatch({ type: C.MESSAGE_AWAIT_CREATION_RESPONSE});
 
         const mesItem = {
-            itemID: qid,
             content: message,
             date: firebase.database.ServerValue.TIMESTAMP,
-            fromUid: state.auth.uid,
-            username: state.auth.username,
-            toUid: touid
+            senderUid: state.auth.uid,
+            senderUsername: state.auth.username,
         }
         const conversation = {
-            buyer: state.auth.uid,
-            seller: touid
+            details:{
+                users: {
+                    buyer: state.auth.uid,
+                    seller: touid
+                },
+                itemId: qid
+            },
+            messages:[]
         }
 
-        let getsnapshot = null;
-        fromRef.on('value', (snapshot) => {
+        let check = false;
+
+        conversationRef.child("details").child("users").child("buyer").equalTo(state.auth.uid).once("value", (snapshot) =>{
+            console.log(snapshot.val());
+            if (snapshot.val()){
+                check = true;
+            }
+        })
+        conversationRef.child("details").child("users").child("seller").equalTo(state.auth.uid).once("value", (snapshot) =>{
+            console.log(snapshot.val());
+            if (snapshot.val()){
+                check = true;
+            }
+        })
+
+        if (check){
+            
+        }
+
+
+        fromRef.on('value', (snapshot) =>{
             if (snapshot.val()) {
                 console.log(snapshot.val());
                 Object.keys(snapshot.val()).map((item) => {
