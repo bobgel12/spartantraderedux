@@ -203,14 +203,13 @@ export const getMessageList = () => {
 
 export const listenToMessage = (qid, touid) => {
     return (dispatch, getState) => {
-        console.log(qid)
-        console.log(touid)
+        // console.log(qid)
+        // console.log(touid)
         const state = getState();
         const mesRef = database.ref(`Users/${state.auth.uid}/conversation/${touid}/${qid}`);
         mesRef.once('value', (snapshot) => {
-            console.log(snapshot.val());
             snapshot.forEach((a) => {
-                console.log(a.val().conversationKey);
+                // console.log(a.val().conversationKey);
                 getMes(a.val().conversationKey)
             });
         });

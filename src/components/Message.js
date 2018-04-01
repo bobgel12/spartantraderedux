@@ -41,6 +41,11 @@ const styles = {
     },
     inputText:{
         marginTop: "60vh"
+    },
+    displayMessage: {
+        width: '100%',
+        height: '500px',
+        overflow: 'scroll',
     }
 };
 
@@ -91,6 +96,10 @@ class Message extends Component {
         );
     }
     
+    handleChange(){
+
+    }
+
     componentWillMount(){
         this.props.getMessageList();
         if (this.props.match){
@@ -108,6 +117,8 @@ class Message extends Component {
         }
     }
 
+
+
     onRouteChanged() {
         console.log("ROUTE CHANGED");
         if(this.props.match){
@@ -120,7 +131,6 @@ class Message extends Component {
     }
     
     render(){
-        console.log(this.props.message.data)
         return(
         <div>
             <Card style={styles.card}>
@@ -132,7 +142,7 @@ class Message extends Component {
                                     this.props.message.messageList ?
                                         Object.keys(this.props.message.messageList).map((qid) => {
                                             return (
-                                                <Link key={qid} to={`/message/${this.props.message.messageList[qid].itemId}/${this.props.auth.uid}/${this.props.message.messageList[qid].uid}`}>
+                                                <Link  key={qid} to={`/message/${this.props.message.messageList[qid].itemId}/${this.props.auth.uid}/${this.props.message.messageList[qid].uid}`}>
                                                     <Divider inset={true} />
                                                     <ListItem
                                                         leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
@@ -147,7 +157,7 @@ class Message extends Component {
                         </List>
                     </div>
                     <div className= "col-sm-12 col-md-9 ">
-                        <List>
+                        <List style = {styles.displayMessage}>
                                 {   
                                     this.props.message.data ?
                                     Object.keys(this.props.message.data).map((qid) => {
@@ -163,17 +173,17 @@ class Message extends Component {
                                         })  
                                    : null
                                 }
-
-                                <TextField
-                                    style = {styles.inputText}
-                                    fullWidth={true}
-                                    floatingLabelText="Message"
-                                    name="title"
-                                    onChange={this.onChange}
-                                    value={this.state.content}
-                                />
-                                <RaisedButton onClick={this.onSubmit} label="Primary" primary={true} style = {styles.buttonStyle} />
                         </List>
+                        <form onSubmit={this.onSubmit}>
+                            <TextField
+                                fullWidth={true}
+                                floatingLabelText="Message"
+                                name="title"
+                                onChange={this.onChange}
+                                value={this.state.content}
+                            />
+                            <RaisedButton type="submit" label="Submit" primary={true} style = {styles.buttonStyle} />
+                        </form>
                     </div>
                 </div>
             </Card>
