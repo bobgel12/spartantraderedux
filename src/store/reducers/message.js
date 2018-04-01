@@ -2,8 +2,10 @@ import C from '../../constants';
 
 const initialState = {
     hasReceivedData: false,
+    hasReceivedMessageList: false,
     submittingNew: false,
     errorMessage: '',
+    messageList: {},
     data: {},
     status: {},
 };
@@ -14,6 +16,12 @@ export default (state, action) => {
             return Object.assign({}, state, {
                 hasReceivedData: true,
                 data: action.data,
+                errorMessage: ''
+            });
+        case C.MESSAGE_LIST_RECEIVE_DATA:
+            return Object.assign({}, state, {
+                hasReceivedMessageList: true,
+                messageList: action.data,
                 errorMessage: ''
             });
         case C.MESSAGE_RECEIVE_DATA_ERROR:

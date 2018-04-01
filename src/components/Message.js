@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Card, CardHeader } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-
+import { Link } from 'react-router-dom';
+import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 
 import { connect } from 'react-redux';
 import { deletePost } from '../actions/posts';
@@ -54,24 +55,23 @@ const iconButtonElement = (
     </IconButton>
 );
 
-const rightIconMenu = (
-    <IconMenu iconButtonElement={iconButtonElement}>
-        <MenuItem>Reply</MenuItem>
-        <MenuItem>Forward</MenuItem>
-        <MenuItem>Delete</MenuItem>
-    </IconMenu>
-);
-
-
 
 class Message extends Component {
     constructor(props) {
         super(props)
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.state = {
-            content: ""
-        };
+        if (this.props.match) {
+            this.state = {
+                content: "",
+                qid: this.props.match.params.qid,
+                toid: this.props.match.params.toid
+            };
+        } else{
+            this.state = {
+                content: ""
+            }
+        }
     }
 
     onChange(e) {
@@ -92,106 +92,80 @@ class Message extends Component {
     }
     
     componentWillMount(){
+        this.props.getMessageList();
         if (this.props.match){
-            this.props.listenToMessage(this.props.match.params.qid, this.props.match.params.toid);
-            this.props.getMessageList();
+            this.setState(Object.assign({}, this.state, {
+                qid: this.props.match.params.qid,
+                toid: this.props.match.params.toid
+            }))
+            this.props.listenToMessage(this.state.qid, this.state.toid);
         }
     }
 
+    componentWillUpdate(prevProps) {
+        if (this.props.location !== prevProps.location) {
+            this.onRouteChanged();
+        }
+    }
+
+    onRouteChanged() {
+        console.log("ROUTE CHANGED");
+        if(this.props.match){
+            this.setState(Object.assign({}, this.state, {
+                qid: this.props.match.params.qid,
+                toid: this.props.match.params.toid
+            }))
+            this.props.listenToMessage(this.state.qid, this.state.toid);
+        }
+    }
+    
     render(){
+        console.log(this.props.message.data)
         return(
         <div>
             <Card style={styles.card}>
                 <div className="row">
-                    <div className="col-sm-12 col-md-4 container1">
+                    <div className="col-sm-12 col-md-3 container1">
+                        <Subheader>Messages</Subheader>
                         <List >
-                            <Subheader>Messages</Subheader>
-                            {/* <Link to={`/message/${this.props.wishList[qid]}/${this.props.auth.uid}/${this.}`}><RaisedButton style={styles.buttonStyle} label="View" /> */}
-                                <ListItem
-                                    leftAvatar={<Avatar src={this.props.auth.photo} />}
-                                    rightIconButton={rightIconMenu}
-                                    primaryText="Brendan Lim"
-                                    secondaryText={
-                                        <p>
-                                            <span style={{ color: darkBlack }}>Brunch this weekend?</span><br />
-                                            I&apos;ll be in your neighborhood doing errands this weekend. Do you want to grab brunch?</p>
-                                    }
-                                    secondaryTextLines={2}
-                                />
-                            {/* </Link> */}
-                            <Divider inset={true} />
-                            <ListItem
-                                leftAvatar={<Avatar src={this.props.auth.photo} />}
-                                rightIconButton={rightIconMenu}
-                                primaryText="me, Scott, Jennifer"
-                                secondaryText={
-                                    <p>
-                                        <span style={{ color: darkBlack }}>Summer BBQ</span><br />
-                                        Wish I could come, but I&apos;m out of town this weekend.</p>
+                                {
+                                    this.props.message.messageList ?
+                                        Object.keys(this.props.message.messageList).map((qid) => {
+                                            return (
+                                                <Link key={qid} to={`/message/${this.props.message.messageList[qid].itemId}/${this.props.auth.uid}/${this.props.message.messageList[qid].uid}`}>
+                                                    <Divider inset={true} />
+                                                    <ListItem
+                                                        leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
+                                                        rightIcon={<CommunicationChatBubble />}
+                                                        primaryText={this.props.message.messageList[qid].Username}
+                                                    />
+                                                </Link>
+                                            );
+                                        })
+                                        : null
                                 }
-                                secondaryTextLines={2}
-                            />
-                            <Divider inset={true} />
-                            <ListItem
-                                leftAvatar={<Avatar src={this.props.auth.photo} />}
-                                rightIconButton={rightIconMenu}
-                                primaryText="Grace Ng"
-                                secondaryText={
-                                    <p>
-                                        <span style={{ color: darkBlack }}>Oui oui</span><br />
-                                        Do you have any Paris recs? Have you ever been? </p>
-                                }
-                                secondaryTextLines={2}
-                            />
-                            <Divider inset={true} />
-                            <ListItem
-                                leftAvatar={<Avatar src={this.props.auth.photo} />}
-                                rightIconButton={rightIconMenu}
-                                primaryText="Kerem Suer"
-                                secondaryText={
-                                    <p>
-                                        <span style={{ color: darkBlack }}>Birthday gift</span><br />
-                                        Do you have any ideas what we can get Heidi for her birthday? How about a pony?</p>
-                                }
-                                secondaryTextLines={2}
-                            />
-                            <Divider inset={true} />
-                            <ListItem
-                                leftAvatar={<Avatar src={this.props.auth.photo} />}
-                                rightIconButton={rightIconMenu}
-                                primaryText="Raquel Parrado"
-                                secondaryText={
-                                    <p>
-                                        <span style={{ color: darkBlack }}>Recipe to try</span><br />
-                                        We should eat this: grated squash. Corn and tomatillo tacos.</p>
-                                }
-                                secondaryTextLines={2}
-                            />
                         </List>
                     </div>
-                    <div className= "col-sm-12 col-md-8 ">
+                    <div className= "col-sm-12 col-md-9 ">
                         <List>
-                                <CardHeader
-                                    title="Nhi Le"
-                                    subtitle="ItemName"
-                                    avatar={this.props.auth.photo}
-                                />
                                 {   
                                     this.props.message.data ?
                                     Object.keys(this.props.message.data).map((qid) => {
                                         return (
-                                        <div key={qid}>
-                                            <p>
-                                                    {this.props.message.data[qid].username} : {this.props.message.data[qid].content}
-                                            </p>    
-                                        </div>
-                                        );
-                                    })
-                                    : null
+                                                <ListItem
+                                                    key = {qid}
+                                                    disabled={true}
+                                                    leftAvatar={<Avatar src={this.props.message.data[qid].sendUserPhoto} />}
+                                                    primaryText={ this.props.message.data[qid].content }
+                                                >
+                                                </ListItem>
+                                            );
+                                        })  
+                                   : null
                                 }
+
                                 <TextField
                                     style = {styles.inputText}
-                                    // hintText="Text"
                                     fullWidth={true}
                                     floatingLabelText="Message"
                                     name="title"
