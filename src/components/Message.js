@@ -41,6 +41,11 @@ const styles = {
     },
     inputText:{
         marginTop: "60vh"
+    },
+    formStyle:{
+        width: '100%',
+        height: '400px',
+        overflow: 'scroll'
     }
 };
 
@@ -61,16 +66,8 @@ class Message extends Component {
         super(props)
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        if (this.props.match) {
-            this.state = {
-                content: "",
-                qid: this.props.match.params.qid,
-                toid: this.props.match.params.toid
-            };
-        } else{
-            this.state = {
-                content: ""
-            }
+        this.state = {
+            content: ""
         }
     }
 
@@ -94,33 +91,20 @@ class Message extends Component {
     componentWillMount(){
         this.props.getMessageList();
         if (this.props.match){
-            this.setState(Object.assign({}, this.state, {
-                qid: this.props.match.params.qid,
-                toid: this.props.match.params.toid
-            }))
-            this.props.listenToMessage(this.state.qid, this.state.toid);
+            this.props.listenToMessage(this.props.match.params.qid, this.props.match.params.toid);
         }
     }
 
     componentWillUpdate(prevProps) {
         if (this.props.location !== prevProps.location) {
-            this.onRouteChanged();
-        }
-    }
-
-    onRouteChanged() {
-        console.log("ROUTE CHANGED");
-        if(this.props.match){
-            this.setState(Object.assign({}, this.state, {
-                qid: this.props.match.params.qid,
-                toid: this.props.match.params.toid
-            }))
-            this.props.listenToMessage(this.state.qid, this.state.toid);
+            console.log("ROUTE CHANGED");
+            if (this.props.match) {
+                this.props.listenToMessage(this.props.match.params.qid, this.props.match.params.toid);
+            }
         }
     }
     
     render(){
-        console.log(this.props.message.data)
         return(
         <div>
             <Card style={styles.card}>
@@ -147,7 +131,7 @@ class Message extends Component {
                         </List>
                     </div>
                     <div className= "col-sm-12 col-md-9 ">
-                        <List>
+                        <List style={styles.formStyle}>
                                 {   
                                     this.props.message.data ?
                                     Object.keys(this.props.message.data).map((qid) => {
@@ -163,17 +147,17 @@ class Message extends Component {
                                         })  
                                    : null
                                 }
-
-                                <TextField
-                                    style = {styles.inputText}
-                                    fullWidth={true}
-                                    floatingLabelText="Message"
-                                    name="title"
-                                    onChange={this.onChange}
-                                    value={this.state.content}
-                                />
-                                <RaisedButton onClick={this.onSubmit} label="Primary" primary={true} style = {styles.buttonStyle} />
                         </List>
+                        <form onSubmit={this.onSubmit}>
+                            <TextField
+                                fullWidth={true}
+                                floatingLabelText="Message"
+                                name="title"
+                                onChange={this.onChange}
+                                value={this.state.content}
+                            />
+                                <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style = {styles.buttonStyle} />
+                        </form>
                     </div>
                 </div>
             </Card>
@@ -186,7 +170,8 @@ class Message extends Component {
 const mapStateToProps = (state) => {
     return {
         auth: state.auth,
-        message: state.message
+        message: state.message,
+        conversation: state.conversation
     };
 };
 
