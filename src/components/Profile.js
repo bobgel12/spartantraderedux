@@ -73,9 +73,6 @@ class Profile extends Component{
              </Card>
            </div>
          </Tab>
-         <Tab value="b" icon={<i className="material-icons md-18">message</i>}>
-              <Message uid={this.state.uid}/>
-         </Tab>
          <Tab value="c" icon={<i className="material-icons md-18">redeem</i>}>
          <div>
            <Card style={styles.card}>

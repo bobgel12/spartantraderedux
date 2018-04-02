@@ -2,30 +2,74 @@ import React, { Component } from 'react';
 import { Card, CardActions, CardHeader, CardTitle, CardMedia, CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
-
+import TextField from 'material-ui/TextField';
+import { List, ListItem } from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
 import { connect } from 'react-redux';
 import { deletePost, addWishlist } from '../actions/posts';
+import { sendMessage, listenToMessage, getMessageList } from '../actions/message';
+
 
 const buttonStyle = {
     margin: 10,
     marginTop: 5
 }
+const styles = {
+    card: {
+        height: "100vh",
+        width: "100%",
+        margin: 0,
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    headline: {
+        fontSize: 24,
+        paddingTop: 16,
+        marginBottom: 12,
+        fontWeight: 400,
+    },
+    buttonStyle: {
+        margin: "10 0 auto auto"
+    },
+    inputText: {
+        marginTop: "60vh"
+    },
+    formStyle: {
+        width: '100%',
+        height: '400px',
+        overflow: 'scroll'
+    }
+};
 
 class ItemPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            item: this.props.posts[this.props.match.params.id]
+            item: this.props.posts[this.props.match.params.id],
+            content: ""
         }
-        this.handleMessage = this.handleMessage.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
-    handleMessage = () => {
-        console.log("Handle message!!");
+    onChange(e) {
+        this.setState(
+            Object.assign({}, this.state, {
+                content: e.target.value
+            })
+        );
+    }
+    onSubmit(e) {
+        e.preventDefault();
+        this.props.sendMessage(this.state.content, this.props.match.params.id, this.state.item.uid);
+        this.setState(
+            Object.assign({}, this.state, {
+                content: "",
+            })
+        );
     }
 
     render() {
-        console.log(this.state.item)
         if (this.state.item) {
         return (
                 <div className="container">
@@ -44,12 +88,23 @@ class ItemPage extends Component {
                             {this.state.item.description}
                         </CardText>
                         <CardActions>
-                        <Link to={`/message/${this.props.match.params.id}/${this.props.auth.uid}/${this.state.item.uid}`}><RaisedButton style={buttonStyle} label="Messages" primary={true}/></Link>
                             <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
                         </CardActions>
                     </Card>
+                    <div className="col-sm-12">
+                        <form onSubmit={this.onSubmit}>
+                            <TextField
+                                fullWidth={true}
+                                floatingLabelText="Message"
+                                name="title"
+                                onChange={this.onChange}
+                                value={this.state.content}
+                            />
+                            <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style={styles.buttonStyle} />
+                        </form>
+                    </div>
                 </div>
-            
+
             )
         } else {
             return (null)
@@ -66,7 +121,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    deletePost, addWishlist
+    deletePost, addWishlist, listenToMessage, sendMessage
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemPage);

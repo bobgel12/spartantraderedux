@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardHeader } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import { Link } from 'react-router-dom';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 
@@ -11,10 +10,11 @@ import { sendMessage, listenToMessage, getMessageList } from '../actions/message
 import { getUser } from '../actions/auth';
 
 
+import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
-import Avatar from 'material-ui/Avatar';
 import { grey400, darkBlack } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
@@ -66,42 +66,38 @@ class Message extends Component {
         super(props)
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.updateCurrentConversation = this.updateCurrentConversation.bind(this);
         this.state = {
-            content: ""
+            content: "",
+            uid:"",
+            qid:"",
         }
     }
 
     onChange(e) {
-        this.setState(
-            {
-                content: e.target.value
-            }
-        );
+        this.setState(Object.assign({}, this.state, {
+            content: e.target.value
+        }));
     }
     onSubmit(e) {
         e.preventDefault();
-        this.props.sendMessage(this.state.content, this.props.match.params.qid, this.props.match.params.toid);
-        this.setState(
-            {
-                content: ""
-            }
-        );
+        this.props.sendMessage(this.state.content, this.state.qid, this.state.uid);
+        this.setState(Object.assign({}, this.state, {
+            content:""
+        }));
+    }
+
+    updateCurrentConversation(newqid, newuid){
+        this.setState(Object.assign({}, this.state, {
+            uid: newuid,
+            qid: newqid,
+        }), () => {
+            this.props.listenToMessage(this.state.qid, this.state.uid);
+        })
     }
     
     componentWillMount(){
         this.props.getMessageList();
-        if (this.props.match){
-            this.props.listenToMessage(this.props.match.params.qid, this.props.match.params.toid);
-        }
-    }
-
-    componentWillUpdate(prevProps) {
-        if (this.props.location !== prevProps.location) {
-            console.log("ROUTE CHANGED");
-            if (this.props.match) {
-                this.props.listenToMessage(this.props.match.params.qid, this.props.match.params.toid);
-            }
-        }
     }
     
     render(){
@@ -116,14 +112,13 @@ class Message extends Component {
                                     this.props.message.messageList ?
                                         Object.keys(this.props.message.messageList).map((qid) => {
                                             return (
-                                                <Link key={qid} to={`/message/${this.props.message.messageList[qid].itemId}/${this.props.auth.uid}/${this.props.message.messageList[qid].uid}`}>
-                                                    <Divider inset={true} />
-                                                    <ListItem
-                                                        leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
-                                                        rightIcon={<CommunicationChatBubble />}
-                                                        primaryText={this.props.message.messageList[qid].Username}
-                                                    />
-                                                </Link>
+                                                <ListItem
+                                                    key={qid}
+                                                    leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
+                                                    rightIcon={<CommunicationChatBubble />}
+                                                    primaryText={this.props.message.messageList[qid].Username}
+                                                    onClick={() => { this.updateCurrentConversation(this.props.message.messageList[qid].itemId, this.props.message.messageList[qid].uid)}}
+                                                />
                                             );
                                         })
                                         : null
