@@ -7,6 +7,7 @@ import Message from './components/Message';
 import ItemPage from './components/ItemPage';
 import Posts from './components/Posts';
 import Profile from './components/Profile';
+import Welcome from './components/Welcome';
 
 import {
 	Route,
@@ -28,7 +29,8 @@ export default class App extends Component {
 			<div>
 				<Auth/>
 				<Switch>
-					<Route exact path='/' component={Posts} />
+					<Route exact path='/' component={Welcome} />
+					<Route exact path='/posts' component={Posts} />
 					<Route path='/profile/:uid' component={Profile} />
 					<Route path="/posts/:id" component={ItemPage} />
 					<Route path="/message/:qid?/:uid?/:toid?" component={Message} />
@@ -37,4 +39,3 @@ export default class App extends Component {
 		);
 	}
 }
-
