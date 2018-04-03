@@ -91,18 +91,23 @@ class ItemPage extends Component {
                             <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
                         </CardActions>
                     </Card>
-                    <div className="col-sm-12">
-                        <form onSubmit={this.onSubmit}>
-                            <TextField
-                                fullWidth={true}
-                                floatingLabelText="Message"
-                                name="title"
-                                onChange={this.onChange}
-                                value={this.state.content}
-                            />
-                            <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style={styles.buttonStyle} />
-                        </form>
-                    </div>
+                    {
+                        this.props.auth.uid ?
+                            <div className="col-sm-12">
+                                <form onSubmit={this.onSubmit}>
+                                    <TextField
+                                        fullWidth={true}
+                                        floatingLabelText="Message"
+                                        name="title"
+                                        onChange={this.onChange}
+                                        value={this.state.content}
+                                    />
+                                    <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style={styles.buttonStyle} />
+                                </form>
+                            </div>
+                        :
+                        null
+                    }
                 </div>
 
             )

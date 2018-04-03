@@ -101,63 +101,69 @@ class Message extends Component {
     }
     
     render(){
-        return(
-        <div>
-            <Card style={styles.card}>
-                <div className="row">
-                    <div className="col-sm-12 col-md-3 container1">
-                        <Subheader>Messages</Subheader>
-                        <List >
-                                {
-                                    this.props.message.messageList ?
-                                        Object.keys(this.props.message.messageList).map((qid) => {
-                                            return (
-                                                <ListItem
-                                                    key={qid}
-                                                    leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
-                                                    rightIcon={<CommunicationChatBubble />}
-                                                    primaryText={this.props.message.messageList[qid].Username}
-                                                    onClick={() => { this.updateCurrentConversation(this.props.message.messageList[qid].itemId, this.props.message.messageList[qid].uid)}}
-                                                />
-                                            );
-                                        })
-                                        : null
-                                }
-                        </List>
-                    </div>
-                    <div className= "col-sm-12 col-md-9 ">
-                        <List style={styles.formStyle}>
-                                {   
-                                    this.props.message.data ?
-                                    Object.keys(this.props.message.data).map((qid) => {
-                                        return (
-                                                <ListItem
-                                                    key = {qid}
-                                                    disabled={true}
-                                                    leftAvatar={<Avatar src={this.props.message.data[qid].sendUserPhoto} />}
-                                                    primaryText={ this.props.message.data[qid].content }
-                                                >
-                                                </ListItem>
-                                            );
-                                        })  
-                                   : null
-                                }
-                        </List>
-                        <form onSubmit={this.onSubmit}>
-                            <TextField
-                                fullWidth={true}
-                                floatingLabelText="Message"
-                                name="title"
-                                onChange={this.onChange}
-                                value={this.state.content}
-                            />
-                                <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style = {styles.buttonStyle} />
-                        </form>
-                    </div>
+        if (this.props.auth.uid){
+            return (
+                <div>
+                    <Card style={styles.card}>
+                        <div className="row">
+                            <div className="col-sm-2 col-md-3 container1">
+                                <Subheader>Messages</Subheader>
+                                <List >
+                                    {
+                                        this.props.message.messageList ?
+                                            Object.keys(this.props.message.messageList).map((qid) => {
+                                                return (
+                                                    <ListItem
+                                                        key={qid}
+                                                        leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
+                                                        rightIcon={<CommunicationChatBubble />}
+                                                        primaryText={this.props.message.messageList[qid].Username}
+                                                        onClick={() => { this.updateCurrentConversation(this.props.message.messageList[qid].itemId, this.props.message.messageList[qid].uid) }}
+                                                    />
+                                                );
+                                            })
+                                            : null
+                                    }
+                                </List>
+                            </div>
+                            <div className="col-sm-10 col-md-9 ">
+                                <List style={styles.formStyle}>
+                                    {
+                                        this.props.message.data ?
+                                            Object.keys(this.props.message.data).map((qid) => {
+                                                return (
+                                                    <ListItem
+                                                        key={qid}
+                                                        disabled={true}
+                                                        leftAvatar={<Avatar src={this.props.message.data[qid].sendUserPhoto} />}
+                                                        primaryText={this.props.message.data[qid].content}
+                                                    >
+                                                    </ListItem>
+                                                );
+                                            })
+                                            : null
+                                    }
+                                </List>
+                                <form onSubmit={this.onSubmit}>
+                                    <TextField
+                                        fullWidth={true}
+                                        floatingLabelText="Message"
+                                        name="title"
+                                        onChange={this.onChange}
+                                        value={this.state.content}
+                                    />
+                                    <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style={styles.buttonStyle} />
+                                </form>
+                            </div>
+                        </div>
+                    </Card>
                 </div>
-            </Card>
-        </div>
-        )
+            )
+        } else{
+            return(
+                null
+            )
+        }
     }
 }
 
