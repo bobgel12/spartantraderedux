@@ -81,7 +81,7 @@ class Welcome extends Component {
                         <input type="text" class="form-control" id="inputEmail" placeholder="email"></input>
                       </div>
                       <div class="form-group">
-                      <label for="inputPassword">Address 2</label>
+                      <label for="inputPassword">Password</label>
                       <input type="text" class="form-control" id="inputPassword" placeholder="should have at least 8 characters/numbers"></input>
                       </div>
                       <div class="form-row">
