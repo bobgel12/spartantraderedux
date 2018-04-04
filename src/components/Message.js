@@ -106,27 +106,38 @@ class Message extends Component {
                 <div>
                     <Card style={styles.card}>
                         <div className="row">
-                            <div className="col-sm-2 col-md-3 container1">
-                                <Subheader>Messages</Subheader>
+                            <div className="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                 <List >
+                                <Subheader>Messages</Subheader>
                                     {
                                         this.props.message.messageList ?
                                             Object.keys(this.props.message.messageList).map((qid) => {
                                                 return (
-                                                    <ListItem
-                                                        key={qid}
-                                                        leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
-                                                        rightIcon={<CommunicationChatBubble />}
-                                                        primaryText={this.props.message.messageList[qid].Username}
-                                                        onClick={() => { this.updateCurrentConversation(this.props.message.messageList[qid].itemId, this.props.message.messageList[qid].uid) }}
-                                                    />
+                                                    <div>
+                                                        <div className="hidden-md-up">
+                                                            <ListItem
+                                                                style={{margin: "10px"}}
+                                                                leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
+                                                                onClick={() => { this.updateCurrentConversation(this.props.message.messageList[qid].itemId, this.props.message.messageList[qid].uid) }}
+                                                            />
+                                                            {/* <p><Avatar src={this.props.message.messageList[qid].UserPhoto} /></p> */}
+                                                        </div>
+                                                        <div className="hidden-sm-down">
+                                                            <ListItem
+                                                                key={qid}
+                                                                leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
+                                                                primaryText={this.props.message.messageList[qid].Username}
+                                                                onClick={() => { this.updateCurrentConversation(this.props.message.messageList[qid].itemId, this.props.message.messageList[qid].uid) }}
+                                                            />
+                                                        </div>
+                                                    </div>
                                                 );
                                             })
                                             : null
                                     }
                                 </List>
                             </div>
-                            <div className="col-sm-10 col-md-9 ">
+                            <div className="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">
                                 <List style={styles.formStyle}>
                                     {
                                         this.props.message.data ?
@@ -146,6 +157,7 @@ class Message extends Component {
                                 </List>
                                 <form onSubmit={this.onSubmit}>
                                     <TextField
+                                        style={{width: "90%"}}
                                         fullWidth={true}
                                         floatingLabelText="Message"
                                         name="title"
