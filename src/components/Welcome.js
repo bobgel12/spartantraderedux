@@ -55,6 +55,11 @@ class Welcome extends Component {
                                     <h3 className ="wellcome">
                                     Welcome to SpartanTrade
                                     </h3>
+
+                                     <CardMedia>
+                                     <img src="https://image.freepik.com/free-icon/group-of-three-men-standing-side-by-side-hugging-each-other_318-63105.jpg" alt="" />
+                                     </CardMedia>
+
                                   </div>
                                 }
                               />
