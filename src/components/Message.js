@@ -49,6 +49,18 @@ const styles = {
     }
 };
 
+function MesItem(props) {
+    return (
+            <ListItem
+                key={props.qid}
+                disabled={true}
+                leftAvatar={<Avatar size={30} src={props.photo} />}
+            >
+            {props.mes}
+            </ListItem>
+    )
+}
+
 
 const iconButtonElement = (
     <IconButton
@@ -81,10 +93,12 @@ class Message extends Component {
     }
     onSubmit(e) {
         e.preventDefault();
-        this.props.sendMessage(this.state.content, this.state.qid, this.state.uid);
-        this.setState(Object.assign({}, this.state, {
-            content:""
-        }));
+        if(this.state.content != ""){
+            this.props.sendMessage(this.state.content, this.state.qid, this.state.uid);
+            this.setState(Object.assign({}, this.state, {
+                content:""
+            }));
+        }
     }
 
     updateCurrentConversation(newqid, newuid){
@@ -143,13 +157,14 @@ class Message extends Component {
                                         this.props.message.data ?
                                             Object.keys(this.props.message.data).map((qid) => {
                                                 return (
-                                                    <ListItem
-                                                        key={qid}
-                                                        disabled={true}
-                                                        leftAvatar={<Avatar src={this.props.message.data[qid].sendUserPhoto} />}
-                                                        primaryText={this.props.message.data[qid].content}
-                                                    >
-                                                    </ListItem>
+                                                    <MesItem key={qid} photo={this.props.message.data[qid].sendUserPhoto} mes={this.props.message.data[qid].content}/>
+                                                    // <ListItem
+                                                    //     key={qid}
+                                                    //     disabled={true}
+                                                    //     leftAvatar={<Avatar size={30} src={this.props.message.data[qid].sendUserPhoto} />}
+                                                    //     primaryText={this.props.message.data[qid].content}
+                                                    // >
+                                                    // </ListItem>
                                                 );
                                             })
                                             : null
