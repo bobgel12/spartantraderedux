@@ -134,7 +134,6 @@ class Message extends Component {
                                                                 leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
                                                                 onClick={() => { this.updateCurrentConversation(this.props.message.messageList[qid].itemId, this.props.message.messageList[qid].uid) }}
                                                             />
-                                                            {/* <p><Avatar src={this.props.message.messageList[qid].UserPhoto} /></p> */}
                                                         </div>
                                                         <div className="hidden-sm-down">
                                                             <ListItem
