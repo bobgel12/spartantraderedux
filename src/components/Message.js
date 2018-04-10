@@ -113,7 +113,7 @@ class Message extends Component {
                                         this.props.message.messageList ?
                                             Object.keys(this.props.message.messageList).map((qid) => {
                                                 return (
-                                                    <div>
+                                                    <div key={qid}>
                                                         <div className="hidden-md-up">
                                                             <ListItem
                                                                 style={{margin: "10px"}}
