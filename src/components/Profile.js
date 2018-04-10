@@ -82,16 +82,15 @@ class Profile extends Component{
                />
                <CardTitle title="Wish List" />
               {
-                // map performs some function for each element of array
-                this.props.wishList ?
-                    Object.keys(this.props.wishList).map((qid) => {
+                    this.props.wishlist.wishList ?
+                    Object.keys(this.props.wishlist.wishList).map((qid) => {
                     return (
                       <div key = {qid}>
                         <CardText>
-                          {this.props.posts.data[this.props.wishList[qid]].title}
+                          {this.props.posts.data[this.props.wishlist.wishList[qid]].title}
                         </CardText>
-                        <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid, this.props.wishList[qid]) }} />
-                        <Link to={`/posts/${this.props.wishList[qid]}`}><RaisedButton style={styles.buttonStyle} label="View" /></Link>
+                        <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid, this.props.wishlist.wishList[qid]) }} />
+                        <Link to={`/posts/${this.props.wishlist.wishList[qid]}`}><RaisedButton style={styles.buttonStyle} label="View" /></Link>
                       </div>
                     );
                   })
@@ -131,7 +130,7 @@ const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
     posts: state.posts,
-    wishList: state.wishlist.wishList,
+    wishlist: state.wishlist,
     profileUser: state.auth.profileUser
 	};
 };
