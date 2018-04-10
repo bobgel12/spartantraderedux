@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { deletePost, addWishlist, listenToWishList} from '../actions/posts';
 import { sendMessage, listenToMessage, getMessageList } from '../actions/message';
 import IconButton from 'material-ui/IconButton';
+import NotificationSystem from 'react-notification-system';
 
 
 
@@ -49,8 +50,9 @@ class ItemPage extends Component {
         this.state = {
             item: this.props.posts[this.props.match.params.id],
             content: "",
-            flag: false
+            flag: false,
         }
+        this._notificationSystem =  null;
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.addwishlist = this.addwishlist.bind(this);
@@ -65,12 +67,19 @@ class ItemPage extends Component {
     }
     onSubmit(e) {
         e.preventDefault();
-        this.props.sendMessage(this.state.content, this.props.match.params.id, this.state.item.uid);
-        this.setState(
-            Object.assign({}, this.state, {
-                content: "",
-            })
-        );
+        if(this.state.content != ""){
+            this.props.sendMessage(this.state.content, this.props.match.params.id, this.state.item.uid);
+            this._notificationSystem.addNotification({
+                message: 'Message Sent!',
+                level: 'success',
+                position: 'tc'
+            });
+            this.setState(
+                Object.assign({}, this.state, {
+                    content: "",
+                })
+            );
+        }
     }
 
     addwishlist(){
@@ -88,6 +97,10 @@ class ItemPage extends Component {
         }
     }
 
+    componentDidMount(){
+        this._notificationSystem = this.refs.notificationSystem;
+    }
+
     render() {
         if (this.state.item) {
             let { item } = this.state;
@@ -100,9 +113,9 @@ class ItemPage extends Component {
                     }
                 })
             }
-            console.log(this.state);
         return (
                 <div className="container">
+                    <NotificationSystem ref="notificationSystem" />
                     <Card>
                         <CardHeader
                             title={this.state.item.username}
