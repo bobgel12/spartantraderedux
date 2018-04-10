@@ -3,10 +3,42 @@ import {Card, CardActions, CardHeader, CardTitle, CardText} from 'material-ui/Ca
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
 import Avatar from 'material-ui/Avatar';
+import IconButton from 'material-ui/IconButton';
 
 
 import { connect } from 'react-redux';
 import { deletePost, addWishlist } from '../actions/posts';
+
+
+const styles = {
+  smallIcon: {
+    width: 36,
+    height: 36,
+  },
+  mediumIcon: {
+    width: 48,
+    height: 48,
+  },
+  largeIcon: {
+    width: 60,
+    height: 60,
+  },
+  small: {
+    width: 72,
+    height: 72,
+    padding: 16,
+  },
+  medium: {
+    width: 96,
+    height: 96,
+    padding: 24,
+  },
+  large: {
+    width: 120,
+    height: 120,
+    padding: 30,
+  },
+};
 
 const style = {
   height: 324,
@@ -28,7 +60,7 @@ const buttonDelete = {
 
 class Item extends Component{
   constructor(props){
-    super(props)
+    super(props);
     this.delete = this.delete.bind(this);
     this.addWishlist = this.addWishlist.bind(this);
   }
@@ -41,13 +73,17 @@ class Item extends Component{
     this.props.addWishlist(this.props.id, this.props.auth.uid);
   }
 
+
   render() {
-    if (this.props.id === 'mini') {
-      return (
-        <CardText>
-          {this.props.item.title}
-        </CardText>
-      );
+    let { item } = this.props;
+    let { uid } = this.props.auth;
+    let flag = false;
+    if (item.favoritesUser) {
+      Object.keys(item.favoritesUser).map((user) => {
+        if (item.favoritesUser[user] === uid) {
+          flag = true;
+        }
+      })
     }
     return (
       <div>
@@ -63,7 +99,23 @@ class Item extends Component{
               <div>
                 {                  
                   this.props.auth.uid ?
-                  <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
+                    flag ?
+                      <IconButton
+                        iconStyle={styles.largeIcon}
+                        style={styles.medium}
+                        onClick={this.addWishlist}
+                      >
+                        <i className="material-icons">favorite</i>
+                      </IconButton>
+                      :
+                      <IconButton
+                        iconStyle={styles.largeIcon}
+                        style={styles.medium}
+                        onClick={this.addWishlist}
+                      >
+                        <i className="material-icons">favorite_border</i>
+                      </IconButton>
+                  // <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
                   : null
                 }
                   <Link to={`/posts/${this.props.id}`}><RaisedButton style={buttonStyle} label="READMORE" primary={true}/></Link>

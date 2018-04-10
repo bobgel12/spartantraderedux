@@ -35,8 +35,6 @@ export const listenToAuth = () => {
 					username: authData.providerData[0].displayName,
 					photo: authData.providerData[0].photoURL,
 				});
-
-				// reload articles on auth update.
 				const listenToPostsDispatcher = listenToPosts();
 				listenToPostsDispatcher(dispatch, getState);
 			} else {
@@ -67,12 +65,5 @@ export const logoutUser = () => {
 	return (dispatch) => {
 		dispatch({ type: C.AUTH_LOGOUT });
 		auth.signOut();
-	};
-};
-
-export const toggleProfile = () => {
-	return (dispatch) => {
-		console.log('Profile');
-		dispatch({ type: C.TOGGLE_PROFLE });
 	};
 };

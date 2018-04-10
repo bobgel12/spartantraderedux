@@ -4,9 +4,17 @@ import Item from './Item.js';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { submitPost, deletePost } from '../actions/posts';
+import { submitPost, deletePost, listenToWishList } from '../actions/posts';
 
 class Posts extends Component{
+  constructor(props){
+    super(props);
+  }
+  componentWillMount() {
+    if(this.props.auth.uid){
+      this.props.listenToWishList(this.props.auth.uid);
+    }
+  }
   getJSX(props) {
 		switch (props.posts.hasReceivedData) {
 			case true: return (
@@ -25,7 +33,7 @@ class Posts extends Component{
               Object.keys(this.props.posts.data).map((item) => {
                 return (
                   <div className="col-xs-12 col-md-6 col-lg-4" key={item}>
-                  <Item item = {this.props.posts.data[item]} id = {item}/>
+                    <Item item={this.props.posts.data[item]} id={item}/>
                   </div>
                 );
               })
@@ -67,7 +75,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	submitPost,
-	deletePost,
+  deletePost,
+  listenToWishList,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
