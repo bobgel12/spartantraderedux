@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { openAuth, logoutUser, toggleProfile } from '../actions/auth';
+import { openAuth, logoutUser } from '../actions/auth';
 import C from '../constants';
 
 class Auth extends Component {
@@ -50,7 +50,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
 	openAuth,
 	logoutUser,
-  toggleProfile
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

@@ -51,7 +51,6 @@ class Profile extends Component{
   }
   
   render() {
-      console.log(this.props.profileUser);
       if(this.state.uid === this.props.auth.uid){
         return (
         <Tabs
@@ -91,7 +90,7 @@ class Profile extends Component{
                         <CardText>
                           {this.props.posts.data[this.props.wishList[qid]].title}
                         </CardText>
-                        <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid) }} />
+                        <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid, this.props.wishList[qid]) }} />
                         <Link to={`/posts/${this.props.wishList[qid]}`}><RaisedButton style={styles.buttonStyle} label="View" /></Link>
                       </div>
                     );
@@ -132,7 +131,7 @@ const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
     posts: state.posts,
-    wishList: state.posts.wishList,
+    wishList: state.wishlist.wishList,
     profileUser: state.auth.profileUser
 	};
 };

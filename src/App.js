@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import store from './store';
 import { listenToAuth } from './actions/auth';
-import { listenToPosts } from './actions/posts';
+import { listenToPosts, listenToWishList } from './actions/posts';
 import Auth from './components/Auth';
 import Message from './components/Message';
 import ItemPage from './components/ItemPage';
