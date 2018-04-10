@@ -1,3 +1,22 @@
 .container1{
     height: 100vh;
 }
+
+.loginPic{
+    height: 500px;
+    width: 100%;
+    background-image: url(./loginPic.jpg);
+    background-position: center;
+    background-size: cover;
+}
+.loginBottom{
+    width: 100%;
+    height: 500px;
+}
+.loginFrame{
+    text-align: center;
+    margin-top: 50px ;
+}
+.red{
+    color: lightcoral;
+}

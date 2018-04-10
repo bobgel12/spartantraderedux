@@ -105,7 +105,7 @@ class Item extends Component{
                         style={styles.medium}
                         onClick={this.addWishlist}
                       >
-                        <i className="material-icons">favorite</i>
+                        <i className="material-icons red">favorite</i>
                       </IconButton>
                       :
                       <IconButton
@@ -113,7 +113,7 @@ class Item extends Component{
                         style={styles.medium}
                         onClick={this.addWishlist}
                       >
-                        <i className="material-icons">favorite_border</i>
+                        <i className="material-icons red">favorite_border</i>
                       </IconButton>
                   // <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
                   : null

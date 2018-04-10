@@ -134,9 +134,7 @@ export const submitPost = (contents) => {
 
 export const deletePost = (qid) => {
 	return (dispatch) => {
-		// TODO delete wishlist in the user ref as well
 		const itemRef = database.ref(`Books/${qid}/favoritesUser/`);
-
 		itemRef.once('value', (snapshot) => {
 			if(snapshot.val()){
 				Object.keys(snapshot.val()).map((item) => {
