@@ -186,23 +186,24 @@ export const deleteWishlist = (qid, uid, qidReal) => {
 		const itemRef = database.ref(`Books/${qidReal}/favoritesUser/`);
 		console.log(qidReal);
 		itemRef.once('value', (snapshot)=>{
-			console.log(snapshot.val());
-			Object.keys(snapshot.val()).map((item)=>{
-				if(snapshot.val()[item] === uid){
-					itemRef.child(item).remove((error)=>{
-						if (error) {
+			if(snapshot.val()){
+				Object.keys(snapshot.val()).map((item)=>{
+					if(snapshot.val()[item] === uid){
+						itemRef.child(item).remove((error)=>{
+							if (error) {
+								dispatch({
+									type: C.FEEDBACK_DISPLAY_ERROR,
+									error: `Deletion failed! ${error}`
+								});
+							}
 							dispatch({
-								type: C.FEEDBACK_DISPLAY_ERROR,
-								error: `Deletion failed! ${error}`
+								type: C.FEEDBACK_DISPLAY_MESSAGE,
+								message: 'Wishlist successfully deleted!'
 							});
-						}
-						dispatch({
-							type: C.FEEDBACK_DISPLAY_MESSAGE,
-							message: 'Wishlist successfully deleted!'
-						});
-					})
-				}
-			})
+						})
+					}
+				})
+			}
 		})
 		wishListRef.child(qid).remove((error) => {
 			if (error) {

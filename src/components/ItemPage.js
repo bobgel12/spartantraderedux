@@ -6,8 +6,10 @@ import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import { connect } from 'react-redux';
-import { deletePost, addWishlist } from '../actions/posts';
+import { deletePost, addWishlist, listenToWishList} from '../actions/posts';
 import { sendMessage, listenToMessage, getMessageList } from '../actions/message';
+import IconButton from 'material-ui/IconButton';
+
 
 
 const buttonStyle = {
@@ -46,10 +48,12 @@ class ItemPage extends Component {
         super(props);
         this.state = {
             item: this.props.posts[this.props.match.params.id],
-            content: ""
+            content: "",
+            flag: false
         }
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.addwishlist = this.addwishlist.bind(this);
     }
 
     onChange(e) {
@@ -69,8 +73,34 @@ class ItemPage extends Component {
         );
     }
 
+    addwishlist(){
+        this.props.addWishlist(this.props.match.params.id, this.props.auth.uid); 
+        this.setState({
+            item: this.props.posts[this.props.match.params.id],
+            content: "",
+            flag: true
+        });
+    }
+
+    componentWillMount() {
+        if (this.props.auth.uid) {
+            this.props.listenToWishList(this.props.auth.uid);
+        }
+    }
+
     render() {
         if (this.state.item) {
+            let { item } = this.state;
+            let { uid } = this.props.auth;
+            let flag = false;
+            if (item.favoritesUser) {
+                Object.keys(item.favoritesUser).map((user) => {
+                    if (item.favoritesUser[user] === uid) {
+                        flag = true;
+                    }
+                })
+            }
+            console.log(this.state);
         return (
                 <div className="container">
                     <Card>
@@ -88,7 +118,26 @@ class ItemPage extends Component {
                             {this.state.item.description}
                         </CardText>
                         <CardActions>
-                            <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
+                            {
+                                this.props.auth.uid ?
+                                    flag || this.state.flag ?
+                                    <IconButton
+                                        iconStyle={styles.largeIcon}
+                                        style={styles.medium}
+                                        onClick={ this.addwishlist }
+                                    >
+                                        <i className="material-icons">favorite</i>
+                                    </IconButton>
+                                    :
+                                    <IconButton
+                                        iconStyle={styles.largeIcon}
+                                        style={styles.medium}
+                                        onClick={this.addwishlist}
+                                    >
+                                        <i className="material-icons">favorite_border</i>
+                                    </IconButton>
+                                : null
+                            }
                         </CardActions>
                     </Card>
                     {
@@ -126,7 +175,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    deletePost, addWishlist, listenToMessage, sendMessage
+    deletePost, addWishlist, listenToMessage, sendMessage, listenToWishList
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemPage);
