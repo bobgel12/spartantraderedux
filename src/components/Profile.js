@@ -89,8 +89,8 @@ class Profile extends Component{
                         <CardText>
                           {this.props.posts.data[this.props.wishlist.wishList[qid]].title}
                         </CardText>
-                        <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid, this.props.wishlist.wishList[qid]) }} />
-                        <Link to={`/posts/${this.props.wishlist.wishList[qid]}`}><RaisedButton style={styles.buttonStyle} label="View" /></Link>
+                        <RaisedButton secondary = {true} style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid, this.props.wishlist.wishList[qid]) }} />
+                        <Link to={`/posts/${this.props.wishlist.wishList[qid]}`}><RaisedButton primary = {true} style={styles.buttonStyle} label="View" /></Link>
                       </div>
                     );
                   })
