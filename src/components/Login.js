@@ -3,7 +3,8 @@ import TextField from 'material-ui/TextField';
 import {RaisedButton , FlatButton} from 'material-ui';
 import Card from 'material-ui/Card';
 import {connect} from 'react-redux';
-import {openAuth, logoutUser} from '../actions/auth';
+import {loginWithFaceBook, loginWithGoogle, logoutUser} from '../actions/auth';
+import {Link} from 'react-router-dom';
 
 
 class Login extends Component {
@@ -18,23 +19,29 @@ class Login extends Component {
                     </div>
                     <div className="loginBottom col-sm-12 col-md-6">
                         <h2>Spartan Trade</h2>
-                        <p style={{marginTop: '30px'}}>
-                            <FlatButton
-                            target="_blank"
-                            label = "Continue with Facebook"
-                            secondary={true}
-                            icon={<i class="fab fa-facebook-f fa-lg"></i>}
-                            />
-                        </p>
-                        <p style={{marginTop: '30px'}}>
-                            <FlatButton
-                            target="_blank"
-                            label = "Continue with Google"
-                            secondary={true}
-                            icon={<i class="fab fa-google fa-lg"></i>}
-                            />
-                        </p>
-                        <p><RaisedButton primary = {true} label="Login"/><RaisedButton style={{marginLeft: '20px'}}primary = {true} label="Register"/></p>
+                        <div style={{marginTop: '30px'}}>
+                            <Link to={`/`}>
+                                <RaisedButton
+                                target="_blank"
+                                label = "Continue with Facebook"
+                                secondary={true}
+                                icon={<i className="fab fa-facebook-f fa-lg"></i>}
+                                onClick = {this.props.loginWithFaceBook}
+                                />
+                            </Link>
+                        </div>
+                        <div style={{marginTop: '30px'}}>
+                            <Link to={`/`}>
+                                <RaisedButton
+                                target="_blank"
+                                label = "Continue with Google"
+                                secondary={true}
+                                icon={<i className="fab fa-google fa-lg"></i>}
+                                onClick = {this.props.loginWithGoogle}
+                                />
+                            </Link>
+                        </div>
+                        <div><RaisedButton primary = {true} label="Login"/><RaisedButton style={{marginLeft: '20px', marginTop: '20px'}}primary = {true} label="Register"/></div>
                     </div>
                 </div>
             </div>
@@ -46,7 +53,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    openAuth
+    loginWithGoogle, loginWithFaceBook
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

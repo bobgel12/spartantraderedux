@@ -46,10 +46,24 @@ export const listenToAuth = () => {
 	};
 };
 
-export const openAuth = () => {
+export const loginWithGoogle = () => {
 	return (dispatch) => {
 		dispatch({ type: C.AUTH_OPEN });
 		const provider = new firebase.auth.GoogleAuthProvider();
+		auth.signInWithPopup(provider)
+			.catch((error) => {
+				dispatch({
+					type: C.FEEDBACK_DISPLAY_ERROR,
+					error: `Login failed! ${error}`
+				});
+				dispatch({ type: C.AUTH_LOGOUT });
+			});
+	};
+};
+export const loginWithFaceBook = () => {
+	return (dispatch) => {
+		dispatch({ type: C.AUTH_OPEN });
+		const provider = new firebase.auth.FacebookAuthProvider();
 		auth.signInWithPopup(provider)
 			.catch((error) => {
 				dispatch({
