@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, CardHeader } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
+import Chip from 'material-ui/Chip';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 
 import { connect } from 'react-redux';
@@ -46,6 +47,13 @@ const styles = {
         width: '100%',
         height: '400px',
         overflow: 'scroll'
+    },
+    chip: {
+        margin: 4,
+    },
+    chipright: {
+        margin: 4,
+        float: "right"
     }
 };
 
@@ -141,15 +149,30 @@ class Message extends Component {
                                     {
                                         this.props.message.data ?
                                             Object.keys(this.props.message.data).map((qid) => {
-                                                return (
-                                                    <ListItem
-                                                        key={qid}
-                                                        disabled={true}
-                                                        leftAvatar={<Avatar src={this.props.message.data[qid].sendUserPhoto} />}
-                                                        primaryText={this.props.message.data[qid].content}
-                                                    >
-                                                    </ListItem>
-                                                );
+                                                if(this.props.message.data[qid].senderUid === this.props.auth.uid){
+                                                    return(
+                                                        <div>
+                                                            <Chip
+                                                                key={qid}
+                                                                style={styles.chipright}
+                                                                >
+                                                                <Avatar src={this.props.message.data[qid].sendUserPhoto} />
+                                                                {this.props.message.data[qid].content}
+                                                            </Chip>
+                                                            <div style={{clear:"both"}}></div>
+                                                        </div>
+                                                    )
+                                                } else {
+                                                    return (
+                                                        <Chip
+                                                            key={qid}
+                                                            style={styles.chip}
+                                                            >
+                                                            <Avatar src={this.props.message.data[qid].sendUserPhoto} />
+                                                            {this.props.message.data[qid].content}
+                                                        </Chip>
+                                                    );
+                                                }
                                             })
                                             : null
                                     }
