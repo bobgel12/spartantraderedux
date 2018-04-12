@@ -2,33 +2,120 @@ import React, { Component } from 'react';
 import { Card, CardActions, CardHeader, CardTitle, CardMedia, CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Link } from 'react-router-dom';
-
+import TextField from 'material-ui/TextField';
+import { List, ListItem } from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
 import { connect } from 'react-redux';
-import { deletePost, addWishlist } from '../actions/posts';
+import { deletePost, addWishlist, listenToWishList} from '../actions/posts';
+import { sendMessage, listenToMessage, getMessageList } from '../actions/message';
+import IconButton from 'material-ui/IconButton';
+import NotificationSystem from 'react-notification-system';
+
+
 
 const buttonStyle = {
     margin: 10,
     marginTop: 5
 }
+const styles = {
+    card: {
+        height: "100vh",
+        width: "100%",
+        margin: 0,
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    headline: {
+        fontSize: 24,
+        paddingTop: 16,
+        marginBottom: 12,
+        fontWeight: 400,
+    },
+    buttonStyle: {
+        margin: "10 0 auto auto"
+    },
+    inputText: {
+        marginTop: "60vh"
+    },
+    formStyle: {
+        width: '100%',
+        height: '400px',
+        overflow: 'scroll'
+    }
+};
 
 class ItemPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            item: this.props.posts[this.props.match.params.id]
+            item: this.props.posts[this.props.match.params.id],
+            content: "",
+            flag: false,
         }
-        this.handleMessage = this.handleMessage.bind(this);
+        this._notificationSystem =  null;
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.addwishlist = this.addwishlist.bind(this);
     }
 
-    handleMessage = () => {
-        console.log("Handle message!!");
+    onChange(e) {
+        this.setState(
+            Object.assign({}, this.state, {
+                content: e.target.value
+            })
+        );
+    }
+    onSubmit(e) {
+        e.preventDefault();
+        if(this.state.content != ""){
+            this.props.sendMessage(this.state.content, this.props.match.params.id, this.state.item.uid);
+            this._notificationSystem.addNotification({
+                message: 'Message Sent!',
+                level: 'success',
+                position: 'tc'
+            });
+            this.setState(
+                Object.assign({}, this.state, {
+                    content: "",
+                })
+            );
+        }
+    }
+
+    addwishlist(){
+        this.props.addWishlist(this.props.match.params.id, this.props.auth.uid); 
+        this.setState({
+            item: this.props.posts[this.props.match.params.id],
+            content: "",
+            flag: true
+        });
+    }
+
+    componentWillMount() {
+        if (this.props.auth.uid) {
+            this.props.listenToWishList(this.props.auth.uid);
+        }
+    }
+
+    componentDidMount(){
+        this._notificationSystem = this.refs.notificationSystem;
     }
 
     render() {
-        console.log(this.state.item)
         if (this.state.item) {
+            let { item } = this.state;
+            let { uid } = this.props.auth;
+            let flag = false;
+            if (item.favoritesUser) {
+                Object.keys(item.favoritesUser).map((user) => {
+                    if (item.favoritesUser[user] === uid) {
+                        flag = true;
+                    }
+                })
+            }
         return (
                 <div className="container">
+                    <NotificationSystem ref="notificationSystem" />
                     <Card>
                         <CardHeader
                             title={this.state.item.username}
@@ -44,12 +131,47 @@ class ItemPage extends Component {
                             {this.state.item.description}
                         </CardText>
                         <CardActions>
-                        <Link to={`/message/${this.props.match.params.id}/${this.props.auth.uid}/${this.state.item.uid}`}><RaisedButton style={buttonStyle} label="Messages" primary={true}/></Link>
-                            <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
+                            {
+                                this.props.auth.uid ?
+                                    flag || this.state.flag ?
+                                    <IconButton
+                                        iconStyle={styles.largeIcon}
+                                        style={styles.medium}
+                                        onClick={ this.addwishlist }
+                                    >
+                                        <i className="material-icons red">favorite</i>
+                                    </IconButton>
+                                    :
+                                    <IconButton
+                                        iconStyle={styles.largeIcon}
+                                        style={styles.medium}
+                                        onClick={this.addwishlist}
+                                    >
+                                        <i className="material-icons red">favorite_border</i>
+                                    </IconButton>
+                                : null
+                            }
                         </CardActions>
                     </Card>
+                    {
+                        this.props.auth.uid ?
+                            <div className="col-sm-12">
+                                <form onSubmit={this.onSubmit}>
+                                    <TextField
+                                        fullWidth={true}
+                                        floatingLabelText="Message"
+                                        name="title"
+                                        onChange={this.onChange}
+                                        value={this.state.content}
+                                    />
+                                    <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style={styles.buttonStyle} />
+                                </form>
+                            </div>
+                        :
+                        null
+                    }
                 </div>
-            
+
             )
         } else {
             return (null)
@@ -66,7 +188,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    deletePost, addWishlist
+    deletePost, addWishlist, listenToMessage, sendMessage, listenToWishList
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemPage);

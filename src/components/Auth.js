@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { openAuth, logoutUser, toggleProfile } from '../actions/auth';
+import {loginWithGoogle, logoutUser} from '../actions/auth';
 import C from '../constants';
 
 class Auth extends Component {
@@ -22,7 +22,7 @@ class Auth extends Component {
           iconElementRight={
                   <div>
                     <Link to={`/profile/${props.auth.uid}`}><Avatar src={props.auth.photo}/></Link>
-                    {/* <Avatar src={props.auth.photo} onClick={() => {history.push('/profile')}} /> */}
+                    <Link to='/message/'><IconButton >icon={<i className="material-icons">chat</i>}</IconButton></Link>
                     <FlatButton onClick={props.logoutUser} label="Log Out"/>
                   </div>
           }
@@ -33,7 +33,7 @@ class Auth extends Component {
         <AppBar
           title="SpartanTrade"
           iconElementLeft={<Link to='/'><IconButton >icon={<i className="material-icons md-18">code</i>}</IconButton></Link>}
-          iconElementRight={<FlatButton onClick={props.openAuth} label="Log in" />}
+          iconElementRight={<Link to='/login'><FlatButton label="Log in" /></Link>}
           />
       );
     }
@@ -48,9 +48,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-	openAuth,
+  loginWithGoogle,
 	logoutUser,
-  toggleProfile
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

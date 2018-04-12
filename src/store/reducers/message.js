@@ -8,6 +8,7 @@ const initialState = {
     messageList: {},
     data: {},
     status: {},
+    conversation: {}
 };
 
 export default (state, action) => {

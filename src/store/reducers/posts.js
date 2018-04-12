@@ -18,16 +18,6 @@ export default (state, action) => {
 				data: action.data,
 				errorMessage: ''
 			});
-		case C.WISHLIST_RECEIVE_DATA:
-			return Object.assign({}, state, {
-				hasReceivedData: true,
-				wishList: action.data,
-				errorMessage: ''
-			});
-		case C.WISHLIST_RECEIVE_DATA_ERROR:
-			return Object.assign({}, state, {
-				errorMessage: action.message
-			});
 		case C.POSTS_RECEIVE_DATA_ERROR:
 			return Object.assign({}, state, {
 				errorMessage: action.message

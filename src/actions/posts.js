@@ -20,6 +20,7 @@ export const addWishlist = (qid, uid) => {
 			console.log("There is no wishlist");
 		});
 		if (!check){
+			const itemRef = database.ref(`Books/${qid}/favoritesUser/`).push(uid);
 			wishListRef.push((qid), (error) =>{
 				if (error) {
 					dispatch({
@@ -133,6 +134,35 @@ export const submitPost = (contents) => {
 
 export const deletePost = (qid) => {
 	return (dispatch) => {
+		const itemRef = database.ref(`Books/${qid}/favoritesUser/`);
+		itemRef.once('value', (snapshot) => {
+			if(snapshot.val()){
+				Object.keys(snapshot.val()).map((item) => {
+					let user = snapshot.val()[item];
+					let userRef = database.ref('Users/' + user + '/wishList');
+					userRef.once('value', (snapshot1)=>{
+						Object.keys(snapshot1.val()).map((item)=>{
+							if (snapshot1.val()[item] === qid){
+								userRef.child(item).remove((error)=>{
+									if (error) {
+										dispatch({
+											type: C.FEEDBACK_DISPLAY_ERROR,
+											error: `Deletion failed! ${error}`
+										});
+									}
+									dispatch({
+										type: C.FEEDBACK_DISPLAY_MESSAGE,
+										message: 'Post successfully deleted!'
+									});
+								})
+								console.log('here1!');
+							}
+						})
+					})
+				})
+			}
+		})
+
 		postsRef.child(qid).remove((error) => {
 			if (error) {
 				dispatch({
@@ -149,9 +179,31 @@ export const deletePost = (qid) => {
 };
 
 
-export const deleteWishlist = (qid, uid) => {
+export const deleteWishlist = (qid, uid, qidReal) => {
 	return (dispatch) => {
 		const wishListRef = database.ref('Users/' + uid + '/wishList');
+		const itemRef = database.ref(`Books/${qidReal}/favoritesUser/`);
+		console.log(qidReal);
+		itemRef.once('value', (snapshot)=>{
+			if(snapshot.val()){
+				Object.keys(snapshot.val()).map((item)=>{
+					if(snapshot.val()[item] === uid){
+						itemRef.child(item).remove((error)=>{
+							if (error) {
+								dispatch({
+									type: C.FEEDBACK_DISPLAY_ERROR,
+									error: `Deletion failed! ${error}`
+								});
+							}
+							dispatch({
+								type: C.FEEDBACK_DISPLAY_MESSAGE,
+								message: 'Wishlist successfully deleted!'
+							});
+						})
+					}
+				})
+			}
+		})
 		wishListRef.child(qid).remove((error) => {
 			if (error) {
 				dispatch({

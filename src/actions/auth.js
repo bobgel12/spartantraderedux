@@ -35,8 +35,6 @@ export const listenToAuth = () => {
 					username: authData.providerData[0].displayName,
 					photo: authData.providerData[0].photoURL,
 				});
-
-				// reload articles on auth update.
 				const listenToPostsDispatcher = listenToPosts();
 				listenToPostsDispatcher(dispatch, getState);
 			} else {
@@ -48,10 +46,24 @@ export const listenToAuth = () => {
 	};
 };
 
-export const openAuth = () => {
+export const loginWithGoogle = () => {
 	return (dispatch) => {
 		dispatch({ type: C.AUTH_OPEN });
 		const provider = new firebase.auth.GoogleAuthProvider();
+		auth.signInWithPopup(provider)
+			.catch((error) => {
+				dispatch({
+					type: C.FEEDBACK_DISPLAY_ERROR,
+					error: `Login failed! ${error}`
+				});
+				dispatch({ type: C.AUTH_LOGOUT });
+			});
+	};
+};
+export const loginWithFaceBook = () => {
+	return (dispatch) => {
+		dispatch({ type: C.AUTH_OPEN });
+		const provider = new firebase.auth.FacebookAuthProvider();
 		auth.signInWithPopup(provider)
 			.catch((error) => {
 				dispatch({
@@ -67,12 +79,5 @@ export const logoutUser = () => {
 	return (dispatch) => {
 		dispatch({ type: C.AUTH_LOGOUT });
 		auth.signOut();
-	};
-};
-
-export const toggleProfile = () => {
-	return (dispatch) => {
-		console.log('Profile');
-		dispatch({ type: C.TOGGLE_PROFLE });
 	};
 };

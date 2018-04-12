@@ -51,7 +51,6 @@ class Profile extends Component{
   }
   
   render() {
-      console.log(this.props.profileUser);
       if(this.state.uid === this.props.auth.uid){
         return (
         <Tabs
@@ -73,9 +72,6 @@ class Profile extends Component{
              </Card>
            </div>
          </Tab>
-         <Tab value="b" icon={<i className="material-icons md-18">message</i>}>
-              <Message uid={this.state.uid}/>
-         </Tab>
          <Tab value="c" icon={<i className="material-icons md-18">redeem</i>}>
          <div>
            <Card style={styles.card}>
@@ -86,16 +82,15 @@ class Profile extends Component{
                />
                <CardTitle title="Wish List" />
               {
-                // map performs some function for each element of array
-                this.props.wishList ?
-                    Object.keys(this.props.wishList).map((qid) => {
+                    this.props.wishlist.wishList ?
+                    Object.keys(this.props.wishlist.wishList).map((qid) => {
                     return (
                       <div key = {qid}>
                         <CardText>
-                          {this.props.posts.data[this.props.wishList[qid]].title}
+                          {this.props.posts.data[this.props.wishlist.wishList[qid]].title}
                         </CardText>
-                        <RaisedButton style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid) }} />
-                        <Link to={`/posts/${this.props.wishList[qid]}`}><RaisedButton style={styles.buttonStyle} label="View" /></Link>
+                        <RaisedButton secondary = {true} style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid, this.props.wishlist.wishList[qid]) }} />
+                        <Link to={`/posts/${this.props.wishlist.wishList[qid]}`}><RaisedButton primary = {true} style={styles.buttonStyle} label="View" /></Link>
                       </div>
                     );
                   })
@@ -135,7 +130,7 @@ const mapStateToProps = (state) => {
 	return {
 		auth: state.auth,
     posts: state.posts,
-    wishList: state.posts.wishList,
+    wishlist: state.wishlist,
     profileUser: state.auth.profileUser
 	};
 };

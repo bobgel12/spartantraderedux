@@ -3,12 +3,14 @@ import posts from './posts';
 import auth from './auth';
 import feedback from './feedback';
 import message from './message';
+import wishlist from './wishlist';
 
 const rootReducer = combineReducers({
 	posts,
 	auth,
 	feedback,
-	message
+	message,
+	wishlist
 });
 
 export default rootReducer;

@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import store from './store';
 import { listenToAuth } from './actions/auth';
-import { listenToPosts } from './actions/posts';
+import { listenToPosts, listenToWishList } from './actions/posts';
 import Auth from './components/Auth';
 import Message from './components/Message';
 import ItemPage from './components/ItemPage';
 import Posts from './components/Posts';
 import Profile from './components/Profile';
+<<<<<<< HEAD
 import Welcome from './components/Welcome';
+=======
+import Login from './components/Login';
+>>>>>>> master
 
 import {
 	Route,
 	Switch
 } from "react-router-dom";
-
-
-
 
 export default class App extends Component {
 	componentWillMount() {
@@ -29,8 +30,13 @@ export default class App extends Component {
 			<div>
 				<Auth/>
 				<Switch>
+<<<<<<< HEAD
 					<Route exact path='/' component={Welcome} />
 					<Route exact path='/posts' component={Posts} />
+=======
+					<Route exact path='/' component={Posts} />
+					<Route exact path="/login" component={Login} />
+>>>>>>> master
 					<Route path='/profile/:uid' component={Profile} />
 					<Route path="/posts/:id" component={ItemPage} />
 					<Route path="/message/:qid?/:uid?/:toid?" component={Message} />
