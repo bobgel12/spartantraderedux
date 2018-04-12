@@ -57,7 +57,7 @@ class Welcome extends Component {
                                     </h3>
 
                                      <CardMedia>
-                                     <img src="https://image.freepik.com/free-icon/group-of-three-men-standing-side-by-side-hugging-each-other_318-63105.jpg" alt="" />
+                                     <img src="https://image.flaticon.com/icons/svg/53/53554.svg"height ="50" width = "50" alt="" />
                                      </CardMedia>
 
                                   </div>
