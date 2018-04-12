@@ -163,18 +163,6 @@ class Message extends Component {
                                     {
                                         this.props.message.data ?
                                             Object.keys(this.props.message.data).map((qid) => {
-<<<<<<< HEAD
-                                                return (
-                                                    <MesItem key={qid} photo={this.props.message.data[qid].sendUserPhoto} mes={this.props.message.data[qid].content}/>
-                                                    // <ListItem
-                                                    //     key={qid}
-                                                    //     disabled={true}
-                                                    //     leftAvatar={<Avatar size={30} src={this.props.message.data[qid].sendUserPhoto} />}
-                                                    //     primaryText={this.props.message.data[qid].content}
-                                                    // >
-                                                    // </ListItem>
-                                                );
-=======
                                                 if(this.props.message.data[qid].senderUid === this.props.auth.uid){
                                                     return(
                                                         <div>
@@ -199,7 +187,6 @@ class Message extends Component {
                                                         </Chip>
                                                     );
                                                 }
->>>>>>> mesOnItemPage
                                             })
                                             : null
                                     }
