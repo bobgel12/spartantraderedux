@@ -64,7 +64,7 @@ export const rate = (rateNum, uid) => {
 		dispatch({ type: C.POST_AWAIT_CREATION_RESPONSE });
 		const state = getState();
 		const rateRef = database.ref('Users/' +uid+ "/rateDetails/");
-		const rateRef2 = database.ref('Users/' +uid+ "/averageRate");
+		const rateRef2 = database.ref('Users/' +uid+ "/data");
 
 		const rate = {
 			rate: rateNum,
@@ -100,7 +100,7 @@ export const rate = (rateNum, uid) => {
 			console.log(average);
 
 			rateRef2.update({
-				"averageRate": average
+				"rating": average
 			});
 
 		});
@@ -143,7 +143,7 @@ export const submitPost = (contents) => {
 		const user = {
 			userPhoto: state.auth.photo,
 			username: state.auth.username,
-			rating: 5,
+			rating: 0,
 			uid: state.auth.uid
 		}
 
@@ -158,14 +158,22 @@ export const submitPost = (contents) => {
 			} else {
 				userRef.on('value', (snapshot) =>{
 					if(!snapshot.val()){
-						userRef.push(user, (error) =>{
-							if(error){
-								dispatch({
-									type: C.FEEDBACK_DISPLAY_ERROR,
-									error: `Save User Error! ${error}`
-								});
-							}
+						userRef.update(user, (error)=>{
+								if(error){
+									dispatch({
+										type: C.FEEDBACK_DISPLAY_ERROR,
+										error: `Save User Error! ${error}`
+									});
+								}
 						});
+						// userRef.push(user, (error) =>{
+						// 	if(error){
+						// 		dispatch({
+						// 			type: C.FEEDBACK_DISPLAY_ERROR,
+						// 			error: `Save User Error! ${error}`
+						// 		});
+						// 	}
+						// });
 					}
 					return null;
 				});
@@ -251,6 +259,7 @@ export const deleteWishlist = (qid, uid, qidReal) => {
 				})
 			}
 		})
+
 		wishListRef.child(qid).remove((error) => {
 			if (error) {
 				dispatch({
