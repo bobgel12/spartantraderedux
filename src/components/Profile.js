@@ -114,7 +114,7 @@ class Profile extends Component{
                   />
                   <CardTitle title="Rating" subtitle={this.props.profileUser.rating} />
                   <CardText>
-                  Rating={this.props.auth.Rating}
+                  {this.props.auth.Rating}
                   <RaisedButton style ={styles.buttonStyle} label="1 Star" onClick= {() => {this.props.rate(1,this.props.profileUser.uid)}}/>
                   <RaisedButton style ={styles.buttonStyle} label="2 Star" onClick= {() => {this.props.rate(2,this.props.profileUser.uid)}}/>
                   <RaisedButton style ={styles.buttonStyle} label="3 Star" onClick= {() => {this.props.rate(3,this.props.profileUser.uid)}}/>

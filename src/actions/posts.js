@@ -68,7 +68,7 @@ export const rate = (rateNum, uid) => {
 
 		const rate = {
 			rate: rateNum,
-		  user: state.auth.uid
+		  	user: state.auth.uid
 		}
 
 		rateRef.push(rate, (error) =>{
