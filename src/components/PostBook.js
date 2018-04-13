@@ -24,7 +24,8 @@ class PostBook extends Component {
         price:'',
         major:'',
         description: ''
-      }
+      },
+      require: ''
     };
   }
 
@@ -37,17 +38,21 @@ class PostBook extends Component {
   }
   onSubmit(e){
       e.preventDefault();
-      this.props.submit(this.state.contents);
-      this.setState(
-        {
-         contents: {
-           title: '',
-           price:'',
-           major:'',
-           description: ''
+      if (this.state.contents.title != '' && this.state.contents.price != '' && this.state.contents.major != '' && this.state.contents.description != ''){
+        this.props.submit(this.state.contents);
+        this.setState(
+          {
+           contents: {
+             title: '',
+             price:'',
+             major:'',
+             description: ''
+           }
          }
-       }
-     );
+       );
+      } else{
+        
+      }
   }
 
   render(){
@@ -60,6 +65,7 @@ class PostBook extends Component {
               name="title"
               onChange={this.onChange}
               value={this.state.contents.title}
+              errorText={this.state.rerquire}
             /><br />
             <TextField
               hintText="Major"
@@ -67,6 +73,7 @@ class PostBook extends Component {
               name="major"
               onChange={this.onChange}
               value={this.state.contents.major}
+              errorText={this.state.rerquire}
             /><br />
             <TextField
               hintText="Price"
@@ -74,6 +81,7 @@ class PostBook extends Component {
               name="price"
               onChange={this.onChange}
               value={this.state.contents.price}
+              errorText={this.state.rerquire}
             /><br />
             <TextField
               hintText="Description"
@@ -81,6 +89,7 @@ class PostBook extends Component {
               name="description"
               onChange={this.onChange}
               value={this.state.contents.description}
+              errorText={this.state.rerquire}
             /><br />
           <RaisedButton label="Post book" type="submit" fullWidth={true} primary = {true}/>
           </form>

@@ -43,9 +43,16 @@ class Profile extends Component{
       uid: this.props.match.params.uid
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeTab = this.handleChangeTab.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+
+  handleChangeTab = (value)=>{
+    this.setState({
+      value: value,
+    });
+  };
 
   handleChange(value){
     let star = ['black', 'black', 'black', 'black', 'black'];
@@ -81,56 +88,58 @@ class Profile extends Component{
 
   render() {
       if(this.state.uid === this.props.auth.uid){
-        return (
-        <Tabs
-         value={this.state.value}
-         onChange={this.handleChange}
-         >
-         <Tab value="a" icon={<i className="material-icons md-18">grade</i>}>
-           <div>
-             <Card style={styles.card}>
-               <CardHeader
-                 title={this.props.auth.username}
-                 subtitle="SJSU"
-                 avatar={this.props.auth.photo}
-                 />
-               <CardTitle title="Rating" subtitle="4.5" />
-               <CardText>
-               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-               </CardText>
-             </Card>
-           </div>
-         </Tab>
-         <Tab value="c" icon={<i className="material-icons md-18">redeem</i>}>
-         <div>
-           <Card style={styles.card}>
-             <CardHeader
-               title={this.props.auth.username}
-               subtitle="SJSU"
-               avatar={this.props.auth.photo}
-               />
-               <CardTitle title="Wish List" />
-              {
-                    this.props.wishlist.wishList ?
-                    Object.keys(this.props.wishlist.wishList).map((qid) => {
-                    return (
-                      <div key = {qid}>
-                        <CardText>
-                          {this.props.posts.data[this.props.wishlist.wishList[qid]].title}
-                        </CardText>
-                        <RaisedButton secondary = {true} style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid, this.props.wishlist.wishList[qid]) }} />
-                        <Link to={`/posts/${this.props.wishlist.wishList[qid]}`}><RaisedButton primary = {true} style={styles.buttonStyle} label="View" /></Link>
-                      </div>
-                    );
-                  })
-                  :
-                  null
-              }
-           </Card>
-         </div>
-         </Tab>
-       </Tabs>
-      )
+        if(this.props.profileUser){
+            return (
+            <Tabs
+            value={this.state.value}
+            onChange={this.handleChangeTab}
+            >
+            <Tab value="a" icon={<i className="material-icons md-18">grade</i>}>
+              <div>
+                <Card style={styles.card}>
+                  <CardHeader
+                    title={this.props.auth.username}
+                    subtitle="SJSU"
+                    avatar={this.props.auth.photo}
+                    />
+                  <CardTitle title="Rating" subtitle={this.props.profileUser.rating} />
+                  <CardText>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </CardText>
+                </Card>
+              </div>
+            </Tab>
+            <Tab value="c" icon={<i className="material-icons md-18">redeem</i>}>
+            <div>
+              <Card style={styles.card}>
+                <CardHeader
+                  title={this.props.auth.username}
+                  subtitle="SJSU"
+                  avatar={this.props.auth.photo}
+                  />
+                  <CardTitle title="Wish List" />
+                  {
+                        this.props.wishlist.wishList ?
+                        Object.keys(this.props.wishlist.wishList).map((qid) => {
+                        return (
+                          <div key = {qid}>
+                            <CardText>
+                              {this.props.posts.data[this.props.wishlist.wishList[qid]].title}
+                            </CardText>
+                            <RaisedButton secondary = {true} style={styles.buttonStyle} label="Remove" onClick={() => { this.props.deleteWishlist(qid, this.props.auth.uid, this.props.wishlist.wishList[qid]) }} />
+                            <Link to={`/posts/${this.props.wishlist.wishList[qid]}`}><RaisedButton primary = {true} style={styles.buttonStyle} label="View" /></Link>
+                          </div>
+                        );
+                      })
+                      :
+                      null
+                  }
+              </Card>
+            </div>
+            </Tab>
+          </Tabs>
+          )
+        } else return null;
       } else {
         return (
             this.props.profileUser ?
