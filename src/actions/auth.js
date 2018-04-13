@@ -11,14 +11,10 @@ export const getUser = (uid) => {
 		userRef.on('value', (snapshot) => {
 			console.log(snapshot.val());
 			if (snapshot.val()){
-				Object.keys(snapshot.val()).map((value) => {
-					console.log(snapshot.val()[value]);
-					dispatch({
-						type: C.PROFILE_USER,
-						data: snapshot.val()[value]
-					})
-					return null;
-				});
+				dispatch({
+					type: C.PROFILE_USER,
+					data: snapshot.val()
+				})
 			} 
 			return null;
 		});

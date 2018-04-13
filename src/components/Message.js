@@ -165,9 +165,9 @@ class Message extends Component {
                                             Object.keys(this.props.message.data).map((qid) => {
                                                 if(this.props.message.data[qid].senderUid === this.props.auth.uid){
                                                     return(
-                                                        <div>
+                                                        <div key={qid}>
                                                             <Chip
-                                                                key={qid}
+                                                             
                                                                 style={styles.chipright}
                                                                 >
                                                                 <Avatar src={this.props.message.data[qid].sendUserPhoto} />

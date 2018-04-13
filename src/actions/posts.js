@@ -59,17 +59,20 @@ export const listenToWishList = (uid) => {
 	};
 };
 
-export const rate = (rateNum, uid) => {
+export const rate = (rateNum, rateMes, uid) => {
 	return (dispatch, getState) => {
 		dispatch({ type: C.POST_AWAIT_CREATION_RESPONSE });
 		const state = getState();
 		const rateRef = database.ref('Users/' +uid+ "/rateDetails/");
-		const rateRef2 = database.ref('Users/' +uid+ "/averageRate");
+		const rateRef2 = database.ref('Users/' +uid+ "/data");
 
 		const rate = {
 			rate: rateNum,
-		  user: state.auth.uid
+			user: state.auth.uid,
+			message: rateMes
 		}
+
+		console.log(rate);
 
 		rateRef.push(rate, (error) =>{
 			if (error) {
@@ -97,13 +100,12 @@ export const rate = (rateNum, uid) => {
 				count++;
 			});
 			average = (sum/count).toFixed(1);
-			console.log(average);
-
+			console.log(average);	
 			rateRef2.update({
-				"averageRate": average
+				"rating": average
 			});
-
 		});
+
 	};
 }
 

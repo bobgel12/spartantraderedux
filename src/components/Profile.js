@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {Card, CardHeader, CardTitle, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import ActionGrade from 'material-ui/svg-icons/action/grade';
 
 import { connect } from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
@@ -33,17 +36,43 @@ class Profile extends Component{
   constructor(props){
     super(props)
     this.state = {
+      star : ['black','black','black','black','black'],
       value: 'a',
+      rateMessage:"",
+      rateValue: 5,
       uid: this.props.match.params.uid
     };
     this.handleChange = this.handleChange.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  handleChange = (value) => {
+  handleChange(value){
+    let star = ['black', 'black', 'black', 'black', 'black'];
+    for(let i = 0; i < value; i++){
+      star[i] = 'rgb(233,185,85)';
+    }
     this.setState({
-      value: value,
+      rateValue : value,
+      star: star
     });
   };
+
+  onChange(e) {
+    this.setState(Object.assign({}, this.state, {
+      rateMessage : e.target.value
+    }));
+  }
+
+  onSubmit(e){
+    e.preventDefault();
+    if (this.state.rateMessage && this.state.rateValue) {
+      this.props.rate(this.state.rateValue, this.state.rateMessage, this.props.profileUser.uid);
+      this.setState({
+        rateMessage : ""
+      });
+    }
+  }
 
   componentWillMount(){
     this.props.getUser(this.props.match.params.uid);
@@ -114,13 +143,35 @@ class Profile extends Component{
                   />
                   <CardTitle title="Rating" subtitle={this.props.profileUser.rating} />
                   <CardText>
-                  Rating={this.props.auth.Rating}
-                  <RaisedButton style ={styles.buttonStyle} label="1 Star" onClick= {() => {this.props.rate(1,this.props.profileUser.uid)}}/>
-                  <RaisedButton style ={styles.buttonStyle} label="2 Star" onClick= {() => {this.props.rate(2,this.props.profileUser.uid)}}/>
-                  <RaisedButton style ={styles.buttonStyle} label="3 Star" onClick= {() => {this.props.rate(3,this.props.profileUser.uid)}}/>
-                  <RaisedButton style ={styles.buttonStyle} label="4 Star" onClick= {() => {this.props.rate(4,this.props.profileUser.uid)}}/>
-                  <RaisedButton style ={styles.buttonStyle} label="5 Star" onClick= {() => {this.props.rate(5,this.props.profileUser.uid)}}/>
-              </CardText>
+                    <div>
+                      <IconButton iconStyle={{color: this.state.star[0]}} tooltip="1 Star" touch={true} tooltipPosition="bottom-center" onClick= {() => {this.handleChange(1)}}>
+                        <ActionGrade />
+                      </IconButton>
+                      <IconButton iconStyle={{color: this.state.star[1]}} tooltip="2 Star" touch={true} tooltipPosition="bottom-center" onClick= {() => {this.handleChange(2)}}>
+                        <ActionGrade />
+                      </IconButton>
+                      <IconButton iconStyle={{color: this.state.star[2]}} tooltip="3 Star" touch={true} tooltipPosition="bottom-center" onClick= {() => {this.handleChange(3)}}>
+                        <ActionGrade />
+                      </IconButton>
+                      <IconButton iconStyle={{color: this.state.star[3]}} tooltip="4 Star" touch={true} tooltipPosition="bottom-center" onClick= {() => {this.handleChange(4)}}>
+                        <ActionGrade />
+                      </IconButton>
+                      <IconButton iconStyle={{color: this.state.star[4]}} tooltip="5 Star" touch={true} tooltipPosition="bottom-center" onClick= {() => {this.handleChange(5)}}>
+                        <ActionGrade />
+                      </IconButton>
+                    </div>
+                  <form onSubmit={this.onSubmit}>
+                      <TextField
+                          style={{width: "50%"}}
+                          fullWidth={true}
+                          floatingLabelText="How would you rate this person?"
+                          name="title"
+                          onChange={this.onChange}
+                          value={this.state.rateMessage}
+                      />
+                      <RaisedButton label="Submit" type="submit" primary={true}  style={{width: "50%"}} style={styles.buttonStyle} />
+                  </form>
+                  </CardText>
                 </Card>
               </div>
               :null

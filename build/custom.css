@@ -1,6 +1,12 @@
 .container1{
     height: 100vh;
 }
+<<<<<<< HEAD
+.mesItem{
+    margin: 2px;
+    background-color: lightblue;
+    border-radius: 10%;
+=======
 
 .loginPic{
     height: 500px;
@@ -19,4 +25,5 @@
 }
 .red{
     color: lightcoral;
+>>>>>>> mesOnItemPage
 }

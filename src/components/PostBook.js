@@ -82,7 +82,7 @@ class PostBook extends Component {
               onChange={this.onChange}
               value={this.state.contents.description}
             /><br />
-          <RaisedButton label="Post book" fullWidth={true} onClick={this.onSubmit} primary = {true}/>
+          <RaisedButton label="Post book" type="submit" fullWidth={true} primary = {true}/>
           </form>
        </Card>
     )

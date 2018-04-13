@@ -21,8 +21,8 @@ class Auth extends Component {
           }
           iconElementRight={
                   <div>
+                    <Link to='/message/'><IconButton >icon={<i className="material-icons">forum</i>}</IconButton></Link>
                     <Link to={`/profile/${props.auth.uid}`}><Avatar src={props.auth.photo}/></Link>
-                    <Link to='/message/'><IconButton >icon={<i className="material-icons">chat</i>}</IconButton></Link>
                     <FlatButton onClick={props.logoutUser} label="Log Out"/>
                   </div>
           }
