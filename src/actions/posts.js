@@ -158,7 +158,7 @@ export const submitPost = (contents) => {
 			} else {
 				userRef.on('value', (snapshot) =>{
 					if(!snapshot.val()){
-						userRef.update(user, (error)=>{
+						userRef.set(user, (error)=>{
 								if(error){
 									dispatch({
 										type: C.FEEDBACK_DISPLAY_ERROR,
