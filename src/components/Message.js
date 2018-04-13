@@ -191,17 +191,22 @@ class Message extends Component {
                                             : null
                                     }
                                 </List>
-                                <form onSubmit={this.onSubmit}>
-                                    <TextField
-                                        style={{width: "90%"}}
-                                        fullWidth={true}
-                                        floatingLabelText="Message"
-                                        name="title"
-                                        onChange={this.onChange}
-                                        value={this.state.content}
-                                    />
-                                    <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style={styles.buttonStyle} />
-                                </form>
+                                {
+                                    this.state.uid ?
+                                    <form onSubmit={this.onSubmit}>
+                                        <TextField
+                                            style={{width: "90%"}}
+                                            fullWidth={true}
+                                            floatingLabelText="Message"
+                                            name="title"
+                                            onChange={this.onChange}
+                                            value={this.state.content}
+                                        />
+                                        <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style={styles.buttonStyle} />
+                                    </form>
+                                    :
+                                    null
+                                }
                             </div>
                         </div>
                     </Card>
