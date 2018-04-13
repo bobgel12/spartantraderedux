@@ -59,6 +59,53 @@ export const listenToWishList = (uid) => {
 	};
 };
 
+export const rate = (rateNum, uid) => {
+	return (dispatch, getState) => {
+		dispatch({ type: C.POST_AWAIT_CREATION_RESPONSE });
+		const state = getState();
+		const rateRef = database.ref('Users/' +uid+ "/rateDetails/");
+		const rateRef2 = database.ref('Users/' +uid+ "/averageRate");
+
+		const rate = {
+			rate: rateNum,
+		  user: state.auth.uid
+		}
+
+		rateRef.push(rate, (error) =>{
+			if (error) {
+				dispatch({
+					type: C.FEEDBACK_DISPLAY_ERROR,
+					error: `Rate failed! ${error}`
+				});
+			} else{
+				dispatch({
+					type: C.FEEDBACK_DISPLAY_MESSAGE,
+					message: 'Rate Done!'
+
+				});
+			}
+		});
+
+		var average = 0;
+
+		rateRef.once("value", (snapshot)=>{
+			let sum = 0;
+			let count = 0;
+			Object.keys(snapshot.val()).map((rateObject)=>{
+				console.log(snapshot.val()[rateObject]);
+				sum += snapshot.val()[rateObject].rate;
+				count++;
+			});
+			average = (sum/count).toFixed(1);
+			console.log(average);
+
+			rateRef2.update({
+				"averageRate": average
+			});
+
+		});
+	};
+}
 
 
 export const listenToPosts = () => {
@@ -119,7 +166,7 @@ export const submitPost = (contents) => {
 								});
 							}
 						});
-					} 
+					}
 					return null;
 				});
 				dispatch({

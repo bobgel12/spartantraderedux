@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { connect } from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import { deletePost, listenToWishList, deleteWishlist} from '../actions/posts';
+import { deletePost, listenToWishList, deleteWishlist, rate} from '../actions/posts';
 import { getUser } from '../actions/auth';
 import Message from './Message';
 import { Link } from 'react-router-dom';
@@ -38,18 +38,18 @@ class Profile extends Component{
     };
     this.handleChange = this.handleChange.bind(this);
   }
-  
+
   handleChange = (value) => {
     this.setState({
       value: value,
     });
   };
-  
+
   componentWillMount(){
     this.props.getUser(this.props.match.params.uid);
     this.props.listenToWishList(this.props.auth.uid);
   }
-  
+
   render() {
       if(this.state.uid === this.props.auth.uid){
         return (
@@ -94,7 +94,7 @@ class Profile extends Component{
                       </div>
                     );
                   })
-                  : 
+                  :
                   null
               }
            </Card>
@@ -103,7 +103,6 @@ class Profile extends Component{
        </Tabs>
       )
       } else {
-        console.log("No auth")
         return (
             this.props.profileUser ?
               <div>
@@ -115,7 +114,12 @@ class Profile extends Component{
                   />
                   <CardTitle title="Rating" subtitle={this.props.profileUser.rating} />
                   <CardText>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Rating={this.props.auth.Rating}
+                  <RaisedButton style ={styles.buttonStyle} label="1 Star" onClick= {() => {this.props.rate(1,this.props.profileUser.uid)}}/>
+                  <RaisedButton style ={styles.buttonStyle} label="2 Star" onClick= {() => {this.props.rate(2,this.props.profileUser.uid)}}/>
+                  <RaisedButton style ={styles.buttonStyle} label="3 Star" onClick= {() => {this.props.rate(3,this.props.profileUser.uid)}}/>
+                  <RaisedButton style ={styles.buttonStyle} label="4 Star" onClick= {() => {this.props.rate(4,this.props.profileUser.uid)}}/>
+                  <RaisedButton style ={styles.buttonStyle} label="5 Star" onClick= {() => {this.props.rate(5,this.props.profileUser.uid)}}/>
               </CardText>
                 </Card>
               </div>
@@ -136,7 +140,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  deletePost, listenToWishList, deleteWishlist, getUser
+  deletePost, listenToWishList, deleteWishlist, getUser, rate
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
