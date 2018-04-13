@@ -51,7 +51,9 @@ class PostBook extends Component {
          }
        );
       } else{
-        
+        this.setState({
+            require: 'Please enter all fields'
+        })
       }
   }
 
@@ -61,37 +63,37 @@ class PostBook extends Component {
           <form onSubmit={this.onSubmit}>
             <TextField
               hintText="Enter Book Title"
-              floatingLabelText="Book Title"
+              // floatingLabelText="Book Title"
               name="title"
               onChange={this.onChange}
               value={this.state.contents.title}
-              errorText={this.state.rerquire}
-            /><br />
+              errorText={this.state.require}
+              />
             <TextField
               hintText="Major"
-              floatingLabelText="For what Major"
+              // floatingLabelText="For what Major"
               name="major"
               onChange={this.onChange}
               value={this.state.contents.major}
-              errorText={this.state.rerquire}
-            /><br />
+              errorText={this.state.require}
+              />
             <TextField
               hintText="Price"
-              floatingLabelText="How much do you want to sell for?"
+              // floatingLabelText="How much do you want to sell for?"
               name="price"
               onChange={this.onChange}
               value={this.state.contents.price}
-              errorText={this.state.rerquire}
-            /><br />
+              errorText={this.state.require}
+              />
             <TextField
               hintText="Description"
-              floatingLabelText="Description"
+              // floatingLabelText="Description"
               name="description"
               onChange={this.onChange}
               value={this.state.contents.description}
-              errorText={this.state.rerquire}
-            /><br />
-          <RaisedButton label="Post book" type="submit" fullWidth={true} primary = {true}/>
+              errorText={this.state.require}
+              />
+          <RaisedButton style = {{marginBottom: '0', width: '60%'}} label="Post book" type="submit" primary = {true}/>
           </form>
        </Card>
     )
