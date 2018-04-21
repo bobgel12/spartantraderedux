@@ -2,6 +2,8 @@ import React, {Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Card from 'material-ui/Card';
+import Snackbar from 'material-ui/Snackbar';
+
 
 const style = {
   height: 300,
@@ -18,6 +20,7 @@ class PostBook extends Component {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
     this.state = {
       contents: {
         title: '',
@@ -25,7 +28,8 @@ class PostBook extends Component {
         major:'',
         description: ''
       },
-      require: ''
+      require: '',
+      submited: false
     };
   }
 
@@ -47,7 +51,9 @@ class PostBook extends Component {
              price:'',
              major:'',
              description: ''
-           }
+           },
+           submited: true,
+           require: ""
          }
        );
       } else{
@@ -57,9 +63,22 @@ class PostBook extends Component {
       }
   }
 
+  handleRequestClose(){
+      this.setState(Object.assign({}, this.state, {
+          submited: false
+      }));
+  }
+
   render(){
     return(
       <Card style={style}>
+          <Snackbar
+            open={this.state.submited}
+            message="Book posted!"
+            autoHideDuration={4000}
+            onRequestClose={this.handleRequestClose}
+            style = {{color: 'green'}}
+          />
           <form onSubmit={this.onSubmit}>
             <TextField
               hintText="Enter Book Title"

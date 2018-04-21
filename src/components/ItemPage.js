@@ -55,7 +55,6 @@ class ItemPage extends Component {
             flag: false,
             submited: false
         }
-        // this._notificationSystem =  null;
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.addwishlist = this.addwishlist.bind(this);
@@ -73,11 +72,6 @@ class ItemPage extends Component {
         e.preventDefault();
         if(this.state.content != ""){
             this.props.sendMessage(this.state.content, this.props.match.params.id, this.state.item.uid);
-            // this._notificationSystem.addNotification({
-            //     message: 'Message Sent!',
-            //     level: 'success',
-            //     position: 'tc'
-            // });
             this.setState(
                 Object.assign({}, this.state, {
                     content: "",
@@ -107,10 +101,6 @@ class ItemPage extends Component {
             this.props.listenToWishList(this.props.auth.uid);
         }
     }
-
-    // componentDidMount(){
-    //     this._notificationSystem = this.refs.notificationSystem;
-    // }
 
     render() {
         if (this.state.item) {
