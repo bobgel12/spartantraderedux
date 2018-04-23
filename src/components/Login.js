@@ -41,7 +41,19 @@ class Login extends Component {
                                 />
                             </Link>
                         </div>
-                        <div><RaisedButton primary = {true} label="Login"/><RaisedButton style={{marginLeft: '20px', marginTop: '20px'}}primary = {true} label="Register"/></div>
+                        <div style={{marginTop: '30px'}}>
+                            <Link to={'/register'}>
+                                <RaisedButton
+                                target="_blank"
+                                label = "Register with Email"
+                                secondary={true}
+                                
+
+                                />
+                            </Link>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
