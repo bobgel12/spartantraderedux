@@ -47,9 +47,8 @@ class Login extends Component {
                                 target="_blank"
                                 label = "Register with Email"
                                 secondary={true}
-                                
-
-                                />
+                              icon={<i class="fab fa-edge"></i>}
+                            />
                             </Link>
                         </div>
 
