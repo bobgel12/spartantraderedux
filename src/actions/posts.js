@@ -71,9 +71,6 @@ export const rate = (rateNum, rateMes, uid) => {
 			user: state.auth.uid,
 			message: rateMes
 		}
-
-		console.log(rate);
-
 		rateRef.push(rate, (error) =>{
 			if (error) {
 				dispatch({
@@ -100,7 +97,6 @@ export const rate = (rateNum, rateMes, uid) => {
 				count++;
 			});
 			average = (sum/count).toFixed(1);
-			console.log(average);	
 			rateRef2.update({
 				"rating": average
 			});
