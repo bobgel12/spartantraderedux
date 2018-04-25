@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loginWithGoogle, logoutUser } from '../actions/auth';
+import { search } from '../actions/filter';
 import C from '../constants';
 
 import IconMenu from 'material-ui/IconMenu';
@@ -20,21 +21,41 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 class Auth extends Component {
   constructor(props) {
     super(props);
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.state = {
+      searchValue: ""
+    }
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    this.props.search(this.state.searchValue);
+  }
+
+  onChange(e) {
+    this.setState(
+      Object.assign({}, this.state, {
+        searchValue: e.target.value
+      })
+    )
   }
 
   render() {
     let auth  = this.props.auth;
-    console.log(auth);
     return (
       <AppBar
         iconElementLeft={
           <div>
             <Link to='/'><IconButton >icon={<i className="material-icons md-18">code</i>}</IconButton></Link>
-            <span className="d-none d-sm-inline-flex" style={{marginRight: 10}}>SpartanTrade  </span>
-            <TextField
-              hintText="Spartan Trade"
-              name="search"
-            />
+            <span className="d-none d-sm-inline-flex" style={{marginRight: 20}}>SpartanTrade  </span>
+            <form onSubmit={this.onSubmit} style={{display:"inline"}}>
+              <TextField
+                hintText="Spartan Trade"
+                name="search"
+                onChange={this.onChange}
+              />
+            </form>
           </div>
         }
         iconElementRight={
@@ -79,6 +100,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   loginWithGoogle,
   logoutUser,
+  search
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

@@ -3,7 +3,8 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Card from 'material-ui/Card';
 import Snackbar from 'material-ui/Snackbar';
-
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 const style = {
   height: 300,
@@ -21,11 +22,12 @@ class PostBook extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
+    this.handleChangeMajor = this.handleChangeMajor.bind(this);
     this.state = {
       contents: {
         title: '',
         price:'',
-        major:'',
+        major:'Engineering',
         description: ''
       },
       require: '',
@@ -37,6 +39,14 @@ class PostBook extends Component {
     this.setState(
       Object.assign(this.state.contents, {
         [e.target.name]: e.target.value
+      })
+    )
+  }
+
+  handleChangeMajor(event, index, value){
+    this.setState(
+      Object.assign(this.state.contents, {
+        major: value
       })
     )
   }
@@ -89,14 +99,6 @@ class PostBook extends Component {
               errorText={this.state.require}
               />
             <TextField
-              hintText="Major"
-              // floatingLabelText="For what Major"
-              name="major"
-              onChange={this.onChange}
-              value={this.state.contents.major}
-              errorText={this.state.require}
-              />
-            <TextField
               hintText="Price"
               // floatingLabelText="How much do you want to sell for?"
               name="price"
@@ -112,6 +114,14 @@ class PostBook extends Component {
               value={this.state.contents.description}
               errorText={this.state.require}
               />
+            <DropDownMenu value={this.state.contents.major} onChange={this.handleChangeMajor} style={{width: 300}}
+              autoWidth={false}>
+              <MenuItem value={"Engineering"} primaryText="Engineering" />
+              <MenuItem value={"Business"} primaryText="Business" />
+              <MenuItem value={"Computer Science"} primaryText="Computer Science" />
+              <MenuItem value={"Socialology"} primaryText="Socialology" />
+              <MenuItem value={"Other"} primaryText="Other" />
+            </DropDownMenu>
           <RaisedButton style = {{marginBottom: '0', width: '60%'}} label="Post book" type="submit" primary = {true}/>
           </form>
        </Card>

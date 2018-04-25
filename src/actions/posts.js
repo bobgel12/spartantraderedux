@@ -107,19 +107,38 @@ export const rate = (rateNum, rateMes, uid) => {
 
 
 export const listenToPosts = () => {
-	return (dispatch) => {
+	return (dispatch, getState) => {
 		postsRef.off();
-		postsRef.on('value', (snapshot) => {
-			dispatch({
-				type: C.POSTS_RECEIVE_DATA,
-				data: snapshot.val()
+		const state = getState();
+		if(state.filter.searchValue == ''){
+			postsRef.on('value', (snapshot) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA,
+					data: snapshot.val()
+				});
+			}, (error) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA_ERROR,
+					message: error.message
+				});
 			});
-		}, (error) => {
-			dispatch({
-				type: C.POSTS_RECEIVE_DATA_ERROR,
-				message: error.message
+		} else{
+			// set the value to lower case when posting must set to lower case as well
+			// let searchValue = state.filter.searchValue.toLowerCase();
+			let searchValue = state.filter.searchValue;
+			console.log("We have to search: "+ searchValue);
+			postsRef.orderByChild('title').startAt(searchValue).endAt(searchValue+"uf8ff").once("value", (snapshot) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA,
+					data: snapshot.val()
+				});
+			}, (error)=>{
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA_ERROR,
+					message: error.message
+				});		
 			});
-		});
+		}
 	};
 };
 
