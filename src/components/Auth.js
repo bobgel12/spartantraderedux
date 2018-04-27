@@ -3,6 +3,15 @@ import FlatButton from 'material-ui/FlatButton';
 import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import Paper from 'material-ui/Paper';
+import Menu from 'material-ui/Menu';
+
+import Divider from 'material-ui/Divider';
+import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
+
+
+
 
 import { Link } from 'react-router-dom';
 
@@ -19,12 +28,14 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 
 class Auth extends Component {
+
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
-      searchValue: ""
+      searchValue: "",
+      filter: "dfd"
     }
   }
 
@@ -41,6 +52,15 @@ class Auth extends Component {
     )
   }
 
+  handleChangeFilter(event, index, value){
+    this.setState(
+      {
+        filter: value
+      })
+
+  };
+
+
   render() {
     let auth  = this.props.auth;
     return (
@@ -56,6 +76,46 @@ class Auth extends Component {
                 onChange={this.onChange}
               />
             </form>
+            <DropDownMenu value={this.state.filter} onChange={this.handleChangeFilter} onChange={this.handleChange}>
+
+            <Paper >
+      <Menu desktop={true} width={320}>
+        <MenuItem primaryText="Date" insertChildren={true}
+        rightIcon={<ArrowDropRight />}
+        menuItems={[
+          <MenuItem primaryText="Oldest to Newest" />,
+          <MenuItem primaryText="Newest to Oldest" />
+        ]}
+        />
+        <MenuItem primaryText="ISBN"  />
+        <MenuItem primaryText="Major" insertChildren={true}
+        rightIcon={<ArrowDropRight />}
+        menuItems={[
+          <MenuItem primaryText="Engineering" insertChildren={true} />,
+          <MenuItem primaryText="Business" insertChildren={true} />,
+          <MenuItem primaryText="Biology" insertChildren={true} />,
+          <MenuItem primaryText="Sociology" insertChildren={true} />,
+          <MenuItem primaryText="English" insertChildren={true} />,
+          <MenuItem primaryText="Accounting" insertChildren={true} />,
+          <MenuItem primaryText="Other" insertChildren={true} />
+
+
+
+        ]}
+        />
+        <MenuItem primaryText="Price" insertChildren={true}
+          rightIcon={<ArrowDropRight />}
+          menuItems={[
+            <MenuItem primaryText="Low to High" insertChildren={true} />,
+            <MenuItem primaryText="High to Low" insertChildren={true} />
+
+          ]}
+        />
+
+
+      </Menu>
+    </Paper>
+    </DropDownMenu>
           </div>
         }
         iconElementRight={
@@ -72,7 +132,7 @@ class Auth extends Component {
                   iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                   anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
                   targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                > 
+                >
                   <MenuItem primaryText="New Post" onClick={this.props.logoutUser} />
                   <Link to='/message/' style={{textDecoration: "none"}}><MenuItem primaryText="Message" /></Link>
                   <MenuItem primaryText="Sign out" onClick={this.props.logoutUser} />
