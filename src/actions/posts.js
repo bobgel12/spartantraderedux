@@ -59,22 +59,85 @@ export const listenToWishList = (uid) => {
 	};
 };
 
+export const rate = (rateNum, rateMes, uid) => {
+	return (dispatch, getState) => {
+		dispatch({ type: C.POST_AWAIT_CREATION_RESPONSE });
+		const state = getState();
+		const rateRef = database.ref('Users/' +uid+ "/rateDetails/");
+		const rateRef2 = database.ref('Users/' +uid+ "/data");
+
+		const rate = {
+			rate: rateNum,
+			user: state.auth.uid,
+			message: rateMes
+		}
+		rateRef.push(rate, (error) =>{
+			if (error) {
+				dispatch({
+					type: C.FEEDBACK_DISPLAY_ERROR,
+					error: `Rate failed! ${error}`
+				});
+			} else{
+				dispatch({
+					type: C.FEEDBACK_DISPLAY_MESSAGE,
+					message: 'Rate Done!'
+
+				});
+			}
+		});
+
+		var average = 0;
+
+		rateRef.once("value", (snapshot)=>{
+			let sum = 0;
+			let count = 0;
+			Object.keys(snapshot.val()).map((rateObject)=>{
+				console.log(snapshot.val()[rateObject]);
+				sum += snapshot.val()[rateObject].rate;
+				count++;
+			});
+			average = (sum/count).toFixed(1);
+			rateRef2.update({
+				"rating": average
+			});
+		});
+
+	};
+}
 
 
 export const listenToPosts = () => {
-	return (dispatch) => {
+	return (dispatch, getState) => {
 		postsRef.off();
-		postsRef.on('value', (snapshot) => {
-			dispatch({
-				type: C.POSTS_RECEIVE_DATA,
-				data: snapshot.val()
+		const state = getState();
+		if(state.filter.searchValue == ''){
+			postsRef.on('value', (snapshot) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA,
+					data: snapshot.val()
+				});
+			}, (error) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA_ERROR,
+					message: error.message
+				});
 			});
-		}, (error) => {
-			dispatch({
-				type: C.POSTS_RECEIVE_DATA_ERROR,
-				message: error.message
+		} else{
+			// set the value to lower case when posting must set to lower case as well
+			// let searchValue = state.filter.searchValue.toLowerCase();
+			let searchValue = state.filter.searchValue;
+			postsRef.orderByChild('title').startAt(searchValue).endAt(searchValue+"uf8ff").once("value", (snapshot) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA,
+					data: snapshot.val()
+				});
+			}, (error)=>{
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA_ERROR,
+					message: error.message
+				});		
 			});
-		});
+		}
 	};
 };
 
@@ -111,7 +174,7 @@ export const submitPost = (contents) => {
 			} else {
 				userRef.on('value', (snapshot) =>{
 					if(!snapshot.val()){
-						userRef.push(user, (error) =>{
+						userRef.set(user, (error) =>{
 							if(error){
 								dispatch({
 									type: C.FEEDBACK_DISPLAY_ERROR,
@@ -119,7 +182,7 @@ export const submitPost = (contents) => {
 								});
 							}
 						});
-					} 
+					}
 					return null;
 				});
 				dispatch({

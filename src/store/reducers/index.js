@@ -4,13 +4,15 @@ import auth from './auth';
 import feedback from './feedback';
 import message from './message';
 import wishlist from './wishlist';
+import filter from './filter';
 
 const rootReducer = combineReducers({
 	posts,
 	auth,
 	feedback,
 	message,
-	wishlist
+	wishlist,
+	filter
 });
 
 export default rootReducer;

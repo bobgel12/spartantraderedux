@@ -1,7 +1,11 @@
 .container1{
     height: 100vh;
 }
-
+.mesItem{
+    margin: 2px;
+    background-color: lightblue;
+    border-radius: 10%;
+}
 .loginPic{
     height: 500px;
     width: 100%;
@@ -19,4 +23,7 @@
 }
 .red{
     color: lightcoral;
+}
+.link{
+    color: magenta;
 }
