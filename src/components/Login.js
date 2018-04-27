@@ -18,7 +18,7 @@ class Login extends Component {
                     <div className="loginPic col-sm-12 col-md-4">
                     </div>
                     <div className="loginBottom col-sm-12 col-md-6">
-                        <h2>Spartan Trade</h2>
+                        <h2>Welcome to Spartan Trade</h2>
                         <div style={{marginTop: '30px'}}>
                             <Link to={`/`}>
                                 <RaisedButton
@@ -46,7 +46,7 @@ class Login extends Component {
                                 <RaisedButton primary = {true} label="Login with email"/>
                             </Link>
                             <Link to={`/register`}>
-                                <RaisedButton style={{marginLeft: '20px', marginTop: '20px'}}primary = {true} label="Register"/>
+                                <RaisedButton style={{marginLeft: '20px', marginTop: '20px'}}primary = {true} label="Register with Email"/>
                             </Link>
                         </div>
                     </div>

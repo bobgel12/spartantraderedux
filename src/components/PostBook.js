@@ -26,6 +26,7 @@ class PostBook extends Component {
     this.state = {
       contents: {
         title: '',
+        isbn: '',
         price:'',
         major:'Engineering',
         description: ''
@@ -58,6 +59,7 @@ class PostBook extends Component {
           {
            contents: {
              title: '',
+             isbn: '',
              price:'',
              major:'',
              description: ''
@@ -98,6 +100,14 @@ class PostBook extends Component {
               value={this.state.contents.title}
               errorText={this.state.require}
               />
+              <TextField
+                hintText="ISBN"
+                // floatingLabelText="How much do you want to sell for?"
+                name="isbn"
+                onChange={this.onChange}
+                value={this.state.contents.isbn}
+                errorText={this.state.require}
+                />
             <TextField
               hintText="Price"
               // floatingLabelText="How much do you want to sell for?"
