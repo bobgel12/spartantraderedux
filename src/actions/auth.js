@@ -12,9 +12,15 @@ export const getUser = (uid) => {
 			console.log(snapshot.val());
 			if (snapshot.val()){
 				dispatch({
+<<<<<<< HEAD
 						type: C.PROFILE_USER,
 						data: snapshot.val()
 					})
+=======
+					type: C.PROFILE_USER,
+					data: snapshot.val()
+				})
+>>>>>>> master
 			} 
 			return null;
 		});

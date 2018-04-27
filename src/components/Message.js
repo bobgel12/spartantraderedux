@@ -136,14 +136,14 @@ class Message extends Component {
                                             Object.keys(this.props.message.messageList).map((qid) => {
                                                 return (
                                                     <div key={qid}>
-                                                        <div className="hidden-md-up">
+                                                        <div className="d-block d-sm-none">
                                                             <ListItem
                                                                 style={{margin: "10px"}}
                                                                 leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
                                                                 onClick={() => { this.updateCurrentConversation(this.props.message.messageList[qid].itemId, this.props.message.messageList[qid].uid) }}
                                                             />
                                                         </div>
-                                                        <div className="hidden-sm-down">
+                                                        <div className="d-none d-sm-block">
                                                             <ListItem
                                                                 key={qid}
                                                                 leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
@@ -165,9 +165,8 @@ class Message extends Component {
                                             Object.keys(this.props.message.data).map((qid) => {
                                                 if(this.props.message.data[qid].senderUid === this.props.auth.uid){
                                                     return(
-                                                        <div>
+                                                        <div key={qid}>
                                                             <Chip
-                                                                key={qid}
                                                                 style={styles.chipright}
                                                                 >
                                                                 <Avatar src={this.props.message.data[qid].sendUserPhoto} />
@@ -191,17 +190,22 @@ class Message extends Component {
                                             : null
                                     }
                                 </List>
-                                <form onSubmit={this.onSubmit}>
-                                    <TextField
-                                        style={{width: "90%"}}
-                                        fullWidth={true}
-                                        floatingLabelText="Message"
-                                        name="title"
-                                        onChange={this.onChange}
-                                        value={this.state.content}
-                                    />
-                                    <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style={styles.buttonStyle} />
-                                </form>
+                                {
+                                    this.state.uid ?
+                                    <form onSubmit={this.onSubmit}>
+                                        <TextField
+                                            style={{width: "90%"}}
+                                            fullWidth={true}
+                                            floatingLabelText="Message"
+                                            name="title"
+                                            onChange={this.onChange}
+                                            value={this.state.content}
+                                        />
+                                        <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style={styles.buttonStyle} />
+                                    </form>
+                                    :
+                                    null
+                                }
                             </div>
                         </div>
                     </Card>

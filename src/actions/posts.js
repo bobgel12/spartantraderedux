@@ -59,7 +59,7 @@ export const listenToWishList = (uid) => {
 	};
 };
 
-export const rate = (rateNum, uid) => {
+export const rate = (rateNum, rateMes, uid) => {
 	return (dispatch, getState) => {
 		dispatch({ type: C.POST_AWAIT_CREATION_RESPONSE });
 		const state = getState();
@@ -68,9 +68,13 @@ export const rate = (rateNum, uid) => {
 
 		const rate = {
 			rate: rateNum,
+<<<<<<< HEAD
 		  	user: state.auth.uid
+=======
+			user: state.auth.uid,
+			message: rateMes
+>>>>>>> master
 		}
-
 		rateRef.push(rate, (error) =>{
 			if (error) {
 				dispatch({
@@ -97,31 +101,47 @@ export const rate = (rateNum, uid) => {
 				count++;
 			});
 			average = (sum/count).toFixed(1);
-			console.log(average);
-
 			rateRef2.update({
 				"rating": average
 			});
-
 		});
+
 	};
 }
 
 
 export const listenToPosts = () => {
-	return (dispatch) => {
+	return (dispatch, getState) => {
 		postsRef.off();
-		postsRef.on('value', (snapshot) => {
-			dispatch({
-				type: C.POSTS_RECEIVE_DATA,
-				data: snapshot.val()
+		const state = getState();
+		if(state.filter.searchValue == ''){
+			postsRef.on('value', (snapshot) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA,
+					data: snapshot.val()
+				});
+			}, (error) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA_ERROR,
+					message: error.message
+				});
 			});
-		}, (error) => {
-			dispatch({
-				type: C.POSTS_RECEIVE_DATA_ERROR,
-				message: error.message
+		} else{
+			// set the value to lower case when posting must set to lower case as well
+			// let searchValue = state.filter.searchValue.toLowerCase();
+			let searchValue = state.filter.searchValue;
+			postsRef.orderByChild('title').startAt(searchValue).endAt(searchValue+"uf8ff").once("value", (snapshot) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA,
+					data: snapshot.val()
+				});
+			}, (error)=>{
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA_ERROR,
+					message: error.message
+				});		
 			});
-		});
+		}
 	};
 };
 
@@ -158,6 +178,7 @@ export const submitPost = (contents) => {
 			} else {
 				userRef.on('value', (snapshot) =>{
 					if(!snapshot.val()){
+<<<<<<< HEAD
 						userRef.set(user, (error)=>{
 								if(error){
 									dispatch({
@@ -165,6 +186,15 @@ export const submitPost = (contents) => {
 										error: `Save User Error! ${error}`
 									});
 								}
+=======
+						userRef.set(user, (error) =>{
+							if(error){
+								dispatch({
+									type: C.FEEDBACK_DISPLAY_ERROR,
+									error: `Save User Error! ${error}`
+								});
+							}
+>>>>>>> master
 						});
 						// userRef.push(user, (error) =>{
 						// 	if(error){

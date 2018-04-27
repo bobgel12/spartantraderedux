@@ -9,7 +9,9 @@ import { connect } from 'react-redux';
 import { deletePost, addWishlist, listenToWishList} from '../actions/posts';
 import { sendMessage, listenToMessage, getMessageList } from '../actions/message';
 import IconButton from 'material-ui/IconButton';
-import NotificationSystem from 'react-notification-system';
+// import NotificationSystem from 'react-notification-system';
+import Snackbar from 'material-ui/Snackbar';
+import { blue100 } from 'material-ui/styles/colors';
 
 
 
@@ -51,11 +53,12 @@ class ItemPage extends Component {
             item: this.props.posts[this.props.match.params.id],
             content: "",
             flag: false,
+            submited: false
         }
-        this._notificationSystem =  null;
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.addwishlist = this.addwishlist.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
     }
 
     onChange(e) {
@@ -69,17 +72,19 @@ class ItemPage extends Component {
         e.preventDefault();
         if(this.state.content != ""){
             this.props.sendMessage(this.state.content, this.props.match.params.id, this.state.item.uid);
-            this._notificationSystem.addNotification({
-                message: 'Message Sent!',
-                level: 'success',
-                position: 'tc'
-            });
             this.setState(
                 Object.assign({}, this.state, {
                     content: "",
+                    submited: true
                 })
             );
         }
+    }
+
+    handleRequestClose(){
+        this.setState(Object.assign({}, this.state, {
+            submited: false
+        }));
     }
 
     addwishlist(){
@@ -97,10 +102,6 @@ class ItemPage extends Component {
         }
     }
 
-    componentDidMount(){
-        this._notificationSystem = this.refs.notificationSystem;
-    }
-
     render() {
         if (this.state.item) {
             let { item } = this.state;
@@ -115,7 +116,7 @@ class ItemPage extends Component {
             }
         return (
                 <div className="container">
-                    <NotificationSystem ref="notificationSystem" />
+                    {/* <NotificationSystem ref="notificationSystem" /> */}
                     <Card>
                         <CardHeader
                             title={this.state.item.username}
@@ -166,6 +167,13 @@ class ItemPage extends Component {
                                     />
                                     <RaisedButton label="Submit" type="submit" primary={true} fullWidth={true} style={styles.buttonStyle} />
                                 </form>
+                                    <Snackbar
+                                    open={this.state.submited}
+                                    message="Message Sent!"
+                                    autoHideDuration={4000}
+                                    onRequestClose={this.handleRequestClose}
+                                    style = {{color: 'green'}}
+                                    />
                             </div>
                         :
                         null
