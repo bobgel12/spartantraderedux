@@ -147,6 +147,7 @@ export const submitPost = (contents) => {
 		const post = {
 			title: contents.title,
 			major: contents.major,
+			isbn: contents.isbn,
 			description: contents.description,
 			price: contents.price,
 			date: firebase.database.ServerValue.TIMESTAMP,

@@ -93,7 +93,7 @@ class Item extends Component{
             subtitle="SJSU"
             children={<Link to={`/profile/${this.props.item.uid}`}><Avatar src={this.props.item.userPhoto} /></Link>}
             />
-          <CardTitle title={this.props.item.title} subtitle={"Major: "+this.props.item.major + ", Price: $" + this.props.item.price} />
+          <CardTitle title={this.props.item.title} subtitle={"Major: "+this.props.item.major + ", Price: $" + this.props.item.price+ ", ISBN: "+ this.props.item.isbn} />
           <CardActions>
             {
               <div>
@@ -115,7 +115,6 @@ class Item extends Component{
                       >
                         <i className="material-icons red">favorite_border</i>
                       </IconButton>
-                  // <RaisedButton style={buttonStyle} label="Wishlist" primary={true} onClick={this.addWishlist} />
                   : null
                 }
                   <Link to={`/posts/${this.props.id}`}><RaisedButton style={buttonStyle} label="READMORE" primary={true}/></Link>
