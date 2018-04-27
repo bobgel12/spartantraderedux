@@ -136,14 +136,14 @@ class Message extends Component {
                                             Object.keys(this.props.message.messageList).map((qid) => {
                                                 return (
                                                     <div key={qid}>
-                                                        <div className="hidden-md-up">
+                                                        <div className="d-block d-sm-none">
                                                             <ListItem
                                                                 style={{margin: "10px"}}
                                                                 leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
                                                                 onClick={() => { this.updateCurrentConversation(this.props.message.messageList[qid].itemId, this.props.message.messageList[qid].uid) }}
                                                             />
                                                         </div>
-                                                        <div className="hidden-sm-down">
+                                                        <div className="d-none d-sm-block">
                                                             <ListItem
                                                                 key={qid}
                                                                 leftAvatar={<Avatar src={this.props.message.messageList[qid].UserPhoto} />}
@@ -167,7 +167,6 @@ class Message extends Component {
                                                     return(
                                                         <div key={qid}>
                                                             <Chip
-                                                             
                                                                 style={styles.chipright}
                                                                 >
                                                                 <Avatar src={this.props.message.data[qid].sendUserPhoto} />

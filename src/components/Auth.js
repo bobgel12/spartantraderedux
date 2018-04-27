@@ -47,7 +47,7 @@ class Auth extends Component {
       <AppBar
         iconElementLeft={
           <div>
-            <Link to='/'><IconButton >icon={<i className="material-icons md-18">code</i>}</IconButton></Link>
+            <Link to='/'><IconButton> icon={<i className="material-icons md-18">code</i>}</IconButton></Link>
             <span className="d-none d-md-inline-flex" style={{marginRight: 20}}>SpartanTrade  </span>
             <form onSubmit={this.onSubmit} style={{display:"inline"}}>
               <TextField
