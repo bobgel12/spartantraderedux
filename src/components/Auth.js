@@ -51,7 +51,7 @@ class Auth extends Component {
             <span className="d-none d-sm-inline-flex" style={{marginRight: 20}}>SpartanTrade  </span>
             <form onSubmit={this.onSubmit} style={{display:"inline"}}>
               <TextField
-                hintText="Spartan Trade"
+                hintText="Searching"
                 name="search"
                 onChange={this.onChange}
               />
@@ -71,7 +71,7 @@ class Auth extends Component {
                   iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                   anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
                   targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-                > 
+                >
                   <Link to='/message/' style={{textDecoration: "none"}}><MenuItem primaryText="Message" /></Link>
                   <MenuItem primaryText="Sign out" onClick={this.props.logoutUser} />
                 </IconMenu>
