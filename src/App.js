@@ -9,6 +9,7 @@ import Posts from './components/Posts';
 import Profile from './components/Profile';
 import Login from './components/Login';
 import Register from './components/Register';
+import EditPost from './components/EditPost';
 
 import {
 	Route,
@@ -29,6 +30,7 @@ export default class App extends Component {
 				<Switch>
 					<Route exact path='/' component={Posts} />
 					<Route exact path="/login" component={Login} />
+					<Route exact path="/edit/:id" component={EditPost} />
 					<Route exact path="/register" component={Register} />
 					<Route path='/profile/:uid' component={Profile} />
 					<Route path="/posts/:id" component={ItemPage} />

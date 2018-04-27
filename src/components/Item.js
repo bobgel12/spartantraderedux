@@ -121,7 +121,10 @@ class Item extends Component{
                 {
                   this.props.auth.uid ?
                   this.props.auth.uid === this.props.item.uid ?
-                  <RaisedButton label="Delete" secondary={true} style={buttonDelete} onClick={this.delete} />
+                  <div>
+                    <RaisedButton label="Delete" secondary={true} style={buttonDelete} onClick={this.delete} />
+                    <Link to={`/edit/${this.props.id}`}><RaisedButton label="Edit" secondary={true} style={buttonDelete} /></Link>
+                  </div>
                   :
                   null
                   :
