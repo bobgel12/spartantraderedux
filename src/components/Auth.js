@@ -72,12 +72,8 @@ class Auth extends Component {
                   iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                   anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
                   targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-<<<<<<< HEAD
-                >
-=======
                 > 
                   <MenuItem primaryText="New Post" onClick={this.props.logoutUser} />
->>>>>>> Phuc
                   <Link to='/message/' style={{textDecoration: "none"}}><MenuItem primaryText="Message" /></Link>
                   <MenuItem primaryText="Sign out" onClick={this.props.logoutUser} />
                 </IconMenu>
