@@ -27,7 +27,7 @@ const style = {
     textAlign: 'center',
 };
 
-class register extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
     }
@@ -95,4 +95,4 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 };
-export default connect(mapStateToProps, mapDispatchToProps)(register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
