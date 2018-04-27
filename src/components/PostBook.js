@@ -52,7 +52,7 @@ class PostBook extends Component {
   }
   onSubmit(e){
       e.preventDefault();
-      if (this.state.contents.title != '' && this.state.contents.price != '' && this.state.contents.major != '' && this.state.contents.description != ''){
+      if (this.state.contents.title !== '' && this.state.contents.price !== '' && this.state.contents.major !== '' && this.state.contents.description !== ''){
         this.props.submit(this.state.contents);
         this.setState(
           {

@@ -47,8 +47,8 @@ class Auth extends Component {
       <AppBar
         iconElementLeft={
           <div>
-            <Link to='/'><IconButton >icon={<i className="material-icons md-18">code</i>}</IconButton></Link>
-            <span className="d-none d-sm-inline-flex" style={{marginRight: 20}}>SpartanTrade  </span>
+            <Link to='/'><IconButton> icon={<i className="material-icons md-18">code</i>}</IconButton></Link>
+            <span className="d-none d-md-inline-flex" style={{marginRight: 20}}>SpartanTrade  </span>
             <form onSubmit={this.onSubmit} style={{display:"inline"}}>
               <TextField
                 hintText="Searching"
@@ -59,9 +59,10 @@ class Auth extends Component {
           </div>
         }
         iconElementRight={
-          auth.status == C.AUTH_LOGGED_IN ?
+          auth.status === C.AUTH_LOGGED_IN ?
             <div>
               <div className="d-none d-sm-inline-flex">
+                <IconButton >icon={<i class="material-icons">fiber_new</i>}</IconButton>
                 <Link to='/message/'><IconButton >icon={<i className="material-icons">forum</i>}</IconButton></Link>
                 <Link to={`/profile/${auth.uid}`}><Avatar src={auth.photo} /></Link>
                 <FlatButton onClick={this.props.logoutUser} label="Log Out" />
@@ -71,7 +72,12 @@ class Auth extends Component {
                   iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                   anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
                   targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+<<<<<<< HEAD
                 >
+=======
+                > 
+                  <MenuItem primaryText="New Post" onClick={this.props.logoutUser} />
+>>>>>>> Phuc
                   <Link to='/message/' style={{textDecoration: "none"}}><MenuItem primaryText="Message" /></Link>
                   <MenuItem primaryText="Sign out" onClick={this.props.logoutUser} />
                 </IconMenu>
