@@ -196,6 +196,42 @@ export const submitPost = (contents) => {
 };
 
 
+export const editPost = (contents, key) => {
+	return (dispatch, getState) => {
+		const state = getState();
+		const post = {
+			title: contents.title,
+			major: contents.major,
+			isbn: contents.isbn,
+			description: contents.description,
+			price: contents.price,
+			date: firebase.database.ServerValue.TIMESTAMP,
+			userPhoto: state.auth.photo,
+			username: state.auth.username,
+			uid: state.auth.uid,
+		};
+
+		const editBookRef = database.ref(`Books/${key}`);
+
+		dispatch({ type: C.POST_AWAIT_CREATION_RESPONSE });
+		editBookRef.update(post, (error)=>{
+			if (error) {
+				dispatch({
+					type: C.FEEDBACK_DISPLAY_ERROR,
+					error: `Edit failed! ${error}`
+				});
+			} else {
+				dispatch({
+					type: C.FEEDBACK_DISPLAY_MESSAGE,
+					message: 'Post successfully changed!'
+				});
+			}
+		});
+	};
+};
+
+
+
 export const deletePost = (qid) => {
 	return (dispatch) => {
 		const itemRef = database.ref(`Books/${qid}/favoritesUser/`);
