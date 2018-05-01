@@ -35,7 +35,7 @@ class Auth extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
       searchValue: "",
-      filter: "dfd"
+      filter: ""
     }
   }
 
@@ -66,58 +66,59 @@ class Auth extends Component {
     return (
       <AppBar
         iconElementLeft={
+
           <div>
             <Link to='/'><IconButton> icon={<i className="material-icons md-18">code</i>}</IconButton></Link>
-            <span className="d-none d-md-inline-flex" style={{marginRight: 20}}>SpartanTrade  </span>
-            <form onSubmit={this.onSubmit} style={{display:"inline"}}>
+            <span className="d-none d-md-inline-flex" style={{marginRight: 20}}>SpartanTrade </span>
+            <form onSubmit={this.onSubmit} style={{display:"inline-block"}}>
               <TextField
                 hintText="Searching"
                 name="search"
                 onChange={this.onChange}
               />
+
+              <DropDownMenu value={this.state.filter} onChange={this.handleChangeFilter} onChange={this.handleChange}style={{display:"inline-block"}}>
+
+              <Paper >
+              <Menu desktop={true} width={100}>
+              <MenuItem primaryText="Date" insertChildren={true}
+              rightIcon={<ArrowDropRight />}
+              menuItems={[
+              <MenuItem primaryText="Oldest to Newest" />,
+              <MenuItem primaryText="Newest to Oldest" /> ]} />
+              <MenuItem primaryText="ISBN"  />
+              <MenuItem primaryText="Major" insertChildren={true}
+              rightIcon={<ArrowDropRight />}
+              menuItems={[
+                <MenuItem primaryText="Engineering" insertChildren={true} />,
+                <MenuItem primaryText="Business" insertChildren={true} />,
+                <MenuItem primaryText="Biology" insertChildren={true} />,
+                <MenuItem primaryText="Sociology" insertChildren={true} />,
+                <MenuItem primaryText="English" insertChildren={true} />,
+                <MenuItem primaryText="Accounting" insertChildren={true} />,
+                <MenuItem primaryText="Other" insertChildren={true} />
+                ]} />
+            <MenuItem primaryText="Price" insertChildren={true}
+              rightIcon={<ArrowDropRight />}
+              menuItems={[
+              <MenuItem primaryText="Low to High" insertChildren={true} />,
+              <MenuItem primaryText="High to Low" insertChildren={true} />
+              ]} />
+          </Menu>
+          </Paper>
+          </DropDownMenu>
+
+
             </form>
-            <DropDownMenu value={this.state.filter} onChange={this.handleChangeFilter} onChange={this.handleChange}>
-
-            <Paper >
-      <Menu desktop={true} width={320}>
-        <MenuItem primaryText="Date" insertChildren={true}
-        rightIcon={<ArrowDropRight />}
-        menuItems={[
-          <MenuItem primaryText="Oldest to Newest" />,
-          <MenuItem primaryText="Newest to Oldest" />
-        ]}
-        />
-        <MenuItem primaryText="ISBN"  />
-        <MenuItem primaryText="Major" insertChildren={true}
-        rightIcon={<ArrowDropRight />}
-        menuItems={[
-          <MenuItem primaryText="Engineering" insertChildren={true} />,
-          <MenuItem primaryText="Business" insertChildren={true} />,
-          <MenuItem primaryText="Biology" insertChildren={true} />,
-          <MenuItem primaryText="Sociology" insertChildren={true} />,
-          <MenuItem primaryText="English" insertChildren={true} />,
-          <MenuItem primaryText="Accounting" insertChildren={true} />,
-          <MenuItem primaryText="Other" insertChildren={true} />
-
-
-
-        ]}
-        />
-        <MenuItem primaryText="Price" insertChildren={true}
-          rightIcon={<ArrowDropRight />}
-          menuItems={[
-            <MenuItem primaryText="Low to High" insertChildren={true} />,
-            <MenuItem primaryText="High to Low" insertChildren={true} />
-
-          ]}
-        />
-
-
-      </Menu>
-    </Paper>
-    </DropDownMenu>
           </div>
+
+
+
+
+
         }
+
+
         iconElementRight={
           auth.status === C.AUTH_LOGGED_IN ?
             <div>
