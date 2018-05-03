@@ -6,10 +6,9 @@ import TextField from 'material-ui/TextField';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
-
+import ContentFilter from 'material-ui/svg-icons/content/filter-list';
 import Divider from 'material-ui/Divider';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
-
 
 
 
@@ -25,6 +24,33 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
+const Filter = (props) =>{
+  return(
+    <IconMenu
+      iconButtonElement={<IconButton><ContentFilter /></IconButton>}
+      onChange={props.handleChangeFilter}
+      value={props.state.valueFilter}
+      maxHeight={272}
+      anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+    >
+      <MenuItem value={1} primaryText="Low to High" />
+      <MenuItem value={2} primaryText="High to Low" />
+      <Divider />
+      <MenuItem value={3} primaryText="Oldest to Newest" />
+      <MenuItem value={4} primaryText="Newest to Oldest" />
+      <Divider />
+      <MenuItem value={5} primaryText="ISBN" />
+      <Divider />
+      <MenuItem value={6} primaryText="Engineering" />
+      <MenuItem value={7} primaryText="Business" />
+      <MenuItem value={8} primaryText="Biology" />
+      <MenuItem value={9} primaryText="Sociology" />
+      <MenuItem value={10} primaryText="English" />
+      <MenuItem value={11} primaryText="Accounting" />
+      <MenuItem value={12} primaryText="Other" />
+    </IconMenu>
+  )
+}
 
 
 class Auth extends Component {
@@ -33,9 +59,10 @@ class Auth extends Component {
     super(props);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleChangeFilter = this.handleChangeFilter.bind(this);
     this.state = {
       searchValue: "",
-      filter: "dfd"
+      valueFilter: '1',
     }
   }
 
@@ -52,12 +79,8 @@ class Auth extends Component {
     )
   }
 
-  handleChangeFilter(event, index, value){
-    this.setState(
-      {
-        filter: value
-      })
-
+  handleChangeFilter(event, value){
+    this.setState({valueFilter: value});
   };
 
 
@@ -76,52 +99,13 @@ class Auth extends Component {
                 onChange={this.onChange}
               />
             </form>
-            <DropDownMenu value={this.state.filter} onChange={this.handleChangeFilter} onChange={this.handleChange}>
-
-            <Paper >
-      <Menu desktop={true} width={320}>
-        <MenuItem primaryText="Date" insertChildren={true}
-        rightIcon={<ArrowDropRight />}
-        menuItems={[
-          <MenuItem primaryText="Oldest to Newest" />,
-          <MenuItem primaryText="Newest to Oldest" />
-        ]}
-        />
-        <MenuItem primaryText="ISBN"  />
-        <MenuItem primaryText="Major" insertChildren={true}
-        rightIcon={<ArrowDropRight />}
-        menuItems={[
-          <MenuItem primaryText="Engineering" insertChildren={true} />,
-          <MenuItem primaryText="Business" insertChildren={true} />,
-          <MenuItem primaryText="Biology" insertChildren={true} />,
-          <MenuItem primaryText="Sociology" insertChildren={true} />,
-          <MenuItem primaryText="English" insertChildren={true} />,
-          <MenuItem primaryText="Accounting" insertChildren={true} />,
-          <MenuItem primaryText="Other" insertChildren={true} />
-
-
-
-        ]}
-        />
-        <MenuItem primaryText="Price" insertChildren={true}
-          rightIcon={<ArrowDropRight />}
-          menuItems={[
-            <MenuItem primaryText="Low to High" insertChildren={true} />,
-            <MenuItem primaryText="High to Low" insertChildren={true} />
-
-          ]}
-        />
-
-
-      </Menu>
-    </Paper>
-    </DropDownMenu>
           </div>
         }
         iconElementRight={
           auth.status === C.AUTH_LOGGED_IN ?
             <div>
               <div className="d-none d-sm-inline-flex">
+                <Filter state={this.state} handleChangeFilter={this.handleChangeFilter} mini = {false} />
                 <IconButton >icon={<i class="material-icons">fiber_new</i>}</IconButton>
                 <Link to='/message/'><IconButton >icon={<i className="material-icons">forum</i>}</IconButton></Link>
                 <Link to={`/profile/${auth.uid}`}><Avatar src={auth.photo} /></Link>
@@ -133,6 +117,7 @@ class Auth extends Component {
                   anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
                   targetOrigin={{ horizontal: 'right', vertical: 'top' }}
                 >
+                  <Filter state={this.state} handleChangeFilter={this.handleChangeFilter} mini = {true}/>
                   <MenuItem primaryText="New Post" onClick={this.props.logoutUser} />
                   <Link to='/message/' style={{textDecoration: "none"}}><MenuItem primaryText="Message" /></Link>
                   <MenuItem primaryText="Sign out" onClick={this.props.logoutUser} />
@@ -147,6 +132,7 @@ class Auth extends Component {
                 targetOrigin={{ horizontal: 'right', vertical: 'top' }}
               >
                 <Link to='/login' style={{ textDecoration: "none" }}><MenuItem primaryText="Sign In" /></Link>
+                <Filter state={this.state} handleChangeFilter={this.handleChangeFilter} mini={true}/>
               </IconMenu>
             </div>
         }
@@ -166,3 +152,4 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+
