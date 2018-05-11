@@ -5,11 +5,11 @@ import { database } from '../firebaseApp';
 
 import { listenToPosts } from './posts';
 
+// #1.1 Function to get the current User to the store
 export const getUser = (uid) => {
 	return (dispatch) => {
 		const userRef = database.ref('Users/' + uid + '/data');
 		userRef.on('value', (snapshot) => {
-			console.log(snapshot.val());
 			if (snapshot.val()){
 				dispatch({
 					type: C.PROFILE_USER,
@@ -20,7 +20,7 @@ export const getUser = (uid) => {
 		});
 	}
 }
-
+// #1.2 Function to check if there is a user logged in
 export const listenToAuth = () => {
 	return (dispatch, getState) => {
 		auth.onAuthStateChanged((authData) => {
@@ -42,6 +42,7 @@ export const listenToAuth = () => {
 	};
 };
 
+// #1.3 Function to log in with Google
 export const loginWithGoogle = () => {
 	return (dispatch) => {
 		dispatch({ type: C.AUTH_OPEN });
@@ -56,6 +57,8 @@ export const loginWithGoogle = () => {
 			});
 	};
 };
+
+// #1.4 Function to log in with Facebook
 export const loginWithFaceBook = () => {
 	return (dispatch) => {
 		dispatch({ type: C.AUTH_OPEN });
@@ -71,6 +74,7 @@ export const loginWithFaceBook = () => {
 	};
 };
 
+// #1.5 Function to log out
 export const logoutUser = () => {
 	return (dispatch) => {
 		dispatch({ type: C.AUTH_LOGOUT });

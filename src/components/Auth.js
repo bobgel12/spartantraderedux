@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { loginWithGoogle, logoutUser } from '../actions/auth';
-import { search } from '../actions/filter';
+import { search, filter } from '../actions/filter';
 import C from '../constants';
 
 import IconMenu from 'material-ui/IconMenu';
@@ -33,21 +33,21 @@ const Filter = (props) =>{
       maxHeight={272}
       anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
     >
-      <MenuItem value={1} primaryText="Low to High" />
-      <MenuItem value={2} primaryText="High to Low" />
+      <MenuItem value={C.FILTER_BY_LOW_HIGH} primaryText="Low to High" />
+      <MenuItem value={C.FILTER_BY_HIGH_LOW} primaryText="High to Low" />
       <Divider />
-      <MenuItem value={3} primaryText="Oldest to Newest" />
-      <MenuItem value={4} primaryText="Newest to Oldest" />
+      <MenuItem value={C.FILTER_BY_OLD_NEW} primaryText="Oldest to Newest" />
+      <MenuItem value={C.FILTER_BY_NEW_OLD} primaryText="Newest to Oldest" />
       <Divider />
-      <MenuItem value={5} primaryText="ISBN" />
+      <MenuItem value={C.FILTER_BY_ISBN} primaryText="ISBN" />
       <Divider />
-      <MenuItem value={6} primaryText="Engineering" />
-      <MenuItem value={7} primaryText="Business" />
-      <MenuItem value={8} primaryText="Biology" />
-      <MenuItem value={9} primaryText="Sociology" />
-      <MenuItem value={10} primaryText="English" />
-      <MenuItem value={11} primaryText="Accounting" />
-      <MenuItem value={12} primaryText="Other" />
+      <MenuItem value={C.FILTER_BY_ENGINEERING} primaryText="Engineering" />
+      <MenuItem value={C.FILTER_BY_BUSINESS} primaryText="Business" />
+      <MenuItem value={C.FILTER_BY_BIOLOGY} primaryText="Biology" />
+      <MenuItem value={C.FILTER_BY_SOCIOLOGY} primaryText="Sociology" />
+      <MenuItem value={C.FILTER_BY_ENGLISH} primaryText="English" />
+      <MenuItem value={C.FILTER_BY_ACCOUNTING} primaryText="Accounting" />
+      <MenuItem value={C.FILTER_BY_OTHER} primaryText="Other" />
     </IconMenu>
   )
 }
@@ -62,7 +62,7 @@ class Auth extends Component {
     this.handleChangeFilter = this.handleChangeFilter.bind(this);
     this.state = {
       searchValue: "",
-      valueFilter: '1',
+      valueFilter: C.FILTER_BY_NONE,
     }
   }
 
@@ -81,6 +81,7 @@ class Auth extends Component {
 
   handleChangeFilter(event, value){
     this.setState({valueFilter: value});
+    this.props.filter(value);
   };
 
 
@@ -106,7 +107,7 @@ class Auth extends Component {
             <div>
               <div className="d-none d-sm-inline-flex">
                 <Filter state={this.state} handleChangeFilter={this.handleChangeFilter} mini = {false} />
-                <IconButton >icon={<i class="material-icons">fiber_new</i>}</IconButton>
+                {/* <IconButton >icon={<i class="material-icons">fiber_new</i>}</IconButton> */}
                 <Link to='/message/'><IconButton >icon={<i className="material-icons">forum</i>}</IconButton></Link>
                 <Link to={`/profile/${auth.uid}`}><Avatar src={auth.photo} /></Link>
                 <FlatButton onClick={this.props.logoutUser} label="Log Out" />
@@ -148,7 +149,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   loginWithGoogle,
   logoutUser,
-  search
+  search,
+  filter
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

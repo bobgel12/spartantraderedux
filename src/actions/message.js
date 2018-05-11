@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 
 const conversationRef = database.ref('Conversations');
 
+// #3.1 Function to send message given the message, from user's ID, to user's ID
 export const sendMessage = (message, qid, touid) => {
     return (dispatch, getState) => {
         const state = getState();
@@ -13,12 +14,11 @@ export const sendMessage = (message, qid, touid) => {
         const receiveRefUser = database.ref(`Users/${touid}/conversationList`);
         const itemRef = database.ref(`Books/${qid}`);
 
+        // Message Item
         var item
         itemRef.once('value', (snapshot)=>{
             item = snapshot.val();
         })
-
-        console.log(item);
         
         dispatch({ type: C.MESSAGE_AWAIT_CREATION_RESPONSE});
 
@@ -54,7 +54,6 @@ export const sendMessage = (message, qid, touid) => {
         sendRef.once("value",(snapshot)=>{
             if(snapshot.exists()){
                 snapshot.forEach((a) => {
-                    console.log(a.key);
                     update(a.key, true);
                 });
             }
@@ -182,6 +181,7 @@ export const sendMessage = (message, qid, touid) => {
     }
 }
 
+// #3.2 Function to get conversation to display in the message given the current user's ID
 export const getMessageList = () => {
     return (dispatch, getState) => {
         const state = getState();
@@ -201,6 +201,7 @@ export const getMessageList = () => {
     }
 }
 
+// #3.3 Function to get the message of the current user with the given User's ID
 export const listenToMessage = (qid, touid) => {
     return (dispatch, getState) => {
         console.log(qid)

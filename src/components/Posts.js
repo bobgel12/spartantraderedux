@@ -32,7 +32,6 @@ class Posts extends Component{
   render(){
     return(
         <div className="container">
-          <Chips/>
           <div className="row">
             {
               this.props.auth.uid ?

@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 
 const postsRef = database.ref('Books');
 
+// #4.1 Add a item into a user wishlist given the user's ID and the item's ID
 export const addWishlist = (qid, uid) => {
 	return (dispatch) => {
 		const wishListRef = database.ref('Users/'+uid+'/wishList');
@@ -17,7 +18,7 @@ export const addWishlist = (qid, uid) => {
 					return null;
 				})
 			:
-			console.log("There is no wishlist");
+			null
 		});
 		if (!check){
 			const itemRef = database.ref(`Books/${qid}/favoritesUser/`).push(uid);
@@ -42,6 +43,7 @@ export const addWishlist = (qid, uid) => {
 	}
 }
 
+// #4.2 Function to get the wishlist of the given user's ID
 export const listenToWishList = (uid) => {
 	return (dispatch) => {
 		const wishListRef = database.ref('Users/'+ uid+'/wishList');
@@ -59,6 +61,7 @@ export const listenToWishList = (uid) => {
 	};
 };
 
+// #4.3 Function to rate a user given the message, rate value, target user's ID
 export const rate = (rateNum, rateMes, uid) => {
 	return (dispatch, getState) => {
 		dispatch({ type: C.POST_AWAIT_CREATION_RESPONSE });
@@ -105,12 +108,77 @@ export const rate = (rateNum, rateMes, uid) => {
 	};
 }
 
-
+// #4.4 Function to get the posts given condition.
 export const listenToPosts = () => {
 	return (dispatch, getState) => {
 		postsRef.off();
 		const state = getState();
-		if(state.filter.searchValue == ''){
+		if(state.filter.searchValue != ''){
+			// set the value to lower case when posting must set to lower case as well
+			// let searchValue = state.filter.searchValue.toLowerCase();
+			let searchValue = state.filter.searchValue;
+			postsRef.orderByChild('title').startAt(searchValue).endAt(searchValue + "uf8ff").once("value", (snapshot) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA,
+					data: snapshot.val()
+				});
+			}, (error) => {
+				dispatch({
+					type: C.POSTS_RECEIVE_DATA_ERROR,
+					message: error.message
+				});
+			});
+		} else if(state.filter.filter != C.FILTER_BY_NONE){
+			postsRef.off();
+			switch(state.filter.filter){
+				case C.FILTER_BY_HIGH_LOW:
+					null;
+				case C.FILTER_BY_LOW_HIGH:
+					null;
+				case C.FILTER_BY_OLD_NEW:
+					postsRef.orderByChild("date").once('value', (snapshot) => {
+						dispatch({
+							type: C.POSTS_RECEIVE_DATA,
+							data: snapshot.val()
+						});
+					}, (error) => {
+						dispatch({
+							type: C.POSTS_RECEIVE_DATA_ERROR,
+							message: error.message
+						});
+					});
+				case C.FILTER_BY_NEW_OLD:
+					postsRef.orderByChild("reverseDate").once('value', (snapshot) => {
+						// Use snapshot.forEach because javascript object doesnt have order. Put them in a different object.
+						console.log(snapshot.val());
+						dispatch({
+							type: C.POSTS_RECEIVE_DATA,
+							data: snapshot.val()
+						});
+					}, (error) => {
+						dispatch({
+							type: C.POSTS_RECEIVE_DATA_ERROR,
+							message: error.message
+						});
+					});
+				case C.FILTER_BY_ENGINEERING:
+					null;
+				case C.FILTER_BY_BUSINESS:
+					null;
+				case C.FILTER_BY_BIOLOGY:
+					null;
+				case C.FILTER_BY_SOCIOLOGY:
+					null;
+				case C.FILTER_BY_ENGLISH:
+					null;
+				case C.FILTER_BY_ACCOUNTING:
+					null;
+				case C.FILTER_BY_OTHER:
+					null;
+				case C.FILTER_BY_ISBN:
+					null;
+			}
+		} else {
 			postsRef.on('value', (snapshot) => {
 				dispatch({
 					type: C.POSTS_RECEIVE_DATA,
@@ -122,35 +190,22 @@ export const listenToPosts = () => {
 					message: error.message
 				});
 			});
-		} else{
-			// set the value to lower case when posting must set to lower case as well
-			// let searchValue = state.filter.searchValue.toLowerCase();
-			let searchValue = state.filter.searchValue;
-			postsRef.orderByChild('title').startAt(searchValue).endAt(searchValue+"uf8ff").once("value", (snapshot) => {
-				dispatch({
-					type: C.POSTS_RECEIVE_DATA,
-					data: snapshot.val()
-				});
-			}, (error)=>{
-				dispatch({
-					type: C.POSTS_RECEIVE_DATA_ERROR,
-					message: error.message
-				});		
-			});
 		}
 	};
 };
 
+// #4.5 Function to submit a new book given the contents of the newly created book
 export const submitPost = (contents) => {
 	return (dispatch, getState) => {
 		const state = getState();
+		let timestamp = firebase.database.ServerValue.TIMESTAMP
 		const post = {
 			title: contents.title,
 			major: contents.major,
 			isbn: contents.isbn,
 			description: contents.description,
 			price: contents.price,
-			date: firebase.database.ServerValue.TIMESTAMP,
+			date: timestamp,
 			userPhoto: state.auth.photo,
 			username: state.auth.username,
 			uid: state.auth.uid,
@@ -165,7 +220,7 @@ export const submitPost = (contents) => {
 		}
 
 		dispatch({ type: C.POST_AWAIT_CREATION_RESPONSE });
-		postsRef.push(post, (error) => {
+		let newPostKey = postsRef.push(post, (error) => {
 			dispatch({ type: C.POST_RECEIVE_CREATION_RESPONSE });
 			if (error) {
 				dispatch({
@@ -191,11 +246,19 @@ export const submitPost = (contents) => {
 					message: 'Submission successfully saved!'
 				});
 			}
-		});
+		})
+		// Get the inverse date for reverse search.
+		newPostKey.then(()=>{
+			console.log(newPostKey.key);
+			postsRef.child(newPostKey.key).once("value", (snapshot)=>{
+				console.log(snapshot.val().date*-1);
+				newPostKey.update({ reverseDate: snapshot.val().date * -1 })
+			})
+		})
 	};
 };
 
-
+// #4.6 Function to edit a post given the key of id of the post being edited
 export const editPost = (contents, key) => {
 	return (dispatch, getState) => {
 		const state = getState();
@@ -230,8 +293,7 @@ export const editPost = (contents, key) => {
 	};
 };
 
-
-
+// #4.7 Function to delete a post given the post's ID
 export const deletePost = (qid) => {
 	return (dispatch) => {
 		const itemRef = database.ref(`Books/${qid}/favoritesUser/`);
@@ -278,7 +340,7 @@ export const deletePost = (qid) => {
 	};
 };
 
-
+// #4.8 Functon to delete an item in the user's wishlist given the item's id and the user's ID
 export const deleteWishlist = (qid, uid, qidReal) => {
 	return (dispatch) => {
 		const wishListRef = database.ref('Users/' + uid + '/wishList');
